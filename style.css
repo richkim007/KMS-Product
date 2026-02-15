@@ -1,1 +1,131 @@
-/* Add styles here */
+body {
+    font-family: 'Helvetica Neue', sans-serif;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-image: radial-gradient(circle, #1a1a2e, #16213e, #0f3460);
+    padding: 20px;
+}
+
+.container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+h1 {
+    color: #c5a8ff;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px #c5a8ff;
+}
+
+.subtitle {
+    color: #a8a8b3;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+}
+
+.user-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.input-group label {
+    margin-bottom: 8px;
+    color: #c5a8ff;
+    font-weight: bold;
+}
+
+.input-group input, .input-group select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid #c5a8ff;
+    color: #e0e0e0;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.lotto-display {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.lotto-set {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.number {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #1a1a2e;
+    background-color: #c5a8ff;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 15px #c5a8ff;
+    transform: scale(0);
+    opacity: 0;
+}
+
+@keyframes number-animation {
+    from {
+        transform: scale(0.5) rotate(-90deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.number.animated {
+    animation: number-animation 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+#generate-btn {
+    background-color: #ff6ac1;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 0 20px #ff6ac1;
+}
+
+#generate-btn:hover {
+    background-color: #ff89d1;
+    transform: translateY(-3px);
+}
+
+#generate-btn:active {
+    transform: translateY(0px);
+}
