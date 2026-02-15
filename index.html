@@ -3,33 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Astro-Rhythm Lotto</title>
-    <link rel="stylesheet" href="style.css?v=11.0">
+    <title>우주가 당신에게만 보내는 특별한 행운의 로또 번호</title>
+    <!-- CSS 파일에 버전 추가 -->
+    <link rel="stylesheet" href="style.css?v=16.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>Quantum Astro-Rhythm Lotto</h1>
-            <p>양자역학에 의해 생년월일과 태어난 시간을 입력하면 당신만의 행운의 로또번호 숫자가 생성됩니다</p>
-        </div>
-        <div class="user-inputs">
-            <div class="input-group">
-                <label for="birthdate">생년월일</label>
-                <input type="date" id="birthdate">
+        <div class="lotto-box">
+            <h1 class="title-bar">
+                당첨은 기다리는 것이 아닙니다.<br>당신이 관측하는 그 순간, <span class="highlight">현실</span>로 확정됩니다.
+            </h1>
+
+            <div class="description">
+                <p>지금 이 순간에도 수조 개의 당첨 확률이 안개(중첩 상태)처럼 떠다니고 있습니다. 오직 당신의 손끝이 닿는 찰나의 순간,<br>양자역학의 파동이 붕괴하며 가장 완벽한 당첨의 현실 하나가 고정됩니다.</p>
+                <p>망설이지 마세요.<br><strong class="long-line">우주의 불확실성을 당신만의 확실한 행운으로 결정 지으십시오.</strong></p>
             </div>
-            <div class="input-group">
-                <label for="birthtime">태어난 시간</label>
-                <input type="time" id="birthtime">
+
+            <div class="user-inputs">
+                <div class="input-group-row">
+                    <div class="input-group" id="birthdate-group">
+                        <div class="birthdate-label-container">
+                            <label for="birthdatetime">생년월일시</label>
+                            <div class="radio-group">
+                                <input type="radio" id="solar" name="calendar" value="solar" checked>
+                                <label for="solar">양력</label>
+                                <input type="radio" id="lunar" name="calendar" value="lunar">
+                                <label for="lunar">음력</label>
+                            </div>
+                        </div>
+                        <div class="date-input-container">
+                           <input type="datetime-local" id="birthdatetime">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="zodiac">별자리</label>
+                        <input type="text" id="zodiac" placeholder="생년월일시를 선택하세요" readonly>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="zodiac-display">
-            <strong>별자리:</strong> <span id="zodiac-sign">생년월일을 입력하세요</span>
-        </div>
-        <button id="generate-btn">번호 생성</button>
-        <div class="lotto-display">
-            <!-- Lotto numbers will be displayed here -->
+
+            <button id="generate-btn">번호 생성</button>
+
+            <div id="lotto-numbers-container">
+                <!-- Lotto numbers will be displayed here -->
+            </div>
         </div>
     </div>
-    <script src="main.js"></script>
+    <!-- JavaScript 파일 버전을 v3.0으로 강제 업데이트 -->
+    <script src="main.js?v=3.0"></script>
 </body>
 </html>

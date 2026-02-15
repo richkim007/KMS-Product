@@ -1,120 +1,205 @@
 body {
     font-family: sans-serif;
-    background-image: url('https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+    background-image: url('https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
     background-size: cover;
-    background-attachment: fixed;
     background-position: center;
     color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    height: 100vh;
     margin: 0;
+    overflow: auto; /* Allow scrolling if content overflows */
 }
 
 .container {
-    background-color: rgba(255, 255, 255, 0.85);
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    width: 90%;
     max-width: 500px;
+    margin: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.lotto-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     text-align: center;
 }
 
-.header h1 {
-    text-align: center;
-    color: #FFD700; /* Gold color */
-    background-image: url('https://images.pexels.com/photos/110854/pexels-photo-110854.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
-    background-size: cover;
-    background-position: center;
-    padding: 1rem;
-    border-radius: 5px;
-    margin: -2rem -2rem 1.5rem -2rem;
-    font-size: 1.8rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+.title-bar {
+    color: #d9534f;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    line-height: 1.4;
 }
 
-.header p {
-    margin-bottom: 2rem;
-    font-size: 1rem;
+.highlight {
+    color: #4A90E2; /* A striking blue color */
+    font-weight: 900;  /* Extra bold */
+}
+
+.description {
+    margin-top: 20px;
     color: #555;
+    text-align: left; /* Left-align the description text */
+}
+
+.description p {
+    margin-bottom: 1.2em; /* Space between paragraphs */
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.description p:last-child {
+    margin-bottom: 0;
+}
+
+.long-line {
+    font-size: 15px;
+    color: #191970; /* Deep Navy Blue */
+    font-weight: bold; /* Make it bold */
 }
 
 .user-inputs {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    text-align: left;
+    margin-top: 30px;
+}
+
+.input-group-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.input-group {
+    flex: 1;
+    margin: 0 5px;
+}
+
+.input-group:last-child {
+    flex: 2;
+    margin-right: 0;
 }
 
 .input-group label {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-    color: #000;
     display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #000;
+    font-weight: bold;
 }
 
-.input-group input {
-    padding: 0.75rem;
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 100%;
+    font-size: 16px;
     box-sizing: border-box;
 }
 
-.zodiac-display {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+#zodiac {
     text-align: center;
 }
 
 #generate-btn {
-    display: block;
-    margin: 0 auto;
-    padding: 1rem;
-    width: 100%;
-    background-image: url('https://images.pexels.com/photos/110854/pexels-photo-110854.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+    background-image: url('https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
     background-size: cover;
     background-position: center;
-    color: #FFD700;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    border: none;
-    border-radius: 5px;
-    font-size: 1.5rem;
-    font-weight: bold;
+    color: #FFFF00;
+    padding: 15px 30px;
+    border: 2px solid #FFF;
+    border-radius: 10px;
     cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    text-shadow: 2px 2px 4px #000;
+    transition: transform 0.2s ease;
 }
 
 #generate-btn:hover {
-    transform: scale(1.02);
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    transform: scale(1.05);
 }
 
-.lotto-display {
-    margin-top: 2rem;
-    display: grid;
-    gap: 1rem;
+#lotto-numbers-container {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: transparent; /* Make background transparent */
+    border-radius: 5px;
+    display: none;
+    border: 1px solid #FFF;
 }
 
 .lotto-set {
     display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.lotto-set:last-child {
+    margin-bottom: 0;
 }
 
 .lotto-ball {
-    width: 45px;
-    height: 45px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
+    font-size: 22px;
     font-weight: bold;
-    font-size: 1.2rem;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: inset -2px -2px 5px rgba(0,0,0,0.4), 2px 2px 5px rgba(255,255,255,0.4);
+}
+
+.lotto-ball.c-yellow {
+    background-color: #fbc400;
+}
+
+.lotto-ball.c-blue {
+    background-color: #69c8f2;
+}
+
+.lotto-ball.c-red {
+    background-color: #ff7272;
+}
+
+.lotto-ball.c-gray {
+    background-color: #aaa;
+}
+
+.lotto-ball.c-green {
+    background-color: #b0d840;
+}
+
+.birthdate-label-container {
+    display: flex;
+    align-items: center;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+.radio-group label {
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.radio-group input[type="radio"] {
+    width: auto; /* override the 100% width from the general input style */
+}
+
+.date-input-container {
+    position: relative;
 }
