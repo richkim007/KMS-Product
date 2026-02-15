@@ -18,170 +18,63 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     width: 90%;
-    max-width: 600px;
+    max-width: 500px;
+    text-align: center;
 }
 
 .header h1 {
     text-align: center;
-    color: #FFD700;
+    color: #FFD700; /* Gold color */
     background-image: url('https://images.pexels.com/photos/110854/pexels-photo-110854.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
     background-size: cover;
     background-position: center;
     padding: 1rem;
     border-radius: 5px;
-    margin-bottom: 1.5rem;
+    margin: -2rem -2rem 1.5rem -2rem;
     font-size: 1.8rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
-.description {
-    background-color: rgba(44, 62, 80, 0.85); /* 진한 남색 배경 */
-    padding: 1.2rem;
-    border-radius: 5px;
-    margin-bottom: 1.5rem;
-    text-align: center;
-    border: 1px solid rgba(255, 215, 0, 0.5); /* 금색 테두리 */
-}
-
-.description p {
-    margin: 0;
-    font-size: 1.05rem; /* 가독성을 위해 글자 크기 조정 */
-    color: #FFFFFF; /* 밝은 흰색 글자 */
-    line-height: 1.7;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* 그림자 효과 강화 */
+.header p {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    color: #555;
 }
 
 .user-inputs {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
     margin-bottom: 1.5rem;
-}
-
-.birth-info {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-    align-items: start;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column;
+    text-align: left;
 }
 
 .input-group label {
     margin-bottom: 0.5rem;
     font-weight: bold;
     color: #000;
+    display: block;
 }
 
-.input-group input[type="date"],
-.input-group input[type="time"] {
-    position: relative;
-    padding: 0.75rem 0.5rem 0.75rem 3.5rem;
-    background-position: 0.75rem center;
-    background-repeat: no-repeat;
-    background-size: 2rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.input-group input[type="date"]::-webkit-calendar-picker-indicator,
-.input-group input[type="time"]::-webkit-calendar-picker-indicator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
-
-.input-group input[type="date"] {
-    background-image: url('https://cdn-icons-png.flaticon.com/512/591/591576.png');
-}
-
-.input-group input[type="time"] {
-    background-image: url('https://i.imgur.com/U3v29v8.png');
-}
-
-.input-group input[type="text"] {
+.input-group input {
     padding: 0.75rem;
     border: 1px solid #ccc;
     border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.zodiac-display {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
     text-align: center;
 }
 
-.zodiac-section {
-    align-items: center;
-}
-
-#zodiac {
-    width: 100%;
-    max-width: 250px;
-}
-
-.radio-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 0.5rem;
-}
-
-.lotto-display {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    margin-bottom: 1.5rem;
-}
-
-.lotto-set {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-}
-
-.lotto-ball {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-.lotto-ball.yellow {
-    background-color: #f1c40f; /* 1-10 */
-    color: #333;
-}
-
-.lotto-ball.blue {
-    background-color: #3498db; /* 11-20 */
-}
-
-.lotto-ball.red {
-    background-color: #e74c3c; /* 21-30 */
-}
-
-.lotto-ball.grey {
-    background-color: #7f8c8d; /* 31-40 */
-}
-
-.lotto-ball.green {
-    background-color: #2ecc71; /* 41-45 */
-}
-
-
 #generate-btn {
     display: block;
-    margin: 2rem auto 0;
+    margin: 0 auto;
     padding: 1rem;
-    width: 80%;
-    max-width: 400px;
+    width: 100%;
     background-image: url('https://images.pexels.com/photos/110854/pexels-photo-110854.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
     background-size: cover;
     background-position: center;
@@ -189,13 +82,39 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
     border: none;
     border-radius: 5px;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: bold;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
 #generate-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+    transform: scale(1.02);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+}
+
+.lotto-display {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1rem;
+}
+
+.lotto-set {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.lotto-ball {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
