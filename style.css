@@ -68,18 +68,16 @@ body {
 
 .input-group-row {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    align-items: flex-start; 
+    gap: 15px; 
 }
 
-.input-group {
-    flex: 1;
-    margin: 0 5px;
+#birthdate-group {
+    flex: 1.7;
 }
 
-.input-group:last-child {
-    flex: 2;
-    margin-right: 0;
+#zodiac-group { 
+    flex: 1.3;
 }
 
 .input-group label {
@@ -102,6 +100,15 @@ body {
 
 #zodiac {
     text-align: center;
+}
+
+/* 생년월일 입력창의 텍스트를 중앙 정렬 */
+#birthdate {
+    text-align: center;
+}
+
+#zodiac::placeholder {
+    font-size: 11px;
 }
 
 #generate-btn {
@@ -202,4 +209,5 @@ body {
 
 .date-input-container {
     position: relative;
+    cursor: pointer; /* 마우스를 올리면 클릭 커서로 변경 */
 }

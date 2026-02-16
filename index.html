@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>우주가 당신에게만 보내는 특별한 행운의 로또 번호</title>
-    <!-- CSS 파일에 버전 추가 -->
-    <link rel="stylesheet" href="style.css?v=16.0">
+    <!-- CSS 파일 버전을 v21.0으로 업데이트 -->
+    <link rel="stylesheet" href="style.css?v=21.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
@@ -24,7 +24,7 @@
                 <div class="input-group-row">
                     <div class="input-group" id="birthdate-group">
                         <div class="birthdate-label-container">
-                            <label for="birthdatetime">생년월일시</label>
+                            <label>생년월일</label>
                             <div class="radio-group">
                                 <input type="radio" id="solar" name="calendar" value="solar" checked>
                                 <label for="solar">양력</label>
@@ -32,13 +32,13 @@
                                 <label for="lunar">음력</label>
                             </div>
                         </div>
-                        <div class="date-input-container">
-                           <input type="datetime-local" id="birthdatetime">
-                        </div>
+                        <label for="birthdate" class="date-input-container">
+                           <input type="date" id="birthdate">
+                        </label>
                     </div>
-                    <div class="input-group">
+                    <div class="input-group" id="zodiac-group">
                         <label for="zodiac">별자리</label>
-                        <input type="text" id="zodiac" placeholder="생년월일시를 선택하세요" readonly>
+                        <input type="text" id="zodiac" placeholder="* 생년월일을 선택하세요" readonly>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,6 @@
             </div>
         </div>
     </div>
-    <!-- JavaScript 파일 버전을 v3.0으로 강제 업데이트 -->
-    <script src="main.js?v=3.0"></script>
+    <script src="main.js?v=8.0"></script>
 </body>
 </html>

@@ -1,107 +1,93 @@
-console.log("main.js version 3.0 loaded."); // 이 메시지가 보이면 새 코드가 적용된 것입니다.
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("DOM fully loaded. main.js version 8.0 loaded.");
 
-const generateBtn = document.getElementById('generate-btn');
-const lottoNumbersContainer = document.getElementById('lotto-numbers-container');
-const birthdatetimeInput = document.getElementById('birthdatetime');
-const birthdateGroup = document.getElementById('birthdate-group');
-const zodiacInput = document.getElementById('zodiac');
+    const generateBtn = document.getElementById('generate-btn');
+    const lottoNumbersContainer = document.getElementById('lotto-numbers-container');
+    // ID 변경: birthdatetime -> birthdate
+    const birthdateInput = document.getElementById('birthdate');
+    const zodiacInput = document.getElementById('zodiac');
 
-// --- 최종 날짜 선택 기능 --- 
-// 생년월일 그룹 전체에 클릭 이벤트를 설정합니다.
-// 라벨, 입력창, 주변 빈 공간 어디를 클릭해도 작동합니다.
-birthdateGroup.addEventListener('click', () => {
-    // 모바일 및 최신 브라우저에서는 달력을 바로 표시합니다.
-    try {
-        birthdatetimeInput.showPicker();
-    } catch (error) {
-        // showPicker가 지원되지 않는 경우, 입력창에 포커스를 맞춰
-        // 브라우저 기본 동작으로 달력이 열리도록 유도합니다.
-        birthdatetimeInput.focus();
-        console.error("showPicker() is not supported in this browser:", error);
+    // 생년월일 변경 시 별자리 계산
+    birthdateInput.addEventListener('change', () => {
+        // new Date()는 'YYYY-MM-DD' 형식을 GMT 기준으로 해석하여 하루의 오차가 발생할 수 있습니다.
+        // 이를 방지하기 위해 T00:00:00을 추가하여 사용자의 시간대 기준으로 정확히 해석하도록 합니다.
+        const birthdateValue = birthdateInput.value;
+        if (!birthdateValue) { // 값이 없는 경우 처리
+            zodiacInput.value = '';
+            return;
+        }
+        const birthdate = new Date(birthdateValue + 'T00:00:00');
+        
+        if (isNaN(birthdate.getTime())) {
+            zodiacInput.value = '';
+            return;
+        }
+        const month = birthdate.getMonth() + 1;
+        const day = birthdate.getDate();
+        zodiacInput.value = getZodiacSign(month, day);
+    });
+
+    // 번호 생성 버튼 클릭 이벤트
+    generateBtn.addEventListener('click', () => {
+        const birthdate = birthdateInput.value;
+        const zodiac = zodiacInput.value;
+
+        // 알림 메시지 변경: 생년월일시 -> 생년월일
+        if (!birthdate || !zodiac) {
+            alert('생년월일을 선택해주세요.');
+            return;
+        }
+
+        lottoNumbersContainer.innerHTML = '';
+        lottoNumbersContainer.style.display = 'block';
+
+        for (let i = 0; i < 5; i++) {
+            const lottoSet = generateLottoNumbers();
+            const lottoSetDiv = document.createElement('div');
+            lottoSetDiv.classList.add('lotto-set');
+
+            lottoSet.forEach(number => {
+                const lottoBall = document.createElement('div');
+                lottoBall.classList.add('lotto-ball');
+                
+                if (number <= 10) lottoBall.classList.add('c-yellow');
+                else if (number <= 20) lottoBall.classList.add('c-blue');
+                else if (number <= 30) lottoBall.classList.add('c-red');
+                else if (number <= 40) lottoBall.classList.add('c-gray');
+                else lottoBall.classList.add('c-green');
+
+                lottoBall.textContent = number;
+                lottoSetDiv.appendChild(lottoBall);
+            });
+
+            lottoNumbersContainer.appendChild(lottoSetDiv);
+        }
+    });
+
+    // 로또 번호 생성 함수
+    function generateLottoNumbers() {
+        const numbers = new Set();
+        while (numbers.size < 6) {
+            const randomNumber = Math.floor(Math.random() * 45) + 1;
+            numbers.add(randomNumber);
+        }
+        return Array.from(numbers).sort((a, b) => a - b);
     }
-});
 
-birthdatetimeInput.addEventListener('change', () => {
-    const birthdatetime = new Date(birthdatetimeInput.value);
-    if (isNaN(birthdatetime.getTime())) { // 유효하지 않은 날짜 확인
-        zodiacInput.value = '';
-        return;
-    }
-    const month = birthdatetime.getMonth() + 1;
-    const day = birthdatetime.getDate();
-    zodiacInput.value = getZodiacSign(month, day);
-});
-
-generateBtn.addEventListener('click', () => {
-    const birthdatetime = birthdatetimeInput.value;
-    const zodiac = zodiacInput.value;
-
-    if (!birthdatetime || !zodiac) {
-        alert('생년월일시를 선택해주세요.');
-        return;
-    }
-
-    lottoNumbersContainer.innerHTML = '';
-    lottoNumbersContainer.style.display = 'block';
-
-    for (let i = 0; i < 5; i++) {
-        const lottoSet = generateLottoNumbers();
-        const lottoSetDiv = document.createElement('div');
-        lottoSetDiv.classList.add('lotto-set');
-
-        lottoSet.forEach(number => {
-            const lottoBall = document.createElement('div');
-            lottoBall.classList.add('lotto-ball');
-            
-            if (number <= 10) lottoBall.classList.add('c-yellow');
-            else if (number <= 20) lottoBall.classList.add('c-blue');
-            else if (number <= 30) lottoBall.classList.add('c-red');
-            else if (number <= 40) lottoBall.classList.add('c-gray');
-            else lottoBall.classList.add('c-green');
-
-            lottoBall.textContent = number;
-            lottoSetDiv.appendChild(lottoBall);
-        });
-
-        lottoNumbersContainer.appendChild(lottoSetDiv);
-    }
-});
-
-function generateLottoNumbers() {
-    const numbers = new Set();
-    while (numbers.size < 6) {
-        const randomNumber = Math.floor(Math.random() * 45) + 1;
-        numbers.add(randomNumber);
-    }
-    return Array.from(numbers).sort((a, b) => a - b);
-}
-
-function getZodiacSign(month, day) {
-    if ((month == 1 && day <= 19) || (month == 12 && day >= 22)) {
-        return "염소자리";
-    } else if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) {
-        return "물병자리";
-    } else if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) {
-        return "물고기자리";
-    } else if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) {
-        return "양자리";
-    } else if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) {
-        return "황소자리";
-    } else if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) {
-        return "쌍둥이자리";
-    } else if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) {
-        return "게자리";
-    } else if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) {
-        return "사자자리";
-    } else if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) {
-        return "처녀자리";
-    } else if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) {
-        return "천칭자리";
-    } else if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) {
-        return "전갈자리";
-    } else if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) {
-        return "사수자리";
-    } else {
+    // 별자리 계산 함수
+    function getZodiacSign(month, day) {
+        if ((month == 1 && day <= 19) || (month == 12 && day >= 22)) return "염소자리";
+        if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "물병자리";
+        if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return "물고기자리";
+        if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "양자리";
+        if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "황소자리";
+        if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "쌍둥이자리";
+        if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "게자리";
+        if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "사자자리";
+        if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "처녀자리";
+        if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "천칭자리";
+        if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "전갈자리";
+        if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "사수자리";
         return "";
     }
-}
+});
