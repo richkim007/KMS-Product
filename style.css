@@ -6,14 +6,34 @@ body {
     color: #333;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    align-items: flex-start; /* Change: Align content to the top */
+    min-height: 100vh; /* Use min-height to ensure background covers screen */
     margin: 0;
-    overflow: auto; /* Allow scrolling if content overflows */
+    padding: 20px 0; /* Add some vertical padding */
+    box-sizing: border-box; /* Include padding in height calculation */
+    overflow: auto;
+}
+
+.main-title-box {
+    background-image: url('https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+    background-size: cover;
+    background-position: center;
+    color: #FFFF00; /* Yellow text */
+    padding: 20px 30px; /* A bit more padding for a title */
+    border: 2px solid #FFF;
+    border-radius: 15px; /* Match lotto-box radius */
+    font-size: 26px; /* Slightly larger font */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px #000;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px; /* Space below the title */
 }
 
 .container {
     max-width: 500px;
+    width: 100%;
     margin: 20px;
     position: relative;
     z-index: 1;
