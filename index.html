@@ -403,10 +403,10 @@
     <!-- 8. 푸터 & 법적 고지 -->
     <footer class="bg-white border-t border-slate-200 py-10 px-4 text-xs text-slate-500">
         <div class="max-w-7xl mx-auto space-y-4 text-center">
-            <div class="flex justify-center space-x-6 font-medium">
-                <a href="#" class="hover:text-slate-800">이용약관</a>
-                <a href="#" class="hover:text-slate-800">개인정보처리방침</a>
-                <a href="#" class="hover:text-slate-800">책임있는 복권 이용 가이드</a>
+            <div class="flex flex-wrap justify-center gap-4 sm:gap-8 font-medium text-slate-600">
+                <button onclick="openPolicyModal('terms')" class="hover:text-indigo-600 transition underline-offset-4 hover:underline">이용약관</button>
+                <button onclick="openPolicyModal('privacy')" class="hover:text-indigo-600 transition underline-offset-4 hover:underline">개인정보처리방침</button>
+                <button onclick="openPolicyModal('responsible')" class="hover:text-indigo-600 transition underline-offset-4 hover:underline">책임있는 복권 이용 가이드</button>
             </div>
             <p class="max-w-3xl mx-auto leading-relaxed">
                 <strong>법적 고지:</strong> 본 서비스에서 제공하는 통계 및 분석 데이터는 과거 당첨 이력에 근거한 참고 정보이며 당첨을 보장하지 않습니다. 복권은 독립 시행 원칙에 따른
@@ -415,6 +415,313 @@
             <p>© 2026 KMS 로또 빅데이터 랩. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- ================= [모달: 이용약관 / 개인정보처리방침 / 책임있는 복권 이용 가이드] ================= -->
+    <div id="policyModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-3xl rounded-3xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col animate-in fade-in zoom-in-95 duration-150">
+            <button onclick="closeModal('policyModal')"
+                class="absolute top-5 right-5 text-slate-400 hover:text-slate-600 text-xl z-10">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- 상단 탭 헤더 -->
+            <div class="border-b border-slate-200 pb-3 pr-8">
+                <div class="flex space-x-2 sm:space-x-4 text-xs sm:text-sm font-bold">
+                    <button id="policyTabTerms" onclick="switchPolicyTab('terms')"
+                        class="py-2 px-3 sm:px-4 border-b-2 border-indigo-600 text-indigo-600 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-file-contract"></i>
+                        <span>서비스 이용약관</span>
+                    </button>
+                    <button id="policyTabPrivacy" onclick="switchPolicyTab('privacy')"
+                        class="py-2 px-3 sm:px-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>개인정보처리방침</span>
+                    </button>
+                    <button id="policyTabResponsible" onclick="switchPolicyTab('responsible')"
+                        class="py-2 px-3 sm:px-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-hand-holding-heart"></i>
+                        <span>책임있는 복권 이용 가이드</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 내용 1: 서비스 이용약관 -->
+            <div id="policyContentTerms" class="policy-content flex-1 overflow-y-auto py-5 pr-2 text-xs leading-relaxed text-slate-600 space-y-6">
+                <div>
+                    <span class="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full uppercase">Terms of Service</span>
+                    <h2 class="text-xl font-extrabold text-slate-900 mt-2">KMS 로또 빅데이터 랩 서비스 이용약관</h2>
+                    <p class="text-[11px] text-slate-400 mt-1">시행일자: 2026년 11월 1일</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제1조 (목적)</h3>
+                    <p>본 약관은 <strong>KMS 로또 빅데이터 랩</strong>(이하 "회사" 또는 "서비스")이 제공하는 통계 기반 로또 번호 분석, AI 추천 조합 생성, 꿈해몽 매핑 및 관련 제반 서비스(이하 "서비스")의 이용과 관련하여 회사와 이용자(회원 및 비회원) 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제2조 (용어의 정의)</h3>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>"서비스"란 회사가 제공하는 로또 통계 분석 알고리즘, 스마트 번호 조합기, 꿈해몽 연관수 검색, 명당 판매점 안내 등 일체의 웹 서비스를 의미합니다.</li>
+                        <li>"이용자"란 본 약관에 동의하고 서비스를 이용하는 회원 및 비회원을 말합니다.</li>
+                        <li>"회원"이란 소셜 계정(구글, 네이버, 카카오 등) 연동을 통해 가입하여 조합 저장 등 개인화 기능을 이용하는 자를 말합니다.</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제3조 (약관의 효력 및 변경)</h3>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>본 약관은 서비스 화면 하단에 게시하거나 기타의 방법으로 이용자에게 공지함으로써 효력이 발생합니다.</li>
+                        <li>회사는 관계 법령을 위배하지 않는 범위에서 본 약관을 개정할 수 있으며, 개정 시 적용일자 및 개정 사유를 명시하여 적용일 7일 전(중대한 변경은 30일 전)부터 웹사이트를 통해 공지합니다.</li>
+                    </ol>
+                </div>
+
+                <!-- 중요 면책 고지 박스 -->
+                <div class="bg-rose-50 border border-rose-200 rounded-2xl p-4 space-y-2">
+                    <h3 class="text-sm font-bold text-rose-800 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>제4조 (서비스의 성격 및 법적 면책 고지 - 중요)</span>
+                    </h3>
+                    <ol class="list-decimal list-inside space-y-1.5 text-rose-900/90 font-medium">
+                        <li>본 서비스가 제공하는 모든 번호 조합, 통계 구간, 출현 빈도 데이터는 <strong>과거 당첨 데이터에 기반한 수학적·통계적 참고 자료일 뿐이며, 미래의 당첨 결과를 보장하거나 약속하지 않습니다.</strong></li>
+                        <li>복권은 매 회차 완전 무작위 독립 시행으로 진행되므로 특정 번호의 당첨 확률이 인위적으로 높아질 수 없습니다.</li>
+                        <li><strong>회사는 이용자가 서비스를 통해 획득한 번호나 정보를 활용하여 복권을 구매한 결과(낙첨, 경제적 손실 등)에 대하여 어떠한 민·형사상 법적 책임도 부담하지 않습니다. 최종 구매 및 투자의 책임은 전적으로 이용자 본인에게 있습니다.</strong></li>
+                    </ol>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제5조 (서비스 제공 및 중단)</h3>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>본 서비스는 초기 베타 기간 동안 전면 무료로 제공됩니다.</li>
+                        <li>회사는 시스템 점검, 교체, 고장, 통신 두절 또는 천재지변 등의 불가항력적 사유가 발생한 경우 서비스의 제공을 일시적으로 중단할 수 있습니다.</li>
+                        <li>향후 고도화된 기능 추가나 유료 멤버십 도입 등 서비스 정책 변경 시 회사는 사전에 웹사이트를 통해 이용자에게 명확히 안내합니다.</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제6조 (이용자의 의무 및 금지 행위)</h3>
+                    <p>이용자는 다음 각 호의 행위를 하여서는 안 됩니다.</p>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>타인의 소셜 계정 도용 또는 허위 정보 등록</li>
+                        <li>자동화 프로그램(크롤러, 스크래퍼, 매크로 등)을 이용해 서비스의 데이터를 대량 수집하거나 서버에 비정상적인 부하를 주는 행위</li>
+                        <li>서비스의 알고리즘이나 콘텐츠를 회사의 사전 서면 승인 없이 상업적으로 재판매, 배포, 가공하는 행위</li>
+                        <li>관계 법령이나 공서양속에 반하는 행위</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제7조 (준거법 및 관할법원)</h3>
+                    <p>본 약관의 해석 및 회사와 이용자 간의 분쟁에 대하여는 대한민국 법을 준거법으로 하며, 소송이 제기될 경우 민사소송법상의 관할법원을 제1심 관할법원으로 합니다.</p>
+                </div>
+            </div>
+
+            <!-- 내용 2: 개인정보처리방침 -->
+            <div id="policyContentPrivacy" class="policy-content hidden flex-1 overflow-y-auto py-5 pr-2 text-xs leading-relaxed text-slate-600 space-y-6">
+                <div>
+                    <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full uppercase">Privacy Policy</span>
+                    <h2 class="text-xl font-extrabold text-slate-900 mt-2">KMS 로또 빅데이터 랩 개인정보처리방침</h2>
+                    <p class="text-[11px] text-slate-400 mt-1">시행일자: 2026년 11월 1일</p>
+                </div>
+
+                <p class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-slate-700">
+                    <strong>KMS 로또 빅데이터 랩</strong>은 정보주체의 자유와 권리 보호를 위해 「개인정보 보호법」 및 관계 법령이 정한 바를 준수하여, 적법하게 개인정보를 처리하고 안전하게 관리하고 있습니다.
+                </p>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제1조 (수집하는 개인정보의 항목 및 수집 방법)</h3>
+                    <p>회사는 최소한의 개인정보만을 수집하며, 소셜 간편 로그인(OAuth) 연동 시 아래 정보를 수집합니다.</p>
+                    <div class="space-y-2 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                        <p><strong>1. 수집 항목 (간편 로그인 시):</strong><br>
+                        구글/네이버/카카오 연동 고유 식별자(ID), 프로필 닉네임, 이메일 주소</p>
+                        <p><strong>2. 서비스 이용 과정에서 자동 생성·수집되는 항목:</strong><br>
+                        IP 주소, 쿠키(Cookie), 서비스 이용 기록, 방문 일시, 기기 브라우저 정보, 생성된 로또 조합 저장 데이터</p>
+                        <p><strong>3. 수집 방법:</strong> 웹사이트 내 소셜 간편 로그인 창 및 서비스 이용 과정에서 자동 수집</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제2조 (개인정보의 처리 목적)</h3>
+                    <p>수집된 개인정보는 다음의 목적을 위해서만 이용됩니다.</p>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li><strong>회원 식별 및 로그인 관리:</strong> 소셜 계정 연동을 통한 본인 식별 및 중복 가입 방지</li>
+                        <li><strong>서비스 제공 및 데이터 동기화:</strong> 회원이 생성한 AI 번호 조합, 즐겨찾기, 개인화 통계 데이터의 계정 누적 보관 및 복원</li>
+                        <li><strong>서비스 개선 및 보안:</strong> 부정 이용 방지, 통계 분석, 시스템 안정성 확보</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제3조 (개인정보의 보유 및 이용 기간)</h3>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>원칙적으로 이용자의 <strong>회원 탈퇴 요청 시 수집된 개인정보 및 저장된 조합 데이터는 지체 없이 파기</strong>됩니다.</li>
+                        <li>관계 법령의 규정에 따라 보존할 필요가 있는 경우, 해당 법령이 정한 기간 동안 분리 보관합니다.
+                            <ul class="list-disc list-inside pl-4 text-slate-500 mt-1">
+                                <li>통신비밀보호법에 따른 웹사이트 방문 로그: 3개월</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제4조 (개인정보의 제3자 제공 및 위탁)</h3>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>회사는 원칙적으로 정보주체의 개인정보를 제3자에게 제공하지 않습니다.</li>
+                        <li>서비스 인프라 및 인증 처리를 위해 외부 클라우드 및 플랫폼을 활용할 수 있으며, 이 경우 안전 조치를 엄격히 관리합니다.</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제5조 (정보주체의 권리·의무 및 행사 방법)</h3>
+                    <ol class="list-decimal list-inside space-y-1">
+                        <li>이용자는 언제든지 등록되어 있는 자신의 개인정보 열람, 정정, 삭제, 탈퇴(처리 정지)를 요구할 수 있습니다.</li>
+                        <li>소셜 간편 로그인 연결 해제는 각 플랫폼(구글, 네이버, 카카오)의 보안 설정 메뉴 또는 서비스 내 탈퇴 메뉴를 통해 즉시 처리할 수 있습니다.</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800">제6조 (개인정보의 파기 절차 및 방법)</h3>
+                    <p>전자적 파일 형태로 기록·저장된 개인정보는 재생할 수 없도록 기술적 방법을 사용하여 영구 삭제합니다.</p>
+                </div>
+
+                <div class="space-y-2 bg-indigo-50/60 border border-indigo-100 rounded-2xl p-4">
+                    <h3 class="text-sm font-bold text-indigo-900">제7조 (개인정보 보호책임자)</h3>
+                    <ul class="space-y-1 text-indigo-950 font-medium mt-1">
+                        <li>• 성명/직책: 개인정보 보호책임자</li>
+                        <li>• 이메일: contact@kms-product.pages.dev (또는 고객지원 채널)</li>
+                    </ul>
+                    <p class="text-[11px] text-slate-500 mt-2">이용자는 서비스를 이용하며 발생하는 모든 개인정보 보호 관련 민원을 개인정보 보호책임자에게 문의할 수 있습니다.</p>
+                </div>
+            </div>
+
+            <!-- 내용 3: 책임있는 복권 이용 가이드 -->
+            <div id="policyContentResponsible" class="policy-content hidden flex-1 overflow-y-auto py-5 pr-2 text-xs leading-relaxed text-slate-600 space-y-6">
+                <div>
+                    <span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full uppercase">Responsible Gaming Guide</span>
+                    <h2 class="text-xl font-extrabold text-slate-900 mt-2">책임 있는 복권 이용 가이드 (건전구매 안내)</h2>
+                    <p class="text-[11px] text-slate-400 mt-1">건전하고 즐거운 여가 문화를 위한 가이드라인</p>
+                </div>
+
+                <!-- 메인 슬로건 배너 -->
+                <div class="bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-emerald-500/10 border border-amber-200 rounded-2xl p-4 text-center">
+                    <p class="text-sm font-extrabold text-slate-800">
+                        "복권은 소액으로 즐기는 건전한 여가 문화이자 엔터테인먼트입니다."
+                    </p>
+                    <p class="text-[11px] text-slate-500 mt-1">
+                        KMS 로또 빅데이터 랩은 이용자분들이 과도한 몰입을 방지하고 건강한 삶의 균형을 유지할 수 있도록 건전 복권 문화 조성을 적극 지지합니다.
+                    </p>
+                </div>
+
+                <!-- 1. 복권의 본질 이해 -->
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-calculator text-indigo-600"></i>
+                        <span>1. 복권의 본질 이해 (수학적 팩트)</span>
+                    </h3>
+                    <ul class="space-y-1.5 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                        <li>• <strong>완전 무작위 독립 시행:</strong> 로또 6/45의 1등 당첨 확률은 <strong>1 / 8,145,060 (약 814만 분의 1)</strong>입니다.</li>
+                        <li>• 모든 번호 조합은 이전 회차의 결과와 관계없이 매 추첨 시 정확히 동일한 확률을 갖습니다.</li>
+                        <li>• 본 사이트의 AI 알고리즘, 필터링, 통계 분석은 과거 흐름을 정리하여 시각화한 <strong>통계적 유희 및 엔터테인먼트 목적의 참고 도구</strong>일 뿐이며, 수학적으로 당첨 확률 자체를 인위적으로 올릴 수는 없습니다.</li>
+                    </ul>
+                </div>
+
+                <!-- 2. 건전한 복권 이용 5대 원칙 -->
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-shield-heart text-emerald-600"></i>
+                        <span>2. 건전한 복권 이용을 위한 5대 원칙</span>
+                    </h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+                            <span class="text-emerald-600 font-extrabold">01. 소액 구매 원칙</span>
+                            <p class="text-[11px] text-slate-500 mt-0.5">복권은 잃어도 생활에 전혀 지장이 없는 소액(주당 5천 원 ~ 1만 원 내외)으로만 즐기세요.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+                            <span class="text-indigo-600 font-extrabold">02. 투자·수익 목적 금지</span>
+                            <p class="text-[11px] text-slate-500 mt-0.5">복권은 재테크나 수익 창출의 수단이 아니며, 경제적 문제를 해결해 주지 않습니다.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+                            <span class="text-amber-600 font-extrabold">03. 원금 회수 심리 경계</span>
+                            <p class="text-[11px] text-slate-500 mt-0.5">잃은 돈을 되찾기 위해 베팅 금액을 늘리는 행위는 절대 삼가야 합니다.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
+                            <span class="text-rose-600 font-extrabold">04. 차용 구매 절대 금지</span>
+                            <p class="text-[11px] text-slate-500 mt-0.5">빚을 내거나 다른 사람의 돈으로 복권을 구매하지 마세요.</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-2xs sm:col-span-2">
+                            <span class="text-rose-700 font-extrabold">05. 청소년 구매 불가 (법적 금지)</span>
+                            <p class="text-[11px] text-slate-500 mt-0.5">복권 및 복권기금법에 따라 <strong>만 19세 미만 청소년은 복권을 구매하거나 당첨금을 수령할 수 없습니다.</strong></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. 과몰입 및 도박중독 자가진단 -->
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-list-check text-indigo-600"></i>
+                        <span>3. 과몰입 및 도박중독 자가진단 체크리스트</span>
+                    </h3>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                        <label class="flex items-start space-x-2 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>복권 구매 한도를 스스로 통제하기 어렵다.</span>
+                        </label>
+                        <label class="flex items-start space-x-2 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>복권을 사지 않으면 초조하거나 불안한 감정이 든다.</span>
+                        </label>
+                        <label class="flex items-start space-x-2 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>생활비나 비상금을 쪼개어 복권을 구매한 적이 있다.</span>
+                        </label>
+                        <label class="flex items-start space-x-2 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>주변 사람들에게 복권 구매 금액을 숨기거나 거짓말을 한 적이 있다.</span>
+                        </label>
+                        <label class="flex items-start space-x-2 cursor-pointer">
+                            <input type="checkbox" class="mt-0.5 rounded text-indigo-600 focus:ring-indigo-500">
+                            <span>이전 손실을 만회하기 위해 더 많은 금액의 복권을 구매한다.</span>
+                        </label>
+                        <p class="text-[11px] text-rose-600 font-bold pt-2 border-t border-slate-200">
+                            ※ 위 항목 중 2개 이상에 해당된다면 복권 과몰입 상태일 수 있으므로 즉시 구매를 중단하고 전문가의 상담을 받으시길 권장합니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4. 무료 상담 및 지원 기관 안내 -->
+                <div class="space-y-2">
+                    <h3 class="text-sm font-bold text-slate-800 flex items-center space-x-1.5">
+                        <i class="fa-solid fa-phone-volume text-emerald-600"></i>
+                        <span>4. 도박중독 무료 상담 및 지원 기관 안내</span>
+                    </h3>
+                    <p class="text-[11px] text-slate-500">복권 구매로 인해 일상생활이나 재정에 어려움을 겪고 계신다면, 정부 및 전문 기관의 무료 익명 상담을 이용하실 수 있습니다.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                        <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-center">
+                            <div class="text-[11px] text-emerald-700 font-semibold">한국도박문제예방치유원</div>
+                            <div class="text-base font-black text-emerald-800 mt-1">국번없이 1336</div>
+                            <div class="text-[10px] text-emerald-600 mt-0.5">24시간 무료 전화 상담</div>
+                        </div>
+                        <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl text-center">
+                            <div class="text-[11px] text-indigo-700 font-semibold">넷라인 온라인 상담</div>
+                            <div class="text-xs font-black text-indigo-800 mt-1">netline.kcgp.or.kr</div>
+                            <div class="text-[10px] text-indigo-600 mt-0.5">인터넷 1:1 채팅 상담</div>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl text-center">
+                            <div class="text-[11px] text-amber-700 font-semibold">카카오톡 챗봇 상담</div>
+                            <div class="text-xs font-black text-amber-800 mt-1">한국도박문제예방치유원</div>
+                            <div class="text-[10px] text-amber-600 mt-0.5">카카오톡 채널 검색</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 하단 닫기 버튼 -->
+            <div class="pt-4 border-t border-slate-100 flex justify-end">
+                <button onclick="closeModal('policyModal')"
+                    class="py-2.5 px-6 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-xl text-xs transition shadow-sm">
+                    확인 및 닫기
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- ================= [모달 1: 구글 / 네이버 / 카카오 소셜 로그인] ================= -->
     <div id="authModal"
@@ -1284,6 +1591,30 @@
             const planEl = document.getElementById('payPlanName');
             if (planEl) planEl.textContent = planName;
             openModal('payModal');
+        }
+
+        // 약관 및 가이드 모달 제어 함수
+        function openPolicyModal(type) {
+            switchPolicyTab(type || 'terms');
+            openModal('policyModal');
+        }
+
+        function switchPolicyTab(type) {
+            const tabs = ['Terms', 'Privacy', 'Responsible'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`policyTab${t}`);
+                const content = document.getElementById(`policyContent${t}`);
+                if (btn && content) {
+                    if (t.toLowerCase() === type.toLowerCase()) {
+                        btn.className = 'py-2 px-3 sm:px-4 border-b-2 border-indigo-600 text-indigo-600 transition flex items-center space-x-1.5';
+                        content.classList.remove('hidden');
+                        content.scrollTop = 0;
+                    } else {
+                        btn.className = 'py-2 px-3 sm:px-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition flex items-center space-x-1.5';
+                        content.classList.add('hidden');
+                    }
+                }
+            });
         }
 
         // 초기 바인딩 실행
