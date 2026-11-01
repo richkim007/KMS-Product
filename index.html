@@ -945,19 +945,25 @@
                 if (user.provider === '구글') providerBadgeColor = 'bg-blue-100 text-blue-800 border-blue-200';
 
                 headerArea.innerHTML = `
-                    <div class="flex items-center space-x-2">
+                    <div class="flex items-center space-x-1.5 sm:space-x-2">
                         <button onclick="openUserDataModal()"
-                            class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-200">
+                            class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-200">
                             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span class="max-w-[100px] truncate">${user.name}</span>
+                            <span class="max-w-[85px] sm:max-w-[120px] truncate">${user.name}</span>
                             <span class="bg-indigo-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black">
                                 ${savedCount}
                             </span>
                         </button>
                         <button onclick="openUserDataModal()"
-                            class="text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg transition shadow-xs flex items-center space-x-1">
+                            class="text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-2.5 sm:px-3 py-1.5 rounded-lg transition shadow-xs flex items-center space-x-1">
                             <i class="fa-solid fa-folder-open"></i>
                             <span class="hidden sm:inline">내 데이터</span>
+                        </button>
+                        <button onclick="handleLogout()"
+                            title="로그아웃"
+                            class="text-xs font-semibold text-slate-500 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 px-2.5 py-1.5 rounded-lg transition flex items-center space-x-1">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <span class="hidden sm:inline">로그아웃</span>
                         </button>
                     </div>
                 `;
