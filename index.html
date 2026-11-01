@@ -330,16 +330,22 @@
                         id="numberGrid"></div>
                 </div>
 
-                <div class="bg-slate-50 p-3 rounded-lg border border-slate-100 space-y-1.5 text-xs">
-                    <div class="flex items-center justify-between">
-                        <span class="text-slate-500 font-medium"><i
-                                class="fa-solid fa-circle text-indigo-600 text-[8px] mr-1"></i>지정된 고정수:</span>
-                        <span id="fixedListText" class="font-bold text-indigo-600">없음</span>
+                <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-2.5 text-xs">
+                    <div class="flex items-center justify-between min-h-[36px]">
+                        <span class="text-slate-600 font-bold flex items-center flex-shrink-0 mr-2">
+                            <i class="fa-solid fa-thumbtack text-indigo-600 text-xs mr-1.5"></i>지정된 고정수:
+                        </span>
+                        <div id="fixedListText" class="flex items-center space-x-1.5 flex-wrap justify-end">
+                            <span class="text-slate-400 font-normal">선택된 고정수 없음 (최대 3개)</span>
+                        </div>
                     </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-slate-500 font-medium"><i
-                                class="fa-solid fa-circle text-rose-500 text-[8px] mr-1"></i>지정된 제외수:</span>
-                        <span id="excludeListText" class="font-bold text-rose-600">없음</span>
+                    <div class="flex items-center justify-between min-h-[36px] pt-2 border-t border-slate-200/60">
+                        <span class="text-slate-600 font-bold flex items-center flex-shrink-0 mr-2">
+                            <i class="fa-solid fa-ban text-rose-500 text-xs mr-1.5"></i>지정된 제외수:
+                        </span>
+                        <div id="excludeListText" class="flex items-center space-x-1 flex-wrap gap-y-1 justify-end max-w-[240px]">
+                            <span class="text-slate-400 font-normal">선택된 제외수 없음 (최대 10개)</span>
+                        </div>
                     </div>
                 </div>
 
@@ -1414,13 +1420,37 @@
                 }
             }
 
-            const fixedText = document.getElementById('fixedListText');
-            const excludeText = document.getElementById('excludeListText');
-            if (fixedText) {
-                fixedText.textContent = fixedNumbers.size > 0 ? Array.from(fixedNumbers).sort((a,b)=>a-b).join(', ') : '없음';
+            const fixedContainer = document.getElementById('fixedListText');
+            const excludeContainer = document.getElementById('excludeListText');
+
+            // 지정된 고정수 3D 구형 로또볼 렌더링
+            if (fixedContainer) {
+                if (fixedNumbers.size > 0) {
+                    const sorted = Array.from(fixedNumbers).sort((a, b) => a - b);
+                    fixedContainer.innerHTML = sorted.map(num => `
+                        <span class="ball ${getBallClass(num)} !w-8 !h-8 !text-xs shadow-md transform hover:scale-115 transition cursor-pointer"
+                            onclick="toggleNumber(${num})" title="클릭하여 고정수 해제">
+                            ${num}
+                        </span>
+                    `).join('');
+                } else {
+                    fixedContainer.innerHTML = `<span class="text-slate-400 font-normal text-xs">선택된 고정수 없음 (최대 3개)</span>`;
+                }
             }
-            if (excludeText) {
-                excludeText.textContent = excludeNumbers.size > 0 ? Array.from(excludeNumbers).sort((a,b)=>a-b).join(', ') : '없음';
+
+            // 지정된 제외수 3D 미니볼 렌더링
+            if (excludeContainer) {
+                if (excludeNumbers.size > 0) {
+                    const sorted = Array.from(excludeNumbers).sort((a, b) => a - b);
+                    excludeContainer.innerHTML = sorted.map(num => `
+                        <span class="ball ${getBallClass(num)} !w-6 !h-6 !text-[11px] opacity-75 line-through decoration-rose-600 decoration-2 shadow-sm transform hover:scale-115 transition cursor-pointer"
+                            onclick="toggleNumber(${num})" title="클릭하여 제외수 해제">
+                            ${num}
+                        </span>
+                    `).join('');
+                } else {
+                    excludeContainer.innerHTML = `<span class="text-slate-400 font-normal text-xs">선택된 제외수 없음 (최대 10개)</span>`;
+                }
             }
         }
 
