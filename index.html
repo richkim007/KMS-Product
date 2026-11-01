@@ -3,6 +3,7 @@
 
 <head>
     <meta name="naver-site-verification" content="0da26b5aaab27f8011a1dc615af91bc2b30815d8" />
+    <meta name="google-site-verification" content="uMICI_br93r5MG1T2behzNUoRs1vV5ELyWMdRbAcH5I" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KMS 로또 빅데이터 랩 & 스마트 AI 엔진 | loddo.co</title>
@@ -2774,14 +2775,14 @@
             const badge = document.getElementById('userProviderBadge');
             badge.textContent = user.provider;
             badge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full ${user.provider === '카카오' ? 'bg-[#FEE500] text-black' :
-                    user.provider === '네이버' ? 'bg-[#03C75A] text-white' :
-                        user.provider === '구글' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-800'
+                user.provider === '네이버' ? 'bg-[#03C75A] text-white' :
+                    user.provider === '구글' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-800'
                 }`;
 
             const avatar = document.getElementById('userAvatarIcon');
             avatar.className = `w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-inner ${user.provider === '카카오' ? 'bg-amber-400 text-slate-900' :
-                    user.provider === '네이버' ? 'bg-emerald-500' :
-                        user.provider === '구글' ? 'bg-blue-500' : 'bg-indigo-600'
+                user.provider === '네이버' ? 'bg-emerald-500' :
+                    user.provider === '구글' ? 'bg-blue-500' : 'bg-indigo-600'
                 }`;
 
             document.getElementById('savedCountStat').textContent = data.savedList ? data.savedList.length : 0;
