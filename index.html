@@ -104,7 +104,7 @@
                 <a href="#stats" class="hover:text-indigo-600 transition">데이터 통계</a>
                 <a href="#dream" class="hover:text-indigo-600 transition">꿈해몽 매핑</a>
                 <a href="#places" class="hover:text-indigo-600 transition">전국 10대 명당</a>
-                <a href="#pricing" class="hover:text-indigo-600 transition">멤버십 요금제</a>
+                <a href="#pricing" class="hover:text-indigo-600 transition">멤버십 안내</a>
             </nav>
             <div class="flex items-center space-x-3">
                 <button onclick="openModal('authModal')"
@@ -117,78 +117,71 @@
     </header>
 
     <!-- 2. 히어로 배너 -->
-    <section class="bg-gradient-to-b from-indigo-900 via-slate-900 to-slate-900 text-white py-12 px-4">
-        <div class="max-w-5xl mx-auto text-center space-y-4">
+    <section class="bg-gradient-to-b from-indigo-900 via-indigo-950 to-slate-900 text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center space-y-4">
             <div
-                class="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 px-3 py-1 rounded-full text-xs text-indigo-200">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>공식 데이터 기반 통계 알고리즘 필터링</span>
+                class="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 px-3.5 py-1 rounded-full text-xs font-semibold text-indigo-200">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span>초기 서비스 전면 무료 운영 중</span>
             </div>
-            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight">
-                무작위 자동 대신,<br class="hidden sm:inline"> <span class="text-indigo-400">통계적 필터링</span>으로 번호를 설계합니다
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
+                빅데이터 통계 알고리즘 기반<br class="hidden sm:inline">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-indigo-300">
+                    스마트 로또 번호 분석 엔진
+                </span>
             </h1>
-            <p class="text-slate-300 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-                복권은 독립 시행의 확률 게임입니다. 맹목적인 운이 아닌 역사적 출현 빈도, 합계 구간(130~155), 홀짝 균형을 정밀하게 고려하여 최적의 조합을 추출합니다.
+            <p class="text-sm md:text-base text-indigo-200/80 max-w-2xl mx-auto font-normal">
+                역대 1회부터 최신 회차까지 전수 당첨 데이터를 과학적으로 분석하여 합계 구간, 연속수 배제, 홀짝 비율을 최적화한 스마트 조합을 무료로 제공합니다.
             </p>
-
-            <!-- 최신 회차 박스 -->
-            <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-4 max-w-xl mx-auto backdrop-blur mt-4">
-                <div class="text-xs text-slate-400 font-semibold mb-2 flex justify-between items-center px-1">
-                    <span>제 1245회 공인 추첨 결과</span>
-                    <span class="text-indigo-300">합계: 136 (황금구간 안착)</span>
-                </div>
-                <div class="flex items-center justify-center space-x-2">
-                    <span class="ball ball-yellow">4</span>
-                    <span class="ball ball-yellow">5</span>
-                    <span class="ball ball-blue">25</span>
-                    <span class="ball ball-red">28</span>
-                    <span class="ball ball-red">32</span>
-                    <span class="ball ball-gray">42</span>
-                    <span class="text-slate-400 font-bold px-1">+</span>
-                    <span class="ball ball-yellow">12</span>
-                </div>
-            </div>
         </div>
     </section>
 
-    <!-- 3. 실시간 핵심 데이터 지표 -->
-    <section id="stats" class="max-w-7xl mx-auto px-4 -mt-6 relative z-10">
+    <!-- 3. 핵심 통계 대시보드 요약 -->
+    <section id="stats" class="max-w-7xl mx-auto px-4 -mt-8 relative z-20">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <div class="text-xs font-semibold text-slate-500">최근 30회 HOT (최다)</div>
-                <div class="text-2xl font-black text-rose-600 mt-1">#13, #18, #28</div>
-                <div class="text-xs text-slate-400 mt-1">단기 출현 가중치 상위군</div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="text-xs font-semibold text-slate-500">최근 다출수 (HOT)</div>
+                <div class="flex items-center space-x-1.5 mt-2">
+                    <span class="ball ball-red !w-7 !h-7 !text-xs">23</span>
+                    <span class="ball ball-yellow !w-7 !h-7 !text-xs">7</span>
+                    <span class="ball ball-blue !w-7 !h-7 !text-xs">14</span>
+                </div>
+                <div class="text-xs text-slate-400 mt-2">최근 15회차 빈도 상위</div>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <div class="text-xs font-semibold text-slate-500">장기 미출현 COLD</div>
-                <div class="text-2xl font-black text-blue-600 mt-1">#5, #17, #27</div>
-                <div class="text-xs text-slate-400 mt-1">임계점 도달 회귀 후보군</div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="text-xs font-semibold text-slate-500">장기 미출수 (COLD)</div>
+                <div class="flex items-center space-x-1.5 mt-2">
+                    <span class="ball ball-gray !w-7 !h-7 !text-xs">38</span>
+                    <span class="ball ball-green !w-7 !h-7 !text-xs">42</span>
+                    <span class="ball ball-yellow !w-7 !h-7 !text-xs">5</span>
+                </div>
+                <div class="text-xs text-slate-400 mt-2">12주 이상 미등장 번호</div>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                <div class="text-xs font-semibold text-slate-500">역대 당첨 합계 집중 구간</div>
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+                <div class="text-xs font-semibold text-slate-500">합계 황금 구간 (Sum)</div>
                 <div class="text-2xl font-black text-indigo-600 mt-1">130 ~ 155</div>
-                <div class="text-xs text-slate-400 mt-1">역대 1등 당첨의 71.4% 집중</div>
+                <div class="text-xs text-slate-400 mt-1">역대 당첨 확률 약 42.8%</div>
             </div>
-            <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="text-xs font-semibold text-slate-500">최적 홀짝(Odd/Even) 비율</div>
                 <div class="text-2xl font-black text-emerald-600 mt-1">3 : 3 (또는 4:2)</div>
-                <div class="text-xs text-slate-400 mt-1">한쪽 쏠림 극단값 원천 배제</div>
+                <div class="text-xs text-slate-400 mt-1">역대 출현빈도 최상위 구간</div>
             </div>
         </div>
     </section>
 
-    <!-- 4. 인터랙티브 AI 조합 생성기 -->
+    <!-- 4. 스마트 AI 조합기 인터페이스 -->
     <section id="generator" class="max-w-7xl mx-auto px-4 py-16">
         <div class="text-center max-w-2xl mx-auto mb-10">
             <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">Interactive AI Engine</span>
-            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">스마트 AI 번호 조합 필터링</h2>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">스마트 AI 번호 조합 및 필터링</h2>
             <p class="text-sm text-slate-500 mt-2">
-                원하는 고정수와 제외수를 설정하고, 통계 황금 합계 필터를 켠 상태에서 스마트 조합을 생성해보세요.
+                원하는 고정수와 제외수를 설정하고, 통계 황금비율 필터를 적용하여 최적화된 조합을 무료로 생성해보세요.
             </p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            <!-- 좌측 패널 -->
+            <!-- 좌측 패널: 필터 & 번호판 -->
             <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
                 <div>
                     <div class="flex items-center justify-between mb-2">
@@ -254,31 +247,37 @@
                 </button>
             </div>
 
-            <!-- 우측 패널 -->
-            <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-                <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-100">
-                    <h3 class="text-sm font-bold text-slate-900"><i
-                            class="fa-solid fa-receipt text-indigo-600 mr-1.5"></i>조합 추출 결과 리포트</h3>
-                    <span class="text-xs text-slate-400">매 생성 시 새로운 통계 연산 수행</span>
-                </div>
+            <!-- 우측 패널: 생성된 조합 결과 -->
+            <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between min-h-[520px]">
+                <div>
+                    <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+                        <h3 class="text-sm font-bold text-slate-900">
+                            <i class="fa-solid fa-square-poll-vertical text-indigo-600 mr-1.5"></i>AI 스마트 최적 생성 결과
+                        </h3>
+                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                            초기 무료 제공
+                        </span>
+                    </div>
 
-                <div id="resultsContainer" class="space-y-3">
-                    <div class="text-center py-16 text-slate-400">
-                        <i class="fa-solid fa-arrows-spin text-3xl mb-2 text-slate-300"></i>
-                        <p class="text-xs">좌측에서 조건을 설정한 후 <strong>[AI 5개 최적 조합 무료 생성]</strong>을 클릭하세요.</p>
+                    <div id="resultsContainer" class="space-y-3">
+                        <div class="text-center py-16 text-slate-400">
+                            <i class="fa-solid fa-arrows-spin text-3xl mb-2 text-slate-300"></i>
+                            <p class="text-xs">좌측에서 조건을 설정한 후 <strong>[AI 5개 최적 조합 무료 생성]</strong>을 클릭하세요.</p>
+                        </div>
                     </div>
                 </div>
 
+                <!-- 멤버십 안내 배너 -->
                 <div
                     class="mt-6 bg-gradient-to-r from-indigo-50 to-purple-50 p-4 rounded-xl border border-indigo-100 flex items-center justify-between">
                     <div>
-                        <div class="text-xs font-bold text-indigo-900">더 많은 조합과 자동 채점이 필요하신가요?</div>
-                        <div class="text-[11px] text-slate-500 mt-0.5">매주 카카오톡 자동 채점 리포트 & 휠링(Wheeling) 20조합 제공</div>
+                        <div class="text-xs font-bold text-indigo-900">현재 모든 핵심 분석 기능을 무료로 운영하고 있습니다</div>
+                        <div class="text-[11px] text-slate-500 mt-0.5">초기 무료 운영 기간이며, 향후 정밀 멤버십 전환 시 사전 안내될 예정입니다.</div>
                     </div>
-                    <button onclick="openPayModal('PRO', '4,900')"
-                        class="text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 rounded-lg transition shadow-sm whitespace-nowrap">
-                        멤버십 확인
-                    </button>
+                    <a href="#pricing"
+                        class="text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-2 rounded-lg transition shadow-sm whitespace-nowrap ml-3">
+                        운영 계획 확인
+                    </a>
                 </div>
             </div>
         </div>
@@ -323,74 +322,95 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="storeContainer"></div>
     </section>
 
-    <!-- 7. 멤버십 요금제 (수익화 모듈) -->
+    <!-- 7. 멤버십 요금제 운영 정책 안내 -->
     <section id="pricing" class="bg-slate-100 py-16 border-t border-slate-200">
         <div class="max-w-5xl mx-auto px-4 text-center">
-            <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">Monetization Plans</span>
-            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">합리적인 데이터 멤버십 안내</h2>
-            <p class="text-xs md:text-sm text-slate-500 mt-2">필요에 따라 자유롭게 선택할 수 있는 투명한 멤버십 구조입니다.</p>
+            <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">Membership Roadmap</span>
+            <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">멤버십 운영 계획 및 정책 안내</h2>
+            <p class="text-xs md:text-sm text-slate-500 mt-2 max-w-2xl mx-auto leading-relaxed">
+                KMS 로또 랩은 <strong>초기 서비스 기간 동안 모든 사용자에게 전 기능을 100% 무료로 운영</strong>합니다.<br class="hidden sm:inline">
+                멤버십 요금제는 아직 시행하지 않으며, 향후 고도화된 정밀 분석 엔진 및 부가 서비스 확장에 맞춰 멤버십으로 운영될 계획입니다. (요금은 정식 도입 시 공지)
+            </p>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 text-left">
-                <!-- FREE 플랜 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <!-- 1. 현재 운영: FREE 플랜 -->
+                <div class="bg-white p-6 rounded-2xl border-2 border-emerald-500 shadow-md flex flex-col justify-between relative">
+                    <span
+                        class="absolute -top-3 right-5 bg-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                        현재 무료 운영 중
+                    </span>
                     <div>
-                        <div class="text-xs font-bold text-slate-500">기본 체험</div>
-                        <h3 class="text-xl font-black text-slate-900 mt-1">FREE</h3>
-                        <div class="text-2xl font-bold text-slate-900 mt-2">0원</div>
-                        <ul class="text-xs text-slate-600 space-y-2 mt-4">
-                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i>매주 기본 5개 조합 무료 생성</li>
-                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i>기본 핫/콜드 통계 열람</li>
-                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i>전국 10대 명당 정보 조회</li>
+                        <div class="text-xs font-bold text-emerald-600">초기 무료 혜택</div>
+                        <h3 class="text-xl font-black text-slate-900 mt-1">FREE (오픈 베타)</h3>
+                        <div class="text-2xl font-black text-emerald-600 mt-2">0원 <span
+                                class="text-xs text-slate-400 font-normal">/ 전면 무료</span></div>
+                        <p class="text-[11px] text-slate-500 mt-1">누구나 별도 결제 없이 자유롭게 이용 가능합니다.</p>
+                        <ul class="text-xs text-slate-600 space-y-2.5 mt-5">
+                            <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>AI 5개 최적 조합 무제한 무료 생성</li>
+                            <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>핫/콜드 번호 및 홀짝 통계 열람</li>
+                            <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>꿈 키워드 번호 변환기 무료 이용</li>
+                            <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>전국 10대 명당 판매점 팩트체크 조회</li>
                         </ul>
                     </div>
                     <button
-                        class="w-full mt-6 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-lg text-xs hover:bg-slate-200 transition">현재
-                        이용중</button>
+                        class="w-full mt-6 py-2.5 bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold rounded-lg text-xs cursor-default">
+                        ✓ 현재 무료 이용 중
+                    </button>
                 </div>
 
-                <!-- PRO 플랜 -->
+                <!-- 2. 향후 계획: PRO 멤버십 -->
                 <div
-                    class="bg-white p-6 rounded-2xl border-2 border-indigo-600 shadow-lg flex flex-col justify-between relative">
+                    class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between relative">
                     <span
-                        class="absolute -top-3 right-5 bg-indigo-600 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">가장
-                        인기</span>
+                        class="absolute -top-3 right-5 bg-slate-400 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                        향후 도입 계획
+                    </span>
                     <div>
-                        <div class="text-xs font-bold text-indigo-600">정밀 분석가</div>
-                        <h3 class="text-xl font-black text-slate-900 mt-1">PRO</h3>
-                        <div class="text-2xl font-bold text-slate-900 mt-2">4,900원 <span
-                                class="text-xs text-slate-400 font-normal">/ 월</span></div>
-                        <ul class="text-xs text-slate-600 space-y-2 mt-4">
-                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i><strong>매주 20조합</strong> 스마트 생성
-                            </li>
-                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i>제외수 최대 15개 지정 가능</li>
-                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i><strong>추첨 직후 카카오톡 자동 채점
-                                    리포트</strong></li>
-                            <li><i class="fa-solid fa-check text-indigo-600 mr-1.5"></i>광고 없는 쾌적한 환경</li>
+                        <div class="text-xs font-bold text-indigo-600">정밀 분석가 (예정)</div>
+                        <h3 class="text-xl font-black text-slate-900 mt-1">PRO 멤버십</h3>
+                        <div class="text-2xl font-bold text-slate-400 mt-2 tracking-wider">
+                            <span class="inline-block border-b-2 border-slate-300 w-16 text-center text-slate-300 mr-1">미정</span>
+                            <span class="text-xs text-slate-400 font-normal">(요금 공란 / 향후 공지)</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">현재는 미시행 상태이며 정식 런칭 시 확정 공지됩니다.</p>
+                        <ul class="text-xs text-slate-500 space-y-2.5 mt-5">
+                            <li><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i><strong>매주 20조합</strong> 스마트 생성 확장</li>
+                            <li><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i>제외수 최대 15개 심층 필터링</li>
+                            <li><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i>추첨 직후 카카오톡 자동 채점 리포트</li>
+                            <li><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i>광고 없는 쾌적한 분석 환경</li>
                         </ul>
                     </div>
-                    <button onclick="openPayModal('PRO', '4,900')"
-                        class="w-full mt-6 py-2.5 bg-indigo-600 text-white font-bold rounded-lg text-xs hover:bg-indigo-700 transition shadow">PRO
-                        시작하기</button>
+                    <button onclick="openPlanNoticeModal('PRO')"
+                        class="w-full mt-6 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-lg text-xs hover:bg-slate-200 transition">
+                        향후 운영 계획 안내
+                    </button>
                 </div>
 
-                <!-- VIP 플랜 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between">
+                <!-- 3. 향후 계획: VIP 멤버십 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between relative">
+                    <span
+                        class="absolute -top-3 right-5 bg-slate-400 text-white text-[10px] font-extrabold px-2.5 py-0.5 rounded-full">
+                        향후 도입 계획
+                    </span>
                     <div>
-                        <div class="text-xs font-bold text-purple-600">완전 커버리지</div>
-                        <h3 class="text-xl font-black text-slate-900 mt-1">VIP 6개월</h3>
-                        <div class="text-2xl font-bold text-slate-900 mt-2">24,900원 <span
-                                class="text-xs text-slate-400 font-normal">/ 6개월</span></div>
-                        <ul class="text-xs text-slate-600 space-y-2 mt-4">
-                            <li><i class="fa-solid fa-check text-purple-600 mr-1.5"></i>PRO 플랜의 모든 기능 포함</li>
-                            <li><i class="fa-solid fa-check text-purple-600 mr-1.5"></i><strong>고급 휠링(Wheeling)
-                                    시스템</strong> 무제한</li>
-                            <li><i class="fa-solid fa-check text-purple-600 mr-1.5"></i>엑셀 파일 조합 대량 내보내기</li>
-                            <li><i class="fa-solid fa-check text-purple-600 mr-1.5"></i>VIP 전용 통계 리포트 매주 발송</li>
+                        <div class="text-xs font-bold text-purple-600">완전 커버리지 (예정)</div>
+                        <h3 class="text-xl font-black text-slate-900 mt-1">VIP 멤버십</h3>
+                        <div class="text-2xl font-bold text-slate-400 mt-2 tracking-wider">
+                            <span class="inline-block border-b-2 border-slate-300 w-16 text-center text-slate-300 mr-1">미정</span>
+                            <span class="text-xs text-slate-400 font-normal">(요금 공란 / 향후 공지)</span>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-1">현재는 미시행 상태이며 정식 런칭 시 확정 공지됩니다.</p>
+                        <ul class="text-xs text-slate-500 space-y-2.5 mt-5">
+                            <li><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i>PRO 플랜의 모든 기능 포함</li>
+                            <li><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i><strong>고급 휠링(Wheeling) 시스템</strong> 무제한</li>
+                            <li><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i>엑셀 파일 조합 대량 내보내기</li>
+                            <li><i class="fa-solid fa-clock text-slate-400 mr-1.5"></i>VIP 전용 통계 리포트 매주 발송</li>
                         </ul>
                     </div>
-                    <button onclick="openPayModal('VIP (6개월)', '24,900')"
-                        class="w-full mt-6 py-2.5 bg-slate-900 text-white font-bold rounded-lg text-xs hover:bg-slate-800 transition">VIP
-                        구독하기</button>
+                    <button onclick="openPlanNoticeModal('VIP')"
+                        class="w-full mt-6 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-lg text-xs hover:bg-slate-200 transition">
+                        향후 운영 계획 안내
+                    </button>
                 </div>
             </div>
         </div>
@@ -422,41 +442,38 @@
             </button>
             <div class="text-center">
                 <div
-                    class="w-10 h-10 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto mb-2 text-xl font-bold">
+                    class="w-10 h-10 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-2">
                     <i class="fa-solid fa-user-lock"></i>
                 </div>
-                <h3 class="text-lg font-bold text-slate-900">KMS 로또 랩 로그인</h3>
-                <p class="text-xs text-slate-500 mt-1">간편 가입하고 매주 나의 번호를 보관하세요</p>
+                <h3 class="text-lg font-bold text-slate-900">KMS 로또 랩 시작하기</h3>
+                <p class="text-xs text-slate-500 mt-1">현재 초기 무료 운영 기간으로 간편하게 시작할 수 있습니다.</p>
             </div>
-
-            <!-- 카카오 1초 간편 로그인 -->
-            <button onclick="handleLoginSuccess('카카오')"
-                class="w-full py-2.5 bg-[#FEE500] hover:bg-[#FDD835] text-[#3c1e1e] font-bold rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow-sm">
-                <i class="fa-solid fa-comment"></i>
-                <span>카카오 1초 로그인 / 가입</span>
-            </button>
-
-            <div class="flex items-center my-3">
-                <div class="flex-1 border-t border-slate-200"></div>
-                <span class="px-2 text-[11px] text-slate-400">또는 이메일</span>
-                <div class="flex-1 border-t border-slate-200"></div>
+            <div class="space-y-2">
+                <button onclick="handleLoginSuccess('카카오')"
+                    class="w-full py-2.5 px-4 bg-[#FEE500] hover:bg-[#FDD835] text-[#191919] font-bold rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow-sm">
+                    <i class="fa-solid fa-comment"></i>
+                    <span>카카오 1초 로그인</span>
+                </button>
             </div>
-
-            <div class="space-y-2 text-xs">
-                <input type="email" id="loginEmail" placeholder="이메일 주소"
-                    class="w-full px-3 py-2.5 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
-                <input type="password" id="loginPw" placeholder="비밀번호"
-                    class="w-full px-3 py-2.5 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
+            <div class="relative flex py-1 items-center">
+                <div class="flex-grow border-t border-slate-200"></div>
+                <span class="flex-shrink mx-3 text-slate-400 text-[10px]">또는 이메일</span>
+                <div class="flex-grow border-t border-slate-200"></div>
             </div>
-
+            <div class="space-y-2">
+                <input type="email" placeholder="이메일 주소 입력"
+                    class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
+                <input type="password" placeholder="비밀번호"
+                    class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
+            </div>
             <button onclick="handleLoginSuccess('이메일')"
                 class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition shadow">
-                로그인 / 회원가입
+                로그인 / 무료 시작
             </button>
         </div>
     </div>
 
-    <!-- ================= [모달 2: 멤버십 결제창] ================= -->
+    <!-- ================= [모달 2: 향후 멤버십 운영 계획 안내 모달] ================= -->
     <div id="payModal"
         class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl relative space-y-4">
@@ -465,50 +482,37 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <div>
-                <span class="text-[11px] font-bold text-indigo-600 uppercase">Subscription Checkout</span>
+                <span class="text-[11px] font-bold text-indigo-600 uppercase">Service Policy Notice</span>
                 <h3 class="text-lg font-bold text-slate-900 mt-0.5"><span id="payPlanName"
-                        class="text-indigo-600">PRO</span> 멤버십 구독 결제</h3>
-                <p class="text-xs text-slate-500 mt-1">매주 토요일 카톡 자동 알림 및 프리미엄 20조합을 즉시 이용하세요</p>
+                        class="text-indigo-600">PRO</span> 멤버십 운영 계획 안내</h3>
+                <p class="text-xs text-slate-500 mt-1">현재는 멤버십 요금제를 시행하지 않으며 초기 무료 운영 중입니다.</p>
             </div>
 
-            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-100 flex justify-between items-center text-sm">
-                <span class="text-slate-600 font-medium">결제 예정 금액:</span>
-                <span class="text-xl font-extrabold text-indigo-600"><span id="payPlanPrice">4,900</span>원</span>
-            </div>
-
-            <!-- 결제 수단 선택 -->
-            <div class="space-y-2 text-xs">
-                <label class="block font-bold text-slate-700 mb-1">결제 수단 선택</label>
-                <div class="grid grid-cols-2 gap-2">
-                    <button type="button"
-                        class="py-2.5 px-3 border-2 border-indigo-600 bg-indigo-50/50 text-indigo-700 font-bold rounded-lg text-center">
-                        <i class="fa-regular fa-credit-card mr-1"></i> 신용/체크카드
-                    </button>
-                    <button type="button"
-                        class="py-2.5 px-3 border border-slate-200 text-slate-600 font-medium rounded-lg text-center hover:bg-slate-50">
-                        <i class="fa-solid fa-mobile-screen-button mr-1"></i> 카카오페이 / 토스
-                    </button>
+            <div class="bg-indigo-50/70 p-4 rounded-xl border border-indigo-100 text-xs space-y-2 text-slate-700">
+                <div class="flex items-center justify-between pb-2 border-b border-indigo-100/60">
+                    <span class="font-medium text-slate-500">현재 이용 상태:</span>
+                    <span class="font-bold text-emerald-600">전 기능 100% 무료 제공 중</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="font-medium text-slate-500">향후 정식 요금:</span>
+                    <span class="font-bold text-indigo-600">공란 (정식 런칭 시 확정 공지)</span>
                 </div>
             </div>
 
-            <!-- 카드 정보 폼 -->
-            <div class="space-y-2 text-xs">
-                <input type="text" placeholder="카드번호 (16자리)"
-                    class="w-full px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" placeholder="유효기간 (MM/YY)"
-                        class="px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
-                    <input type="password" placeholder="CVC (3자리)"
-                        class="px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
-                </div>
+            <div class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                <p class="font-bold text-slate-800 mb-1">📢 향후 멤버십 운영 계획</p>
+                <p>
+                    더 강력한 데이터 분석 알고리즘과 카카오톡 자동 채점 리포트, 대량 휠링 조합 생성 등 프리미엄 기능은 시스템 고도화 이후 <strong>멤버십 제도로 순차 오픈될 예정</strong>입니다.
+                    현재는 모든 기능을 비용 없이 무료로 체험해보실 수 있습니다.
+                </p>
             </div>
 
-            <button onclick="handlePaymentSuccess()"
+            <button onclick="closeModal('payModal')"
                 class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold rounded-xl text-xs transition shadow-md">
-                안전하게 정기 결제하기
+                확인 및 무료 기능 계속 이용하기
             </button>
 
-            <p class="text-[11px] text-slate-400 text-center">언제든 마이페이지에서 위약금 없이 1클릭으로 해지 가능합니다.</p>
+            <p class="text-[11px] text-slate-400 text-center">정식 멤버십 오픈 시 사이트 공지사항을 통해 가장 먼저 안내해 드립니다.</p>
         </div>
     </div>
 
@@ -522,4 +526,300 @@
             { name: "로또휴게실", address: "경기 용인시 기흥구 용구대로 1885", count: "1등 20회 이상", tag: "경기권 고속도로 거점" },
             { name: "잠실매점", address: "서울 송파구 올림픽로 269 잠실역 8번출구", count: "1등 18회 이상", tag: "서울 동남권 거점" },
             { name: "목포로또복권", address: "전남 목포시 백년대로 382", count: "1등 15회 이상", tag: "호남권 대표" },
-            { name: "행운복권방", address: "충북 청주시 흥덕구 직지대로 630", count
+            { name: "행운복권방", address: "충북 청주시 흥덕구 직지대로 630", count: "1등 14회 이상", tag: "충청권 명당" },
+            { name: "대박찬스", address: "충북 청주시 상당구 상당로 200", count: "1등 12회 이상", tag: "청주 상당구 거점" },
+            { name: "제이복권방", address: "서울 종로구 종로 225-1", count: "1등 12회 이상", tag: "서울 종로 도심" },
+            { name: "가판점", address: "서울 중구 신문로1가 1-23", count: "1등 11회 이상", tag: "광화문역 인근 거점" }
+        ];
+
+        function renderStores() {
+            const container = document.getElementById('storeContainer');
+            if (!container) return;
+            container.innerHTML = topStores.map((s, idx) => `
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-indigo-300 transition">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-xs font-extrabold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
+                            NO.${idx + 1}
+                        </span>
+                        <span class="text-[11px] text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-bold">
+                            ${s.tag}
+                        </span>
+                    </div>
+                    <h3 class="text-base font-bold text-slate-900">${s.name}</h3>
+                    <p class="text-xs text-slate-500 mt-1">${s.address}</p>
+                    <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                        <span class="text-slate-400">누적 당첨 실적</span>
+                        <span class="font-extrabold text-slate-800">${s.count}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // --- (B) 1~45 번호판 및 고정수/제외수 선택 로직 ---
+        let currentMode = 'fixed'; // 'fixed' or 'exclude'
+        const fixedNumbers = new Set();
+        const excludeNumbers = new Set();
+
+        function initNumberGrid() {
+            const grid = document.getElementById('numberGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            for (let i = 1; i <= 45; i++) {
+                const btn = document.createElement('button');
+                btn.className = 'num-btn';
+                btn.textContent = i;
+                btn.id = `num-btn-${i}`;
+                btn.onclick = () => toggleNumber(i);
+                grid.appendChild(btn);
+            }
+            updateNumberUI();
+        }
+
+        function setSelectMode(mode) {
+            currentMode = mode;
+            const fixedBtn = document.getElementById('modeFixedBtn');
+            const excludeBtn = document.getElementById('modeExcludeBtn');
+            if (mode === 'fixed') {
+                fixedBtn.className = 'flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-indigo-600 text-white transition flex items-center justify-center space-x-1';
+                excludeBtn.className = 'flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center justify-center space-x-1';
+            } else {
+                excludeBtn.className = 'flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-rose-600 text-white transition flex items-center justify-center space-x-1';
+                fixedBtn.className = 'flex-1 py-2 px-3 text-xs font-bold rounded-lg bg-slate-100 text-slate-600 hover:bg-slate-200 transition flex items-center justify-center space-x-1';
+            }
+        }
+
+        function toggleNumber(num) {
+            if (currentMode === 'fixed') {
+                if (fixedNumbers.has(num)) {
+                    fixedNumbers.delete(num);
+                } else {
+                    if (fixedNumbers.size >= 3) {
+                        alert('고정수는 최대 3개까지만 지정할 수 있습니다.');
+                        return;
+                    }
+                    excludeNumbers.delete(num);
+                    fixedNumbers.add(num);
+                }
+            } else {
+                if (excludeNumbers.has(num)) {
+                    excludeNumbers.delete(num);
+                } else {
+                    if (excludeNumbers.size >= 10) {
+                        alert('제외수는 최대 10개까지만 지정할 수 있습니다.');
+                        return;
+                    }
+                    fixedNumbers.delete(num);
+                    excludeNumbers.add(num);
+                }
+            }
+            updateNumberUI();
+        }
+
+        function resetSelection() {
+            fixedNumbers.clear();
+            excludeNumbers.clear();
+            updateNumberUI();
+        }
+
+        function updateNumberUI() {
+            for (let i = 1; i <= 45; i++) {
+                const btn = document.getElementById(`num-btn-${i}`);
+                if (!btn) continue;
+                btn.className = 'num-btn';
+                if (fixedNumbers.has(i)) {
+                    btn.classList.add('fixed-num');
+                } else if (excludeNumbers.has(i)) {
+                    btn.classList.add('exclude-num');
+                }
+            }
+
+            const fixedText = document.getElementById('fixedListText');
+            const excludeText = document.getElementById('excludeListText');
+            if (fixedText) {
+                fixedText.textContent = fixedNumbers.size > 0 ? Array.from(fixedNumbers).sort((a,b)=>a-b).join(', ') : '없음';
+            }
+            if (excludeText) {
+                excludeText.textContent = excludeNumbers.size > 0 ? Array.from(excludeNumbers).sort((a,b)=>a-b).join(', ') : '없음';
+            }
+        }
+
+        // 공 색상 계산 함수
+        function getBallClass(num) {
+            if (num <= 10) return 'ball-yellow';
+            if (num <= 20) return 'ball-blue';
+            if (num <= 30) return 'ball-red';
+            if (num <= 40) return 'ball-gray';
+            return 'ball-green';
+        }
+
+        // --- (C) 조합 생성 알고리즘 ---
+        function generateSingleCombination() {
+            const filterSum = document.getElementById('filterSum')?.checked ?? true;
+            const filterConsecutive = document.getElementById('filterConsecutive')?.checked ?? true;
+
+            const available = [];
+            for (let i = 1; i <= 45; i++) {
+                if (!excludeNumbers.has(i) && !fixedNumbers.has(i)) {
+                    available.push(i);
+                }
+            }
+
+            let attempts = 0;
+            while (attempts < 500) {
+                attempts++;
+                const chosen = Array.from(fixedNumbers);
+                const shuffled = [...available].sort(() => 0.5 - Math.random());
+                const needed = 6 - chosen.length;
+                chosen.push(...shuffled.slice(0, needed));
+                chosen.sort((a, b) => a - b);
+
+                // 합계 필터 검증
+                const sum = chosen.reduce((acc, cur) => acc + cur, 0);
+                if (filterSum && (sum < 120 || sum > 165)) {
+                    continue;
+                }
+
+                // 연속 3개 숫자 방지 검증
+                if (filterConsecutive) {
+                    let has3Consecutive = false;
+                    for (let i = 0; i < chosen.length - 2; i++) {
+                        if (chosen[i+1] === chosen[i] + 1 && chosen[i+2] === chosen[i] + 2) {
+                            has3Consecutive = true;
+                            break;
+                        }
+                    }
+                    if (has3Consecutive) continue;
+                }
+
+                return chosen;
+            }
+
+            // 실패 시 폴백
+            const fallback = Array.from(fixedNumbers);
+            const shuffled = [...available].sort(() => 0.5 - Math.random());
+            fallback.push(...shuffled.slice(0, 6 - fallback.length));
+            return fallback.sort((a, b) => a - b);
+        }
+
+        function generateCombinations() {
+            const container = document.getElementById('resultsContainer');
+            if (!container) return;
+
+            const combinations = [];
+            for (let i = 0; i < 5; i++) {
+                combinations.push(generateSingleCombination());
+            }
+
+            container.innerHTML = combinations.map((combo, idx) => {
+                const sum = combo.reduce((a, b) => a + b, 0);
+                const oddCount = combo.filter(n => n % 2 !== 0).length;
+                const evenCount = 6 - oddCount;
+
+                return `
+                    <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm hover:border-indigo-300 transition">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-xs font-black text-indigo-700 bg-indigo-100/70 px-2 py-1 rounded">
+                                조합 ${String.fromCharCode(65 + idx)}
+                            </span>
+                            <div class="flex items-center space-x-1.5">
+                                ${combo.map(n => `<span class="ball ${getBallClass(n)}">${n}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 text-xs text-slate-500">
+                            <span>합계: <strong class="text-slate-800">${sum}</strong></span>
+                            <span>홀짝: <strong class="text-slate-800">${oddCount}:${evenCount}</strong></span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // --- (D) 꿈해몽 검색 매핑 데이터베이스 ---
+        const dreamData = {
+            "돼지": { numbers: [12, 17, 34, 45], meaning: "재물운과 횡재수를 상징하는 대표적 길몽" },
+            "조상": { numbers: [1, 21, 33, 40], meaning: "은덕과 도움, 새로운 번영의 기운을 뜻하는 꿈" },
+            "조상님": { numbers: [1, 21, 33, 40], meaning: "은덕과 도움, 새로운 번영의 기운을 뜻하는 꿈" },
+            "뱀": { numbers: [4, 10, 25, 36], meaning: "지혜와 숨겨진 금전적 이득을 나타내는 상징" },
+            "불": { numbers: [6, 11, 28, 44], meaning: "사업의 번창과 폭발적인 성취를 예견하는 길몽" },
+            "비행기": { numbers: [8, 19, 29, 39], meaning: "신분 상승과 원대한 목표 달성을 뜻하는 상징" },
+            "용": { numbers: [7, 13, 27, 41], meaning: "최고의 명예와 큰 행운이 들어오는 대길몽" },
+            "호랑이": { numbers: [3, 15, 30, 42], meaning: "권력과 리더십, 난관 극복의 강한 에너지" },
+            "물": { numbers: [2, 18, 26, 37], meaning: "재물의 순환과 깨끗한 행운의 유입을 상징" },
+            "똥": { numbers: [5, 16, 31, 43], meaning: "예상치 못한 목돈과 풍요를 가져다주는 길몽" }
+        };
+
+        function searchDreamNumber() {
+            const input = document.getElementById('dreamInput');
+            const resultBox = document.getElementById('dreamResult');
+            if (!input || !resultBox) return;
+
+            const val = input.value.trim();
+            if (!val) {
+                alert('꿈 키워드를 입력해주세요.');
+                return;
+            }
+
+            let matchedKey = null;
+            for (let key in dreamData) {
+                if (val.includes(key)) {
+                    matchedKey = key;
+                    break;
+                }
+            }
+
+            resultBox.classList.remove('hidden');
+            if (matchedKey) {
+                const item = dreamData[matchedKey];
+                resultBox.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between border-b border-slate-700 pb-2">
+                            <span class="text-xs font-bold text-amber-300">‘${matchedKey}’ 꿈 연관 행운 번호</span>
+                            <span class="text-[10px] text-slate-400">민간 해몽 DB 매핑</span>
+                        </div>
+                        <div class="flex items-center space-x-2 py-1">
+                            ${item.numbers.map(n => `<span class="ball ${getBallClass(n)}">${n}</span>`).join('')}
+                        </div>
+                        <p class="text-xs text-slate-300 mt-1">${item.meaning}</p>
+                    </div>
+                `;
+            } else {
+                resultBox.innerHTML = `
+                    <div class="text-xs text-slate-300 space-y-1">
+                        <p class="font-bold text-amber-300">‘${val}’에 대한 고유 매핑 결과 안내</p>
+                        <p>해당 키워드는 현재 추가 수집 중인 해몽 항목입니다. 추천 행운 번호: <strong>7, 14, 21, 35</strong> (엔터테인먼트 참고용)</p>
+                    </div>
+                `;
+            }
+        }
+
+        // --- (E) 모달 제어 함수 ---
+        function openModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('hidden');
+        }
+
+        function closeModal(id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        }
+
+        function openPlanNoticeModal(planName) {
+            const planEl = document.getElementById('payPlanName');
+            if (planEl) planEl.textContent = planName;
+            openModal('payModal');
+        }
+
+        function handleLoginSuccess(provider) {
+            alert(`${provider} 인증이 완료되었습니다. 현재 초기 무료 운영 기간이므로 모든 기능을 무료로 이용하실 수 있습니다.`);
+            closeModal('authModal');
+        }
+
+        // 초기 바인딩 실행
+        document.addEventListener('DOMContentLoaded', () => {
+            initNumberGrid();
+            renderStores();
+        });
+    </script>
+</body>
+
+</html>
