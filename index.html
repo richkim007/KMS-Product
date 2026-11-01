@@ -159,12 +159,16 @@
                 <span
                     class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-semibold border border-indigo-200">loddo.co</span>
             </a>
-            <nav class="hidden md:flex space-x-6 font-medium text-sm text-slate-600">
+            <nav class="hidden md:flex space-x-4 lg:space-x-5 font-medium text-sm text-slate-600 items-center">
                 <a href="#generator" class="text-indigo-600 font-bold hover:text-indigo-700 transition">AI 스마트 조합기</a>
+                <a href="#dream"
+                    class="bg-gradient-to-r from-purple-600 via-indigo-600 to-indigo-700 hover:from-purple-700 hover:to-indigo-800 text-white font-bold px-3.5 py-1.5 rounded-full text-xs transition shadow-sm hover:shadow flex items-center space-x-1.5">
+                    <span>🌙 꿈의 상징 번호 찾기</span>
+                </a>
                 <a href="#stats" class="hover:text-indigo-600 transition">데이터 통계</a>
-                <a href="#articles" class="text-amber-700 font-bold hover:text-amber-800 transition flex items-center space-x-1">
-                    <i class="fa-solid fa-book-open text-xs"></i>
-                    <span>빅데이터 칼럼</span>
+                <a href="#articles" class="hover:text-amber-700 font-bold transition flex items-center space-x-1 text-slate-700">
+                    <i class="fa-solid fa-book-open text-xs text-amber-600"></i>
+                    <span>로또 스토리</span>
                 </a>
                 <a href="#places" class="hover:text-indigo-600 transition">전국 10대 명당</a>
                 <a href="/about.html" class="hover:text-indigo-600 transition">소개</a>
@@ -799,68 +803,61 @@
         </div>
     </section>
 
-    <!-- 5. 꿈 키워드 번호 변환기 (비주얼 키워드 칩 추가) -->
+    <!-- 5. 꿈 키워드 번호 변환기 (매일 변동되는 정통 꿈해몽 & 행운수 매핑 시스템) -->
     <section id="dream"
-        class="bg-gradient-to-b from-indigo-950 via-indigo-900 to-slate-900 text-white py-16 px-4 relative overflow-hidden">
-        <div class="max-w-4xl mx-auto text-center space-y-4 relative z-10">
-            <span
-                class="text-xs font-bold text-indigo-300 tracking-wider uppercase bg-indigo-800/60 px-3 py-1 rounded-full border border-indigo-700">
-                Entertainment & Cultural Tool
-            </span>
-            <h2 class="text-2xl md:text-3xl font-extrabold flex items-center justify-center space-x-2">
-                <span>✨ 어젯밤 꾼 꿈의 상징 번호 찾기</span>
+        class="bg-gradient-to-b from-slate-950 via-indigo-950 to-slate-900 text-white py-16 px-4 relative overflow-hidden">
+        <!-- 배경 신비로운 조명 효과 -->
+        <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-4xl mx-auto text-center space-y-5 relative z-10">
+            <!-- 오늘 날짜 뱃지 -->
+            <div class="inline-flex items-center space-x-2 bg-purple-500/20 border border-purple-400/40 px-3.5 py-1.5 rounded-full text-xs font-bold text-purple-200 shadow-inner">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span id="dreamTodayDate">📅 오늘의 꿈 상징 번호</span>
+            </div>
+
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-black flex items-center justify-center space-x-2">
+                <span>🌙 어젯밤 꾼 꿈의 상징 번호 & 정통 해몽</span>
             </h2>
-            <p class="text-xs md:text-sm text-indigo-200 max-w-xl mx-auto">
-                전통 민간 꿈해몽 데이터베이스와 숫자를 매핑하여 재미로 보는 연관 행운수를 도출합니다. (엔터테인먼트 참고용)
+            <p class="text-xs sm:text-sm text-indigo-200 max-w-xl mx-auto leading-relaxed">
+                전통 민간 꿈해몽 비전(秘傳)을 바탕으로 어젯밤 꾼 꿈의 상징 행운수와 상세한 해몽 풀이를 제공합니다.
             </p>
 
-            <!-- 빠른 원클릭 꿈 키워드 칩 -->
-            <div class="flex flex-wrap justify-center gap-2 pt-2 max-w-lg mx-auto">
-                <button onclick="quickDreamSearch('돼지')"
-                    class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
-                    <span>🐷</span> <span>돼지꿈</span>
-                </button>
-                <button onclick="quickDreamSearch('조상님')"
-                    class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
-                    <span>👴</span> <span>조상님</span>
-                </button>
-                <button onclick="quickDreamSearch('용')"
-                    class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
-                    <span>🐉</span> <span>용꿈</span>
-                </button>
-                <button onclick="quickDreamSearch('뱀')"
-                    class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
-                    <span>🐍</span> <span>뱀꿈</span>
-                </button>
-                <button onclick="quickDreamSearch('불')"
-                    class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
-                    <span>🔥</span> <span>불나는꿈</span>
-                </button>
-                <button onclick="quickDreamSearch('똥')"
-                    class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
-                    <span>💩</span> <span>똥꿈</span>
-                </button>
-                <button onclick="quickDreamSearch('비행기')"
-                    class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
-                    <span>✈️</span> <span>비행기</span>
-                </button>
-                <button onclick="quickDreamSearch('물')"
-                    class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
-                    <span>💧</span> <span>맑은물</span>
-                </button>
+            <!-- 추천 길몽 칩 -->
+            <div class="space-y-2 pt-2">
+                <div class="flex items-center justify-center space-x-2 text-xs font-bold text-amber-300">
+                    <i class="fa-solid fa-fire text-amber-400"></i>
+                    <span>가장 많이 찾는 대표 길몽 추천 순위</span>
+                </div>
+                <div id="dailyDreamChips" class="flex flex-wrap justify-center gap-2 pt-1 max-w-2xl mx-auto min-h-[42px]">
+                    <!-- JS에서 날짜 시드로 자동 렌더링 -->
+                </div>
             </div>
 
-            <div class="max-w-md mx-auto flex items-center bg-white rounded-2xl p-1.5 shadow-xl mt-4">
-                <input type="text" id="dreamInput" placeholder="직접 꿈 키워드 입력 (예: 호랑이, 금반지, 바다)"
-                    class="flex-1 px-3 py-2 text-slate-800 text-xs md:text-sm outline-none rounded-xl">
+            <!-- 카테고리 필터 탭 -->
+            <div class="flex flex-wrap justify-center gap-1.5 pt-1 text-xs">
+                <button onclick="filterDreamCategory('all')" id="dreamCat-all" class="dream-cat-btn px-3 py-1 rounded-full bg-white/20 text-white font-bold transition">전체</button>
+                <button onclick="filterDreamCategory('재물')" id="dreamCat-재물" class="dream-cat-btn px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 transition">💰 재물·돈</button>
+                <button onclick="filterDreamCategory('동물')" id="dreamCat-동물" class="dream-cat-btn px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 transition">🐅 영물·동물</button>
+                <button onclick="filterDreamCategory('자연')" id="dreamCat-자연" class="dream-cat-btn px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 transition">🌊 불·물·자연</button>
+                <button onclick="filterDreamCategory('인물')" id="dreamCat-인물" class="dream-cat-btn px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 transition">👑 인물·신분</button>
+            </div>
+
+            <!-- 검색 입력창 -->
+            <div class="max-w-md mx-auto flex items-center bg-white rounded-2xl p-1.5 shadow-2xl mt-3 border-2 border-indigo-500/50 focus-within:border-amber-400 transition">
+                <i class="fa-solid fa-magnifying-glass text-slate-400 ml-3 mr-1 text-sm"></i>
+                <input type="text" id="dreamInput" placeholder="어젯밤 어떤 꿈을 꾸셨나요? (예: 호랑이, 똥, 불, 용)"
+                    onkeypress="if(event.key==='Enter') searchDreamNumber()"
+                    class="flex-1 px-2 py-2 text-slate-800 text-xs sm:text-sm outline-none rounded-xl bg-transparent">
                 <button onclick="searchDreamNumber()"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-xs md:text-sm transition shadow-sm">
-                    해몽 검색
+                    class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold px-4 py-2 rounded-xl text-xs sm:text-sm transition shadow-md flex items-center space-x-1">
+                    <span>해몽 & 번호 보기</span>
                 </button>
             </div>
 
+            <!-- 해몽 상세 결과 카드 (클릭 시 펼쳐짐) -->
             <div id="dreamResult"
-                class="hidden max-w-md mx-auto bg-slate-800/90 border border-slate-700 rounded-2xl p-4 text-left mt-4 shadow-xl">
+                class="hidden max-w-xl mx-auto bg-slate-900/95 border border-purple-500/40 rounded-3xl p-6 text-left mt-6 shadow-2xl backdrop-blur-md animate-in fade-in zoom-in-95 duration-200">
             </div>
         </div>
     </section>
@@ -974,14 +971,14 @@
         </div>
     </section>
 
-    <!-- 7-1. 로또 빅데이터 인사이트 & 전문 칼럼 아카이브 (구글 애드센스 가치 있는 콘텐츠 구축) -->
+    <!-- 7-1. 로또 스토리 & 유익한 상식 정보 아카이브 -->
     <section id="articles" class="py-16 bg-gradient-to-b from-slate-50 to-white px-4 border-t border-slate-200">
         <div class="max-w-7xl mx-auto space-y-8">
             <div class="text-center max-w-3xl mx-auto space-y-2">
-                <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">BigData Insights</span>
-                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">로또 빅데이터 인사이트 & 상식 가이드</h2>
+                <span class="text-xs font-bold text-amber-700 bg-amber-50 px-3.5 py-1 rounded-full uppercase tracking-wider border border-amber-200">Lotto Story</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">📖 로또 스토리 & 유익한 상식</h2>
                 <p class="text-sm text-slate-500">
-                    단순한 번호 생성을 넘어, 수학적 확률 구조와 세무 상식, 건전한 복권 문화를 과학적으로 탐구합니다.
+                    당첨금 수령 팁부터 명당의 역사, 소외계층을 돕는 복권기금 이야기까지 흥미롭고 훈훈한 로또 이야기를 전해드립니다.
                 </p>
             </div>
 
@@ -3067,62 +3064,305 @@
             URL.revokeObjectURL(url);
         }
 
-        // --- (E) 꿈해몽 검색 매핑 데이터베이스 ---
-        const dreamData = {
-            "돼지": { numbers: [12, 17, 34, 45], meaning: "재물운과 횡재수를 상징하는 대표적 길몽" },
-            "조상": { numbers: [1, 21, 33, 40], meaning: "은덕과 도움, 새로운 번영의 기운을 뜻하는 꿈" },
-            "조상님": { numbers: [1, 21, 33, 40], meaning: "은덕과 도움, 새로운 번영의 기운을 뜻하는 꿈" },
-            "뱀": { numbers: [4, 10, 25, 36], meaning: "지혜와 숨겨진 금전적 이득을 나타내는 상징" },
-            "불": { numbers: [6, 11, 28, 44], meaning: "사업의 번창과 폭발적인 성취를 예견하는 길몽" },
-            "비행기": { numbers: [8, 19, 29, 39], meaning: "신분 상승과 원대한 목표 달성을 뜻하는 상징" },
-            "용": { numbers: [7, 13, 27, 41], meaning: "최고의 명예와 큰 행운이 들어오는 대길몽" },
-            "호랑이": { numbers: [3, 15, 30, 42], meaning: "권력과 리더십, 난관 극복의 강한 에너지" },
-            "물": { numbers: [2, 18, 26, 37], meaning: "재물의 순환과 깨끗한 행운의 유입을 상징" },
-            "똥": { numbers: [5, 16, 31, 43], meaning: "예상치 못한 목돈과 풍요를 가져다주는 길몽" }
-        };
+        // --- (E) 매일 변동되는 정통 꿈해몽 & 행운수 매핑 데이터베이스 ---
+        const dreamDatabase = [
+            { id: "pig", name: "돼지꿈", icon: "🐷", keywords: ["돼지", "멧돼지", "흑돼지"], category: "재물", grade: "특급 대길몽", baseNumbers: [12, 17, 34], meaning: "누런 황금돼지나 흑돼지가 품에 안기거나 집으로 들어오는 꿈은 뜻밖의 횡재수와 큰 목돈, 사업의 급성장과 부귀영화를 알리는 민간 최고의 길몽입니다." },
+            { id: "poop", name: "똥/대변꿈", icon: "💩", keywords: ["똥", "대변", "인분", "변기"], category: "재물", grade: "특급 횡재몽", baseNumbers: [5, 16, 31], meaning: "온몸에 대변이 묻거나 변기에 똥이 가득 넘쳐흐르는 꿈은 억눌린 재물운이 크게 터져 막대한 금전적 풍요와 뜻밖의 유산을 가져다주는 대표적 길조입니다." },
+            { id: "ancestor", name: "조상님꿈", icon: "👴", keywords: ["조상", "조상님", "할아버지", "할머니", "부모님"], category: "인물", grade: "가문 대길몽", baseNumbers: [1, 21, 33, 40], meaning: "돌아가신 조상님이나 부모님이 밝은 미소로 돈이나 보물을 건네는 꿈은 큰 은덕과 가문의 번영, 막혔던 인생의 활로가 활짝 열림을 상징합니다." },
+            { id: "dragon", name: "용꿈", icon: "🐉", keywords: ["용", "청룡", "황룡", "여의주"], category: "동물", grade: "최고 존귀몽", baseNumbers: [7, 13, 27, 41], meaning: "거대한 용이 여의주를 물고 구름을 뚫고 하늘로 승천하는 꿈은 사회적 신분 상승, 국가고시 합격, 최고의 명예와 천운이 함께하는 최고봉의 대길몽입니다." },
+            { id: "fire", name: "불/화재꿈", icon: "🔥", keywords: ["불", "화재", "불타는", "연기"], category: "자연", grade: "번영 대길몽", baseNumbers: [6, 11, 28, 44], meaning: "온 건물이나 산야가 활활 타오르는 화재 꿈은 사업과 가세가 걷잡을 수 없이 크게 번창하고 번뜩이는 창작력으로 큰 재물을 얻음을 뜻합니다." },
+            { id: "water", name: "맑은물/바다", icon: "🌊", keywords: ["물", "바다", "강", "파도", "홍수", "폭포"], category: "자연", grade: "재물 순환몽", baseNumbers: [2, 18, 26, 37], meaning: "맑고 깨끗한 물이 집안 가득 넘쳐흐르거나 거대한 파도를 품는 꿈은 마르지 않는 재물의 샘과 가업의 융성, 순조로운 소원 성취를 의미합니다." },
+            { id: "snake", name: "뱀/구렁이", icon: "🐍", keywords: ["뱀", "구렁이", "백사"], category: "동물", grade: "지혜 횡재몽", baseNumbers: [4, 10, 25, 36], meaning: "황금색 뱀이나 거대한 구렁이가 몸을 감싸거나 품에 안기는 꿈은 비상한 통찰력, 숨겨진 재물의 발견, 장차 큰 인물이 될 자손의 잉태를 뜻합니다." },
+            { id: "tiger", name: "호랑이꿈", icon: "🐅", keywords: ["호랑이", "백호", "표범"], category: "동물", grade: "권력 승리몽", baseNumbers: [3, 15, 30, 42], meaning: "위엄 있는 호랑이가 포효하거나 집을 지키는 꿈은 막강한 권력과 리더십, 경쟁에서의 완벽한 승리와 난관 돌파를 상징합니다." },
+            { id: "fish", name: "물고기/잉어", icon: "🐟", keywords: ["물고기", "잉어", "금붕어", "어항", "낚시"], category: "동물", grade: "출세 길몽", baseNumbers: [8, 14, 23, 38], meaning: "맑은 물에서 커다란 황금 잉어나 물고기를 두 손으로 낚아 올리는 꿈은 노력해 온 일의 화려한 결실과 횡재수, 관직 출세를 예견합니다." },
+            { id: "gold", name: "황금/돈뭉치", icon: "💰", keywords: ["돈", "황금", "금", "보석", "지폐", "돈뭉치"], category: "재물", grade: "직접 재물몽", baseNumbers: [9, 20, 32, 45], meaning: "두 손 가득 지폐 뭉치를 줍거나 찬란한 황금과 보석을 품는 꿈은 현실의 재정적 위기가 일시에 해소되고 예상치 못한 보상이 찾아오는 징조입니다." },
+            { id: "airplane", name: "비행기꿈", icon: "✈️", keywords: ["비행기", "우주선", "비행"], category: "자연", grade: "도약 비상몽", baseNumbers: [8, 19, 29, 39], meaning: "비행기를 타고 구름 위를 날아오르는 꿈은 지위와 직급의 비약적 상승, 해외 진출 등 원대한 인생의 목표가 마침내 성취됨을 암시합니다." },
+            { id: "president", name: "대통령/귀인", icon: "👑", keywords: ["대통령", "유명인", "연예인", "왕", "임금"], category: "인물", grade: "귀인 상봉몽", baseNumbers: [1, 10, 24, 43], meaning: "국가 원수나 존경받는 유명 인사와 악수하고 따뜻한 덕담을 나누는 꿈은 사회적 귀인의 전폭적 지원을 받아 입신양명할 길조입니다." },
+            { id: "corpse", name: "시체/죽음꿈", icon: "⚰️", keywords: ["시체", "죽음", "송장", "장례식", "관"], category: "재물", grade: "대반전 길몽", baseNumbers: [5, 12, 33, 41], meaning: "시체를 목격하거나 자신이 죽는 꿈은 묵은 악운과 액운이 완전히 소멸하고 새 생명력과 함께 막대한 행운이 찾아오는 최고의 반전 길몽입니다." },
+            { id: "blood", name: "피/출혈꿈", icon: "🩸", keywords: ["피", "출혈", "선혈"], category: "재물", grade: "성취 횡재몽", baseNumbers: [7, 16, 28, 35], meaning: "온몸에 붉은 피가 묻거나 솟구치는 피를 보는 꿈은 열정적인 성취와 함께 막혔던 금전의 물꼬가 트여 큰 부를 축적함을 의미합니다." },
+            { id: "toad", name: "두꺼비/개구리", icon: "🐸", keywords: ["두꺼비", "개구리", "금두꺼비"], category: "재물", grade: "가복 증진몽", baseNumbers: [11, 22, 34, 44], meaning: "황금 두꺼비가 집안으로 뛰어드는 꿈은 복권 당첨이나 뜻밖의 부동산 횡재 등 가문에 경사와 복이 굴러들어오는 상서로운 징조입니다." },
+            { id: "turtle", name: "거북이꿈", icon: "🐢", keywords: ["거북이", "자라"], category: "동물", grade: "장수 부귀몽", baseNumbers: [3, 14, 25, 39], meaning: "거북이가 알을 낳거나 품에 안기는 꿈은 대대손손 이어질 안정된 부의 축적과 무병장수, 가정의 평안을 뜻합니다." },
+            { id: "house", name: "새집/이사꿈", icon: "🏠", keywords: ["집", "아파트", "이사", "건물", "대궐"], category: "자연", grade: "가업 융성몽", baseNumbers: [2, 13, 27, 42], meaning: "햇살 가득한 새 집으로 이사하는 꿈은 환경의 획기적 발전과 직장의 승진, 생활의 풍요로움을 가져옵니다." },
+            { id: "car", name: "고급자동차", icon: "🚗", keywords: ["자동차", "차", "슈퍼카"], category: "자연", grade: "주도 성취몽", baseNumbers: [6, 17, 30, 45], meaning: "멋진 자동차를 타고 도로를 시원하게 질주하는 꿈은 자신이 주도권을 쥐고 사업이나 프로젝트를 막힘없이 성공시킴을 뜻합니다." },
+            { id: "sun", name: "태양/보름달", icon: "☀️", keywords: ["태양", "해", "달", "보름달", "별", "북두칠성"], category: "자연", grade: "천기 대길몽", baseNumbers: [1, 9, 21, 38], meaning: "둥근 해나 보름달을 품에 안는 꿈은 일생일대의 대운이 열리며, 가문이 번창하고 세상에 이름을 떨칠 대길몽입니다." },
+            { id: "baby", name: "아기/출산꿈", icon: "👶", keywords: ["아기", "갓난아기", "출산", "임신"], category: "인물", grade: "창조 결실몽", baseNumbers: [4, 18, 31, 40], meaning: "건강하고 방긋 웃는 아기를 품에 안아주는 꿈은 오랜 기간 준비해 온 새로운 프로젝트나 일거리가 큰 결실을 맺음을 뜻합니다." },
+            { id: "bird", name: "학/봉황/새", icon: "🕊️", keywords: ["새", "학", "봉황", "비둘기", "독수리"], category: "동물", grade: "명예 영달몽", baseNumbers: [8, 15, 26, 37], meaning: "학이나 봉황이 마당에 내려앉는 꿈은 귀인을 만나거나 학문과 예술, 직업에서 최고 권위의 인정을 받게 됨을 예견합니다." },
+            { id: "flower", name: "꽃/과일꿈", icon: "🌸", keywords: ["꽃", "과일", "사과", "복숭아", "열매"], category: "자연", grade: "사랑 수확몽", baseNumbers: [5, 19, 28, 43], meaning: "탐스러운 과일을 수확하거나 꽃밭을 거니는 꿈은 노력의 풍성한 결실과 좋은 인연, 금전적 보답을 뜻합니다." },
+            { id: "horse", name: "말/백마꿈", icon: "🐎", keywords: ["말", "백마", "흑마"], category: "동물", grade: "질주 성공몽", baseNumbers: [7, 14, 29, 36], meaning: "힘찬 백마를 타고 초원을 달리는 꿈은 장애물이 사라지고 초고속 승진과 확장을 이뤄낼 역동적 길조입니다." },
+            { id: "ox", name: "소/황소꿈", icon: "🐂", keywords: ["소", "황소", "음메"], category: "동물", grade: "근면 대복몽", baseNumbers: [2, 11, 23, 34], meaning: "우람한 황소가 밭을 갈거나 집안으로 들어오는 꿈은 성실한 축적 끝에 부동산 등 큰 자산을 모으게 됨을 뜻합니다." },
+            { id: "rainbow", name: "무지개/눈꿈", icon: "🌈", keywords: ["무지개", "눈", "함박눈"], category: "자연", grade: "상서로운 축복", baseNumbers: [6, 20, 32, 41], meaning: "하늘에 선명한 쌍무지개가 뜨거나 세상을 덮는 눈을 보는 꿈은 집안에 경사가 겹치고 축복이 찾아올 징조입니다." }
+        ];
 
+        // 오늘 날짜 시드 생성 함수 (매일 자정에 자동 변경)
+        function getDailySeedInfo() {
+            const now = new Date();
+            const y = now.getFullYear();
+            const m = now.getMonth() + 1;
+            const d = now.getDate();
+            const dayNames = ['일', '월', '화', '수', '목', '금', '토'];
+            const seed = (y * 10000) + (m * 100) + d;
+            return {
+                displayStr: `${y}년 ${m}월 ${d}일 (${dayNames[now.getDay()]})`,
+                seed: seed
+            };
+        }
+
+        // 특정 꿈의 매일 변동되는 기운 점수 및 행운 번호 계산
+        function getDailyCalculatedDream(item) {
+            const { seed } = getDailySeedInfo();
+            let hash = 0;
+            for (let i = 0; i < item.id.length; i++) {
+                hash = (hash * 31 + item.id.charCodeAt(i)) % 10007;
+            }
+
+            // 오늘의 기운 점수 (92% ~ 99%)
+            const energyScore = 92 + ((seed + hash) % 8);
+
+            // 매일 변동되는 추가 행운 번호 (1~45 중 겹치지 않게 2개 추가)
+            const nums = [...item.baseNumbers];
+            const dailyBonus1 = ((seed * 7 + hash * 13) % 45) + 1;
+            if (!nums.includes(dailyBonus1)) nums.push(dailyBonus1);
+
+            const dailyBonus2 = ((seed * 17 + hash * 19) % 45) + 1;
+            if (!nums.includes(dailyBonus2) && nums.length < 5) nums.push(dailyBonus2);
+
+            nums.sort((a, b) => a - b);
+            return {
+                energyScore,
+                numbers: nums
+            };
+        }
+
+        // 매일 자정 변동되는 추천 길몽 랭킹 UI 렌더링
+        let currentDreamCategory = 'all';
+
+        function renderDailyDreamUI() {
+            const { displayStr, seed } = getDailySeedInfo();
+            const dateBadge = document.getElementById('dreamTodayDate');
+            if (dateBadge) {
+                dateBadge.innerHTML = `📅 <strong>${displayStr}</strong> 오늘의 꿈 상징 번호`;
+            }
+
+            const container = document.getElementById('dailyDreamChips');
+            if (!container) return;
+
+            // 시드를 바탕으로 추천 순위 셔플 (매일 순서가 바뀜)
+            const filtered = currentDreamCategory === 'all' 
+                ? [...dreamDatabase]
+                : dreamDatabase.filter(d => d.category === currentDreamCategory);
+
+            // 날짜 시드로 매일 다르게 정렬
+            const rankedList = filtered.sort((a, b) => {
+                const hashA = (a.id.charCodeAt(0) * 17 + seed) % 101;
+                const hashB = (b.id.charCodeAt(0) * 17 + seed) % 101;
+                return hashB - hashA;
+            }).slice(0, 8); // TOP 8개 노출
+
+            container.innerHTML = rankedList.map((item, idx) => {
+                const { energyScore } = getDailyCalculatedDream(item);
+                return `
+                    <button onclick="quickDreamSelect('${item.id}')"
+                        class="group px-3 py-1.5 bg-white/10 hover:bg-gradient-to-r hover:from-purple-600 hover:to-indigo-600 border border-white/20 hover:border-transparent rounded-2xl text-xs font-semibold transition flex items-center space-x-1.5 shadow-sm transform hover:-translate-y-0.5">
+                        <span class="text-[10px] font-black px-1.5 py-0.2 rounded-full ${idx < 3 ? 'bg-amber-400 text-slate-900' : 'bg-white/20 text-indigo-200'}">${idx + 1}위</span>
+                        <span>${item.icon}</span>
+                        <span>${item.name}</span>
+                        <span class="text-[10px] text-amber-300 font-bold hidden sm:inline">(${energyScore}%)</span>
+                    </button>
+                `;
+            }).join('');
+        }
+
+        // 카테고리 필터링
+        function filterDreamCategory(cat) {
+            currentDreamCategory = cat;
+            document.querySelectorAll('.dream-cat-btn').forEach(btn => {
+                btn.className = 'dream-cat-btn px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-slate-300 transition';
+            });
+            const activeBtn = document.getElementById(`dreamCat-${cat}`);
+            if (activeBtn) {
+                activeBtn.className = 'dream-cat-btn px-3 py-1 rounded-full bg-white/30 text-white font-bold transition shadow-sm';
+            }
+            renderDailyDreamUI();
+        }
+
+        // 빠른 꿈 선택 (칩 클릭 시)
+        function quickDreamSelect(dreamId) {
+            const item = dreamDatabase.find(d => d.id === dreamId);
+            if (item) {
+                const input = document.getElementById('dreamInput');
+                if (input) input.value = item.name;
+                displayDreamResultCard(item);
+            }
+        }
+
+        // 검색창 실행
         function searchDreamNumber() {
             const input = document.getElementById('dreamInput');
-            const resultBox = document.getElementById('dreamResult');
-            if (!input || !resultBox) return;
-
+            if (!input) return;
             const val = input.value.trim();
             if (!val) {
-                alert('꿈 키워드를 입력해주세요.');
+                alert('어젯밤 꾸신 꿈의 키워드를 입력해 주세요 (예: 돼지, 똥, 불, 호랑이 등)');
+                input.focus();
                 return;
             }
 
-            let matchedKey = null;
-            for (let key in dreamData) {
-                if (val.includes(key)) {
-                    matchedKey = key;
-                    break;
-                }
+            // 키워드 매칭
+            let matched = dreamDatabase.find(d => {
+                if (val.includes(d.name) || d.name.includes(val)) return true;
+                return d.keywords.some(k => val.includes(k) || k.includes(val));
+            });
+
+            if (matched) {
+                displayDreamResultCard(matched);
+            } else {
+                // 매칭되지 않는 일반 키워드도 일일 시드로 즉석 해몽 산출
+                displayCustomDreamResult(val);
             }
+        }
+
+        // 해몽 상세 결과 카드 렌더링
+        function displayDreamResultCard(item) {
+            const resultBox = document.getElementById('dreamResult');
+            if (!resultBox) return;
+
+            const { energyScore, numbers } = getDailyCalculatedDream(item);
+            const { displayStr } = getDailySeedInfo();
 
             resultBox.classList.remove('hidden');
-            if (matchedKey) {
-                const item = dreamData[matchedKey];
-                resultBox.innerHTML = `
+            resultBox.innerHTML = `
+                <div class="space-y-4">
+                    <!-- 상단 헤더: 꿈 이름 및 오늘의 길몽 등급 -->
+                    <div class="flex flex-wrap items-center justify-between gap-2 border-b border-indigo-800/80 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl">${item.icon}</span>
+                            <span class="text-base sm:text-lg font-black text-amber-300">‘${item.name}’ 정통 꿈해몽</span>
+                            <span class="text-[11px] font-bold bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full shadow-sm">${item.grade}</span>
+                        </div>
+                        <div class="text-[11px] text-purple-200 bg-purple-900/60 border border-purple-700/50 px-2.5 py-1 rounded-xl">
+                            오늘의 기운 지수: <strong class="text-amber-300 text-xs">${energyScore}%</strong>
+                        </div>
+                    </div>
+
+                    <!-- 해몽 상세 본문 -->
+                    <div class="bg-indigo-950/70 border border-indigo-800/60 rounded-2xl p-4 text-xs sm:text-sm text-indigo-100 leading-relaxed space-y-1.5 shadow-inner">
+                        <div class="text-[11px] font-bold text-amber-300 flex items-center space-x-1">
+                            <i class="fa-solid fa-scroll"></i>
+                            <span>민간 전승 비전(秘傳) 해몽 풀이</span>
+                        </div>
+                        <p>${item.meaning}</p>
+                    </div>
+
+                    <!-- 오늘의 상징 행운수 볼 렌더링 -->
                     <div class="space-y-2">
-                        <div class="flex items-center justify-between border-b border-slate-700 pb-2">
-                            <span class="text-xs font-bold text-amber-300">‘${matchedKey}’ 꿈 연관 행운 번호</span>
-                            <span class="text-[10px] text-slate-400">민간 해몽 DB 매핑</span>
+                        <div class="flex items-center justify-between text-xs text-slate-300">
+                            <span class="font-bold flex items-center space-x-1">
+                                <i class="fa-solid fa-wand-magic-sparkles text-amber-400"></i>
+                                <span>오늘(${displayStr})의 상징 행운 번호</span>
+                            </span>
+                            <span class="text-[10px] text-indigo-300">정통 민간 매핑</span>
                         </div>
-                        <div class="flex items-center space-x-2 py-1">
-                            ${item.numbers.map(n => `<span class="ball ${getBallClass(n)}">${n}</span>`).join('')}
+                        <div class="flex flex-wrap items-center gap-2 py-1">
+                            ${numbers.map(n => `<span class="ball ${getBallClass(n)} shadow-lg">${n}</span>`).join('')}
                         </div>
-                        <p class="text-xs text-slate-300 mt-1">${item.meaning}</p>
                     </div>
-                `;
-            } else {
-                resultBox.innerHTML = `
-                    <div class="text-xs text-slate-300 space-y-1">
-                        <p class="font-bold text-amber-300">‘${val}’에 대한 고유 매핑 결과 안내</p>
-                        <p>해당 키워드는 현재 추가 수집 중인 해몽 항목입니다. 추천 행운 번호: <strong>7, 14, 21, 35</strong> (엔터테인먼트 참고용)</p>
+
+                    <!-- 액션 버튼: AI 스마트 조합기에 고정수로 원클릭 연동 -->
+                    <div class="pt-2 border-t border-indigo-800/80 flex flex-col sm:flex-row items-center gap-2">
+                        <button onclick="applyDreamNumbersToGenerator([${numbers.join(',')}])"
+                            class="w-full sm:flex-1 py-2.5 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black rounded-xl text-xs sm:text-sm transition shadow-lg flex items-center justify-center space-x-1.5 transform hover:scale-[1.02]">
+                            <i class="fa-solid fa-bolt text-xs"></i>
+                            <span>이 행운 번호로 AI 스마트 조합 생성하기</span>
+                        </button>
+                        <button onclick="document.getElementById('dreamResult').classList.add('hidden')"
+                            class="w-full sm:w-auto py-2.5 px-4 bg-white/10 hover:bg-white/20 text-slate-300 font-semibold rounded-xl text-xs transition">
+                            닫기
+                        </button>
                     </div>
-                `;
+                </div>
+            `;
+
+            // 부드럽게 결과창으로 시선 이동
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // 데이터베이스 외 사용자 자유 입력 키워드 대응
+        function displayCustomDreamResult(keyword) {
+            const resultBox = document.getElementById('dreamResult');
+            if (!resultBox) return;
+
+            const { seed, displayStr } = getDailySeedInfo();
+            let hash = 0;
+            for (let i = 0; i < keyword.length; i++) {
+                hash = (hash * 37 + keyword.charCodeAt(i)) % 10007;
             }
+            const energyScore = 90 + ((seed + hash) % 10);
+            
+            // 시드 기반 4개 번호 산출
+            const genNums = [];
+            let step = 1;
+            while (genNums.length < 4) {
+                const n = ((seed * step + hash * 17) % 45) + 1;
+                if (!genNums.includes(n)) genNums.push(n);
+                step++;
+            }
+            genNums.sort((a, b) => a - b);
+
+            resultBox.classList.remove('hidden');
+            resultBox.innerHTML = `
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between border-b border-indigo-800/80 pb-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-2xl">✨</span>
+                            <span class="text-base sm:text-lg font-black text-amber-300">‘${keyword}’ 맞춤 꿈해몽 분석</span>
+                            <span class="text-[11px] font-bold bg-indigo-500 text-white px-2.5 py-0.5 rounded-full">길몽 탐색</span>
+                        </div>
+                        <div class="text-[11px] text-purple-200">오늘의 기운: <strong class="text-amber-300">${energyScore}%</strong></div>
+                    </div>
+                    <div class="bg-indigo-950/70 border border-indigo-800/60 rounded-2xl p-4 text-xs sm:text-sm text-indigo-100 leading-relaxed shadow-inner">
+                        <p>‘<strong>${keyword}</strong>’(은)는 마음속 간절한 소망과 새로운 가능성을 상징하는 상서로운 심리적 징조입니다. 오늘 하루 긍정적인 마음가짐으로 임하시면 뜻밖의 행운과 좋은 기회를 마주하게 될 것입니다.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="text-xs text-slate-300 font-bold">오늘(${displayStr}) ‘${keyword}’의 일일 상징수</div>
+                        <div class="flex items-center space-x-2 py-1">
+                            ${genNums.map(n => `<span class="ball ${getBallClass(n)}">${n}</span>`).join('')}
+                        </div>
+                    </div>
+                    <div class="pt-2 border-t border-indigo-800/80 flex gap-2">
+                        <button onclick="applyDreamNumbersToGenerator([${genNums.join(',')}])"
+                            class="flex-1 py-2.5 px-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-950 font-black rounded-xl text-xs transition shadow-lg flex items-center justify-center space-x-1.5">
+                            <i class="fa-solid fa-bolt"></i>
+                            <span>이 행운 번호로 AI 조합 생성하기</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+            resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // 꿈의 상징 번호를 AI 스마트 조합기에 고정수로 자동 반영하고 이동
+        function applyDreamNumbersToGenerator(numbers) {
+            if (!numbers || numbers.length === 0) return;
+
+            // 고정수 최대 3개까지 자동 등록
+            fixedNumbers.clear();
+            const pickCount = Math.min(3, numbers.length);
+            for (let i = 0; i < pickCount; i++) {
+                excludeNumbers.delete(numbers[i]);
+                fixedNumbers.add(numbers[i]);
+            }
+            updateNumberUI();
+
+            // 조합기 섹션으로 스크롤 이동
+            const genSection = document.getElementById('generator');
+            if (genSection) {
+                genSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // 고정 모드로 설정
+            setMode('fixed');
+
+            // 토스트 알림
+            alert(`🌙 꿈의 행운 번호 [${Array.from(fixedNumbers).join(', ')}]가 AI 스마트 조합기의 고정수로 자동 채택되었습니다!\n\n이제 아래 'AI 스마트 조합 생성' 버튼을 눌러 번호를 확인해 보세요.`);
         }
 
         // --- (F) 모달 제어 함수 ---
@@ -3173,6 +3413,7 @@
             updateAuthHeader();
             initLottoHistoryViewer();
             renderFrequencyStats(); // 동행복권 벤치마킹 번호별 출현빈도 초기 렌더링
+            renderDailyDreamUI();   // 매일 변동되는 꿈해몽 랭킹 및 일일 기운 초기 렌더링
         });
     </script>
 </body>
