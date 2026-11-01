@@ -141,25 +141,34 @@
 
 <body class="bg-slate-50 text-slate-800">
 
+    <!-- 비사행성·무료 오락 시뮬레이션 공식 선언 배너 (구글 애드센스 정책 준수) -->
+    <div class="bg-slate-900 text-slate-300 text-[11px] sm:text-xs py-2 px-4 text-center border-b border-slate-800 flex items-center justify-center space-x-2">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400 flex-shrink-0"></span>
+        <span>본 사이트는 동행복권 공식 데이터에 기반한 <strong>100% 무료 통계·시뮬레이션 연구 도구</strong>이며, 유료 번호 리딩이나 복권 대리 구매를 절대 하지 않습니다.</span>
+    </div>
+
     <!-- 1. GNB 헤더 -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-3">
+            <a href="/" class="flex items-center space-x-3">
                 <div
-                    class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg">
+                    class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm">
                     <i class="fa-solid fa-chart-line"></i>
                 </div>
                 <span class="text-xl font-extrabold text-slate-900 tracking-tight">KMS 로또 랩</span>
                 <span
-                    class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-semibold border border-indigo-200">Data
-                    Analytics</span>
-            </div>
+                    class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded font-semibold border border-indigo-200">loddo.co</span>
+            </a>
             <nav class="hidden md:flex space-x-6 font-medium text-sm text-slate-600">
                 <a href="#generator" class="text-indigo-600 font-bold hover:text-indigo-700 transition">AI 스마트 조합기</a>
                 <a href="#stats" class="hover:text-indigo-600 transition">데이터 통계</a>
-                <a href="#dream" class="hover:text-indigo-600 transition">꿈해몽 매핑</a>
+                <a href="#articles" class="text-amber-700 font-bold hover:text-amber-800 transition flex items-center space-x-1">
+                    <i class="fa-solid fa-book-open text-xs"></i>
+                    <span>빅데이터 칼럼</span>
+                </a>
                 <a href="#places" class="hover:text-indigo-600 transition">전국 10대 명당</a>
-                <a href="#pricing" class="hover:text-indigo-600 transition">멤버십 안내</a>
+                <a href="/about.html" class="hover:text-indigo-600 transition">소개</a>
+                <a href="/contact.html" class="hover:text-indigo-600 transition">문의</a>
             </nav>
 
             <!-- 로그인 및 사용자 상태 영역 -->
@@ -965,22 +974,166 @@
         </div>
     </section>
 
-    <!-- 8. 푸터 & 법적 고지 -->
-    <footer class="bg-white border-t border-slate-200 py-10 px-4 text-xs text-slate-500">
-        <div class="max-w-7xl mx-auto space-y-4 text-center">
-            <div class="flex flex-wrap justify-center gap-4 sm:gap-8 font-medium text-slate-600">
-                <button onclick="openPolicyModal('terms')"
-                    class="hover:text-indigo-600 transition underline-offset-4 hover:underline">이용약관</button>
-                <button onclick="openPolicyModal('privacy')"
-                    class="hover:text-indigo-600 transition underline-offset-4 hover:underline">개인정보처리방침</button>
-                <button onclick="openPolicyModal('responsible')"
-                    class="hover:text-indigo-600 transition underline-offset-4 hover:underline">책임있는 복권 이용 가이드</button>
+    <!-- 7-1. 로또 빅데이터 인사이트 & 전문 칼럼 아카이브 (구글 애드센스 가치 있는 콘텐츠 구축) -->
+    <section id="articles" class="py-16 bg-gradient-to-b from-slate-50 to-white px-4 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto space-y-8">
+            <div class="text-center max-w-3xl mx-auto space-y-2">
+                <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">BigData Insights</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">로또 빅데이터 인사이트 & 상식 가이드</h2>
+                <p class="text-sm text-slate-500">
+                    단순한 번호 생성을 넘어, 수학적 확률 구조와 세무 상식, 건전한 복권 문화를 과학적으로 탐구합니다.
+                </p>
             </div>
-            <p class="max-w-3xl mx-auto leading-relaxed">
-                <strong>법적 고지:</strong> 본 서비스에서 제공하는 통계 및 분석 데이터는 과거 당첨 이력에 근거한 참고 정보이며 당첨을 보장하지 않습니다. 복권은 독립 시행 원칙에 따른
-                완전 무작위 게임입니다. 과도한 몰입은 삶을 해칠 수 있으며, 19세 미만 청소년은 구매할 수 없습니다.
-            </p>
-            <p>© 2026 KMS 로또 빅데이터 랩. All rights reserved.</p>
+
+            <!-- 아티클 그리드 6편 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- 아티클 1 -->
+                <a href="/articles/tax-guide.html" class="group bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="bg-indigo-50 text-indigo-700 font-bold px-2.5 py-1 rounded-md">세무 & 금융 가이드</span>
+                            <span class="text-slate-400">4분 소요</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 group-hover:text-indigo-600 transition text-base leading-snug">
+                            로또 1등 당첨금 수령 절차 및 세금(소득세·주민세) 완벽 계산법
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                            NH농협은행 본점 방문 준비물부터 3억 원 이하 22%, 3억 원 초과 33% 원천징수 세율 공식과 실제 내 통장에 입금되는 실수령액을 상세 계산해 드립니다.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition">
+                        <span>자세히 읽기</span>
+                        <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                    </div>
+                </a>
+
+                <!-- 아티클 2 -->
+                <a href="/articles/probability-theory.html" class="group bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="bg-amber-50 text-amber-700 font-bold px-2.5 py-1 rounded-md">수학 & 확률론</span>
+                            <span class="text-slate-400">5분 소요</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 group-hover:text-indigo-600 transition text-base leading-snug">
+                            역대 최다 빈출 번호의 통계적 의미와 확률론적 고찰
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                            8,145,060분의 1의 조합론적 구조, 각 회차는 이전 결과와 무관하다는 독립 시행(Independent Trials)의 원리와 도박사의 오류를 심층 해설합니다.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition">
+                        <span>자세히 읽기</span>
+                        <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                    </div>
+                </a>
+
+                <!-- 아티클 3 -->
+                <a href="/articles/famous-stores-history.html" class="group bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="bg-emerald-50 text-emerald-700 font-bold px-2.5 py-1 rounded-md">문화 & 명당 분석</span>
+                            <span class="text-slate-400">4분 소요</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 group-hover:text-indigo-600 transition text-base leading-snug">
+                            전국 로또 명당 판매점의 역사와 판매량 비례의 통계학적 진실
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                            서울 노원 스파, 부산 부일카서비스 등 수십 번의 1등을 배출한 명당의 탄생 배경과 판매량이 많아서 당첨자가 많이 나오는 포아송 분포 원리를 짚어봅니다.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition">
+                        <span>자세히 읽기</span>
+                        <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                    </div>
+                </a>
+
+                <!-- 아티클 4 -->
+                <a href="/articles/lottery-fund-public.html" class="group bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="bg-blue-50 text-blue-700 font-bold px-2.5 py-1 rounded-md">복권기금 & 사회공헌</span>
+                            <span class="text-slate-400">4분 소요</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 group-hover:text-indigo-600 transition text-base leading-snug">
+                            우리가 구매한 로또 1,000원은 어디로 갈까? 복권기금 공익사업 구조
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                            복권 1,000원 중 약 410원이 적립되는 복권기금의 배분 원리와 저소득층 주거안정, 장학사업, 문화유산 보존 등 사회 소외계층을 돕는 따뜻한 가치를 소개합니다.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition">
+                        <span>자세히 읽기</span>
+                        <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                    </div>
+                </a>
+
+                <!-- 아티클 5 -->
+                <a href="/articles/auto-vs-manual-stats.html" class="group bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="bg-purple-50 text-purple-700 font-bold px-2.5 py-1 rounded-md">구매 통계 비교</span>
+                            <span class="text-slate-400">4분 소요</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 group-hover:text-indigo-600 transition text-base leading-snug">
+                            자동 vs 반자동 vs 수동 당첨 비율 통계: 과연 어느 쪽이 유리할까?
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                            역대 1등 당첨자의 자동(약 70%)과 수동(약 30%) 점유율 통계와 실제 판매 점유율의 일치성, 수동 번호 조합 시 주의할 점을 분석합니다.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition">
+                        <span>자세히 읽기</span>
+                        <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                    </div>
+                </a>
+
+                <!-- 아티클 6 -->
+                <a href="/articles/paper-preservation.html" class="group bg-white rounded-2xl p-6 border border-slate-200 shadow-sm hover:shadow-md hover:border-indigo-300 transition flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="bg-rose-50 text-rose-700 font-bold px-2.5 py-1 rounded-md">보관 & 상식</span>
+                            <span class="text-slate-400">4분 소요</span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 group-hover:text-indigo-600 transition text-base leading-snug">
+                            로또 복권 용지 보관법과 당첨금 지급 청구 유효기간 1년 안내
+                        </h3>
+                        <p class="text-xs text-slate-500 leading-relaxed line-clamp-3">
+                            열과 자외선에 약한 감열지 특성, 세탁기나 오염으로 훼손 시 지급 판정 기준, 매년 500억 원씩 소멸하는 미수령 당첨금의 귀속 규정을 알아봅니다.
+                        </p>
+                    </div>
+                    <div class="pt-4 mt-4 border-t border-slate-100 flex items-center text-xs font-bold text-indigo-600 group-hover:translate-x-1 transition">
+                        <span>자세히 읽기</span>
+                        <i class="fa-solid fa-arrow-right ml-1.5 text-[10px]"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. 푸터 & 법적 고지 (구글 애드센스 필수 법적 페이지 링크 완비) -->
+    <footer class="bg-white border-t border-slate-200 py-12 px-4 text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto space-y-6 text-center">
+            <!-- 필수 법적 고정 링크 (구글 크롤러가 직접 읽을 수 있는 독립 URL) -->
+            <div class="flex flex-wrap justify-center gap-4 sm:gap-8 font-semibold text-slate-700 text-xs sm:text-sm">
+                <a href="/about.html" class="hover:text-indigo-600 transition">서비스 소개 (About Us)</a>
+                <a href="/terms.html" class="hover:text-indigo-600 transition">이용약관 및 면책조항 (Terms)</a>
+                <a href="/privacy.html" class="hover:text-indigo-600 transition">개인정보처리방침 (Privacy Policy)</a>
+                <a href="/contact.html" class="hover:text-indigo-600 transition">문의하기 (Contact)</a>
+            </div>
+
+            <div class="max-w-3xl mx-auto space-y-2 text-slate-500 text-[11px] sm:text-xs leading-relaxed bg-slate-50 p-5 rounded-2xl border border-slate-200 text-left sm:text-center">
+                <p>
+                    <strong>법적 면책 고지 (Legal Disclaimer):</strong> 본 웹사이트(KMS 로또 빅데이터 랩, loddo.co)에서 제공하는 모든 통계 분석, 스마트 AI 조합 및 꿈해몽 데이터는 순수 오락 및 데이터 통계 연구 목적으로만 제공되며, <strong>실제 로또 복권의 당첨을 보장하지 않습니다.</strong> 복권은 완전 무작위 독립 시행 게임입니다.
+                </p>
+                <p>
+                    <strong>비사행성 정책:</strong> 본 사이트는 유료 번호 리딩, 대리 구매, 현금 베팅을 일절 지원하지 않으며 100% 무료로 서비스됩니다. 만 19세 미만 청소년은 복권을 구매할 수 없습니다.
+                </p>
+            </div>
+
+            <div class="text-slate-400 space-y-1">
+                <p>운영자 공식 문의: <a href="mailto:contact@loddo.co" class="text-indigo-600 hover:underline font-semibold">contact@loddo.co</a> | 웹사이트: https://loddo.co</p>
+                <p>© 2026 KMS 로또 빅데이터 랩 (loddo.co). All rights reserved.</p>
+            </div>
         </div>
     </footer>
 
