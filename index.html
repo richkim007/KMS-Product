@@ -106,12 +106,17 @@
                 <a href="#places" class="hover:text-indigo-600 transition">전국 10대 명당</a>
                 <a href="#pricing" class="hover:text-indigo-600 transition">멤버십 안내</a>
             </nav>
-            <div class="flex items-center space-x-3">
+
+            <!-- 로그인 및 사용자 상태 영역 -->
+            <div class="flex items-center space-x-2" id="headerAuthArea">
                 <button onclick="openModal('authModal')"
-                    class="text-sm font-semibold text-slate-700 hover:text-slate-900 px-3 py-1.5">로그인</button>
+                    class="text-xs sm:text-sm font-semibold text-slate-700 hover:text-indigo-600 px-3 py-1.5 transition">
+                    로그인
+                </button>
                 <a href="#generator"
-                    class="text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition shadow-sm">무료
-                    조합 생성</a>
+                    class="text-xs sm:text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg transition shadow-sm">
+                    무료 조합 생성
+                </a>
             </div>
         </div>
     </header>
@@ -122,7 +127,7 @@
             <div
                 class="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 px-3.5 py-1 rounded-full text-xs font-semibold text-indigo-200">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>초기 서비스 전면 무료 운영 중</span>
+                <span>초기 서비스 전면 무료 운영 중 · 소셜 계정 데이터 연동</span>
             </div>
             <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
                 빅데이터 통계 알고리즘 기반<br class="hidden sm:inline">
@@ -131,7 +136,7 @@
                 </span>
             </h1>
             <p class="text-sm md:text-base text-indigo-200/80 max-w-2xl mx-auto font-normal">
-                역대 1회부터 최신 회차까지 전수 당첨 데이터를 과학적으로 분석하여 합계 구간, 연속수 배제, 홀짝 비율을 최적화한 스마트 조합을 무료로 제공합니다.
+                구글, 네이버, 카카오 계정으로 간편 로그인하고, 생성된 최적 조합과 개인 맞춤 통계 데이터를 내 계정에 안전하게 누적 보관하세요.
             </p>
         </div>
     </section>
@@ -176,7 +181,7 @@
             <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">Interactive AI Engine</span>
             <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">스마트 AI 번호 조합 및 필터링</h2>
             <p class="text-sm text-slate-500 mt-2">
-                원하는 고정수와 제외수를 설정하고, 통계 황금비율 필터를 적용하여 최적화된 조합을 무료로 생성해보세요.
+                고정수와 제외수를 설정하여 최적화된 조합을 무료로 생성하고, 마음에 드는 조합은 내 계정 데이터로 바로 저장하세요.
             </p>
         </div>
 
@@ -251,18 +256,23 @@
             <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between min-h-[520px]">
                 <div>
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
-                        <h3 class="text-sm font-bold text-slate-900">
-                            <i class="fa-solid fa-square-poll-vertical text-indigo-600 mr-1.5"></i>AI 스마트 최적 생성 결과
+                        <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                            <i class="fa-solid fa-square-poll-vertical text-indigo-600"></i>
+                            <span>AI 스마트 최적 생성 결과</span>
                         </h3>
-                        <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                            초기 무료 제공
-                        </span>
+                        <div class="flex items-center space-x-2">
+                            <span id="userStatusIndicator" class="text-xs text-slate-400 font-medium">비로그인 상태</span>
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                초기 무료 제공
+                            </span>
+                        </div>
                     </div>
 
                     <div id="resultsContainer" class="space-y-3">
                         <div class="text-center py-16 text-slate-400">
                             <i class="fa-solid fa-arrows-spin text-3xl mb-2 text-slate-300"></i>
                             <p class="text-xs">좌측에서 조건을 설정한 후 <strong>[AI 5개 최적 조합 무료 생성]</strong>을 클릭하세요.</p>
+                            <p class="text-[11px] text-slate-400 mt-1">로그인하시면 생성된 조합이 내 계정 데이터로 자동 누적 저장됩니다.</p>
                         </div>
                     </div>
                 </div>
@@ -322,7 +332,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="storeContainer"></div>
     </section>
 
-    <!-- 7. 멤버십 요금제 운영 정책 안내 -->
+    <!-- 7. 멤버십 요금제 운영 정책 안내 (FREE & PRO) -->
     <section id="pricing" class="bg-slate-100 py-16 border-t border-slate-200">
         <div class="max-w-4xl mx-auto px-4 text-center">
             <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">Membership Roadmap</span>
@@ -347,6 +357,7 @@
                         <p class="text-[11px] text-slate-500 mt-1">누구나 별도 결제 없이 자유롭게 이용 가능합니다.</p>
                         <ul class="text-xs text-slate-600 space-y-2.5 mt-5">
                             <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>AI 5개 최적 조합 무제한 무료 생성</li>
+                            <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>구글/네이버/카카오 연동 및 데이터 누적</li>
                             <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>핫/콜드 번호 및 홀짝 통계 열람</li>
                             <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>꿈 키워드 번호 변환기 무료 이용</li>
                             <li><i class="fa-solid fa-check text-emerald-500 mr-1.5"></i>전국 10대 명당 판매점 팩트체크 조회</li>
@@ -405,48 +416,151 @@
         </div>
     </footer>
 
-    <!-- ================= [모달 1: 회원가입 / 로그인] ================= -->
+    <!-- ================= [모달 1: 구글 / 네이버 / 카카오 소셜 로그인] ================= -->
     <div id="authModal"
         class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-2xl relative space-y-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl relative space-y-5 animate-in fade-in zoom-in-95 duration-150">
             <button onclick="closeModal('authModal')"
                 class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-            <div class="text-center">
+            <div class="text-center pt-2">
                 <div
-                    class="w-10 h-10 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center mx-auto text-lg mb-2">
-                    <i class="fa-solid fa-user-lock"></i>
+                    class="w-12 h-12 bg-indigo-50 border border-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mx-auto text-xl mb-3 shadow-inner">
+                    <i class="fa-solid fa-database"></i>
                 </div>
-                <h3 class="text-lg font-bold text-slate-900">KMS 로또 랩 시작하기</h3>
-                <p class="text-xs text-slate-500 mt-1">현재 초기 무료 운영 기간으로 간편하게 시작할 수 있습니다.</p>
+                <h3 class="text-lg font-bold text-slate-900">소셜 간편 로그인</h3>
+                <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+                    로그인하시면 <strong>생성한 조합 이력과 보관함 데이터</strong>가<br>계정에 안전하게 자동 누적됩니다.
+                </p>
             </div>
-            <div class="space-y-2">
-                <button onclick="handleLoginSuccess('카카오')"
-                    class="w-full py-2.5 px-4 bg-[#FEE500] hover:bg-[#FDD835] text-[#191919] font-bold rounded-xl text-xs flex items-center justify-center space-x-2 transition shadow-sm">
-                    <i class="fa-solid fa-comment"></i>
-                    <span>카카오 1초 로그인</span>
+
+            <!-- 소셜 3대장 로그인 버튼 -->
+            <div class="space-y-2.5">
+                <!-- 1. 카카오 로그인 -->
+                <button onclick="handleSocialLogin('카카오')"
+                    class="w-full py-2.5 px-4 bg-[#FEE500] hover:bg-[#FDD835] text-[#191919] font-bold rounded-xl text-xs flex items-center justify-center space-x-2.5 transition shadow-sm border border-amber-300/40">
+                    <i class="fa-solid fa-comment text-sm"></i>
+                    <span>카카오톡으로 1초 로그인</span>
+                </button>
+
+                <!-- 2. 네이버 로그인 -->
+                <button onclick="handleSocialLogin('네이버')"
+                    class="w-full py-2.5 px-4 bg-[#03C75A] hover:bg-[#02b351] text-white font-bold rounded-xl text-xs flex items-center justify-center space-x-2.5 transition shadow-sm">
+                    <span class="font-black text-sm tracking-tighter">N</span>
+                    <span>네이버 아이디로 로그인</span>
+                </button>
+
+                <!-- 3. 구글 로그인 -->
+                <button onclick="handleSocialLogin('구글')"
+                    class="w-full py-2.5 px-4 bg-white hover:bg-slate-50 text-slate-700 font-bold rounded-xl text-xs flex items-center justify-center space-x-2.5 transition shadow-sm border border-slate-300">
+                    <svg class="w-4 h-4" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.66v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.15z"/>
+                        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.33 24 12 24z"/>
+                        <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 10.03 0 12s.45 3.82 1.25 5.42l4.03-3.15z"/>
+                        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                    </svg>
+                    <span>Google 계정으로 로그인</span>
                 </button>
             </div>
+
             <div class="relative flex py-1 items-center">
                 <div class="flex-grow border-t border-slate-200"></div>
-                <span class="flex-shrink mx-3 text-slate-400 text-[10px]">또는 이메일</span>
+                <span class="flex-shrink mx-3 text-slate-400 text-[10px]">또는 닉네임 간편 시작</span>
                 <div class="flex-grow border-t border-slate-200"></div>
             </div>
+
             <div class="space-y-2">
-                <input type="email" placeholder="이메일 주소 입력"
+                <input type="text" id="customGuestName" placeholder="원하는 닉네임 입력 (예: 로또1등예정자)"
                     class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
-                <input type="password" placeholder="비밀번호"
-                    class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg outline-none focus:border-indigo-600">
+                <button onclick="handleGuestLogin()"
+                    class="w-full py-2.5 bg-slate-800 hover:bg-slate-900 text-white font-bold rounded-xl text-xs transition shadow">
+                    닉네임으로 바로 시작
+                </button>
             </div>
-            <button onclick="handleLoginSuccess('이메일')"
-                class="w-full py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs transition shadow">
-                로그인 / 무료 시작
-            </button>
+
+            <p class="text-[11px] text-slate-400 text-center">
+                로그인 정보는 사용자 본인의 브라우저 데이터베이스에 안전하게 연결됩니다.
+            </p>
         </div>
     </div>
 
-    <!-- ================= [모달 2: 향후 멤버십 운영 계획 안내 모달] ================= -->
+    <!-- ================= [모달 2: 내 데이터 보관함 & 생성 히스토리] ================= -->
+    <div id="userDataModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-xl rounded-3xl p-6 shadow-2xl relative max-h-[90vh] flex flex-col animate-in fade-in zoom-in-95 duration-150">
+            <button onclick="closeModal('userDataModal')"
+                class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- 상단 유저 요약 정보 -->
+            <div class="flex items-center space-x-3 pb-4 border-b border-slate-100">
+                <div id="userAvatarIcon" class="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-inner">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <h3 class="text-base font-extrabold text-slate-900" id="userDisplayName">사용자</h3>
+                        <span id="userProviderBadge" class="text-[10px] font-bold px-2 py-0.5 rounded-full">카카오</span>
+                    </div>
+                    <div class="text-xs text-slate-400 mt-0.5" id="userAccountInfo">가입일시: 2026-11-01</div>
+                </div>
+            </div>
+
+            <!-- 통계 요약 카드 3종 -->
+            <div class="grid grid-cols-3 gap-2.5 my-4 text-center">
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    <div class="text-[10px] text-slate-400 font-semibold">보관한 조합</div>
+                    <div class="text-lg font-black text-indigo-600 mt-0.5" id="savedCountStat">0</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    <div class="text-[10px] text-slate-400 font-semibold">총 생성 횟수</div>
+                    <div class="text-lg font-black text-emerald-600 mt-0.5" id="genCountStat">0</div>
+                </div>
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                    <div class="text-[10px] text-slate-400 font-semibold">연동 상태</div>
+                    <div class="text-xs font-bold text-slate-700 mt-1.5 flex items-center justify-center space-x-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        <span>실시간 저장</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 탭 전환 버튼 -->
+            <div class="flex border-b border-slate-200 text-xs font-bold">
+                <button id="tabSavedBtn" onclick="switchDataTab('saved')"
+                    class="py-2 px-4 border-b-2 border-indigo-600 text-indigo-600 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-star text-amber-400"></i>
+                    <span>내가 보관한 번호 (<span id="tabSavedCount">0</span>)</span>
+                </button>
+                <button id="tabHistoryBtn" onclick="switchDataTab('history')"
+                    class="py-2 px-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                    <span>생성 히스토리 (<span id="tabHistoryCount">0</span>)</span>
+                </button>
+            </div>
+
+            <!-- 탭 컨텐츠 영역 -->
+            <div class="flex-1 overflow-y-auto py-4 space-y-3 pr-1 text-xs" id="dataTabContent">
+                <!-- 동적으로 채워짐 -->
+            </div>
+
+            <!-- 하단 데이터 관리 버튼들 -->
+            <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <button onclick="exportUserData()"
+                    class="text-slate-500 hover:text-indigo-600 font-semibold flex items-center space-x-1">
+                    <i class="fa-solid fa-download"></i> <span>내 데이터 텍스트로 저장</span>
+                </button>
+                <button onclick="handleLogout()"
+                    class="text-rose-500 hover:text-rose-700 font-semibold flex items-center space-x-1">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>로그아웃</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= [모달 3: 향후 멤버십 운영 계획 안내 모달] ================= -->
     <div id="payModal"
         class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-2xl p-6 shadow-2xl relative space-y-4">
@@ -674,6 +788,8 @@
             return fallback.sort((a, b) => a - b);
         }
 
+        let latestGeneratedCombinations = [];
+
         function generateCombinations() {
             const container = document.getElementById('resultsContainer');
             if (!container) return;
@@ -682,11 +798,16 @@
             for (let i = 0; i < 5; i++) {
                 combinations.push(generateSingleCombination());
             }
+            latestGeneratedCombinations = combinations;
+
+            // 계정에 데이터 자동 쌓기 (히스토리 누적)
+            saveGenerationHistory(combinations);
 
             container.innerHTML = combinations.map((combo, idx) => {
                 const sum = combo.reduce((a, b) => a + b, 0);
                 const oddCount = combo.filter(n => n % 2 !== 0).length;
                 const evenCount = 6 - oddCount;
+                const comboStr = combo.join(',');
 
                 return `
                     <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm hover:border-indigo-300 transition">
@@ -698,16 +819,393 @@
                                 ${combo.map(n => `<span class="ball ${getBallClass(n)}">${n}</span>`).join('')}
                             </div>
                         </div>
-                        <div class="flex items-center space-x-3 text-xs text-slate-500">
-                            <span>합계: <strong class="text-slate-800">${sum}</strong></span>
-                            <span>홀짝: <strong class="text-slate-800">${oddCount}:${evenCount}</strong></span>
+                        <div class="flex items-center space-x-3 text-xs">
+                            <span class="text-slate-500">합계: <strong class="text-slate-800">${sum}</strong></span>
+                            <span class="text-slate-500">홀짝: <strong class="text-slate-800">${oddCount}:${evenCount}</strong></span>
+                            <button onclick="saveCombinationBookmark('${comboStr}', ${idx})"
+                                class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-200 rounded-md font-bold transition flex items-center space-x-1 shadow-2xs">
+                                <i class="fa-solid fa-star text-amber-500 text-[11px]"></i>
+                                <span>보관</span>
+                            </button>
                         </div>
                     </div>
                 `;
             }).join('');
         }
 
-        // --- (D) 꿈해몽 검색 매핑 데이터베이스 ---
+        // --- (D) 소셜 로그인 및 사용자 데이터 관리 시스템 ---
+        const USER_SESSION_KEY = 'kms_lotto_current_user';
+        const USER_DATA_PREFIX = 'kms_lotto_data_';
+
+        function getCurrentUser() {
+            try {
+                const user = localStorage.getItem(USER_SESSION_KEY);
+                return user ? JSON.parse(user) : null;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function setCurrentUser(user) {
+            if (user) {
+                localStorage.setItem(USER_SESSION_KEY, JSON.stringify(user));
+            } else {
+                localStorage.removeItem(USER_SESSION_KEY);
+            }
+            updateAuthHeader();
+        }
+
+        function getUserData(userId) {
+            try {
+                const key = USER_DATA_PREFIX + userId;
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : { savedList: [], historyList: [], totalGenerations: 0 };
+            } catch (e) {
+                return { savedList: [], historyList: [], totalGenerations: 0 };
+            }
+        }
+
+        function saveUserData(userId, data) {
+            try {
+                const key = USER_DATA_PREFIX + userId;
+                localStorage.setItem(key, JSON.stringify(data));
+            } catch (e) {
+                console.error("데이터 저장 실패", e);
+            }
+        }
+
+        // 소셜 로그인 처리 (구글 / 네이버 / 카카오)
+        function handleSocialLogin(provider) {
+            const randomId = Math.floor(100000 + Math.random() * 900000);
+            const userNames = {
+                '카카오': '카카오 회원',
+                '네이버': '네이버 회원',
+                '구글': '구글 회원'
+            };
+
+            const now = new Date();
+            const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+            const newUser = {
+                id: `${provider.toLowerCase()}_${randomId}`,
+                provider: provider,
+                name: `${userNames[provider] || provider} (${randomId.toString().slice(-4)})`,
+                loginAt: dateStr
+            };
+
+            setCurrentUser(newUser);
+            closeModal('authModal');
+            alert(`🎉 ${provider} 계정으로 로그인이 완료되었습니다!\n이제부터 생성되는 조합과 보관된 번호가 [내 데이터]에 안전하게 누적됩니다.`);
+        }
+
+        function handleGuestLogin() {
+            const input = document.getElementById('customGuestName');
+            const name = input ? input.value.trim() : '';
+            if (!name) {
+                alert('닉네임을 입력해주세요.');
+                return;
+            }
+            const randomId = Math.floor(1000 + Math.random() * 9000);
+            const now = new Date();
+            const dateStr = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+
+            const newUser = {
+                id: `guest_${randomId}`,
+                provider: '일반',
+                name: name,
+                loginAt: dateStr
+            };
+            setCurrentUser(newUser);
+            closeModal('authModal');
+            alert(`🎉 '${name}' 님 환영합니다! 내 데이터 보관함이 활성화되었습니다.`);
+        }
+
+        function handleLogout() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                setCurrentUser(null);
+                closeModal('userDataModal');
+                alert('로그아웃되었습니다.');
+            }
+        }
+
+        // 헤더 UI 업데이트
+        function updateAuthHeader() {
+            const headerArea = document.getElementById('headerAuthArea');
+            const statusIndicator = document.getElementById('userStatusIndicator');
+            const user = getCurrentUser();
+
+            if (!headerArea) return;
+
+            if (user) {
+                const data = getUserData(user.id);
+                const savedCount = data.savedList ? data.savedList.length : 0;
+
+                let providerBadgeColor = 'bg-amber-100 text-amber-800 border-amber-200';
+                if (user.provider === '네이버') providerBadgeColor = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+                if (user.provider === '구글') providerBadgeColor = 'bg-blue-100 text-blue-800 border-blue-200';
+
+                headerArea.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <button onclick="openUserDataModal()"
+                            class="flex items-center space-x-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 px-3 py-1.5 rounded-lg text-xs font-bold transition border border-slate-200">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                            <span class="max-w-[100px] truncate">${user.name}</span>
+                            <span class="bg-indigo-600 text-white text-[10px] px-1.5 py-0.2 rounded-full font-black">
+                                ${savedCount}
+                            </span>
+                        </button>
+                        <button onclick="openUserDataModal()"
+                            class="text-xs font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg transition shadow-xs flex items-center space-x-1">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <span class="hidden sm:inline">내 데이터</span>
+                        </button>
+                    </div>
+                `;
+
+                if (statusIndicator) {
+                    statusIndicator.innerHTML = `<span class="text-indigo-600 font-bold">${user.name}</span>님 계정에 자동 누적 중`;
+                }
+            } else {
+                headerArea.innerHTML = `
+                    <button onclick="openModal('authModal')"
+                        class="text-xs sm:text-sm font-semibold text-slate-700 hover:text-indigo-600 px-3 py-1.5 transition">
+                        로그인
+                    </button>
+                    <a href="#generator"
+                        class="text-xs sm:text-sm font-semibold bg-indigo-600 hover:bg-indigo-700 text-white px-3.5 py-1.5 rounded-lg transition shadow-sm">
+                        무료 조합 생성
+                    </a>
+                `;
+
+                if (statusIndicator) {
+                    statusIndicator.textContent = "비로그인 (로컬 임시)";
+                }
+            }
+        }
+
+        // 조합 생성 시 히스토리 데이터 자동 누적 함수
+        function saveGenerationHistory(combinations) {
+            const user = getCurrentUser();
+            if (!user) return; // 비로그인 시 히스토리 저장 생략
+
+            const data = getUserData(user.id);
+            if (!data.historyList) data.historyList = [];
+            data.totalGenerations = (data.totalGenerations || 0) + 1;
+
+            const now = new Date();
+            const timeStr = String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+
+            data.historyList.unshift({
+                id: Date.now(),
+                time: timeStr,
+                combinations: combinations,
+                fixed: Array.from(fixedNumbers),
+                exclude: Array.from(excludeNumbers)
+            });
+
+            // 최대 50건 보관
+            if (data.historyList.length > 50) {
+                data.historyList.pop();
+            }
+
+            saveUserData(user.id, data);
+            updateAuthHeader();
+        }
+
+        // 개별 조합 보관함 저장
+        function saveCombinationBookmark(comboStr, idx) {
+            const user = getCurrentUser();
+            if (!user) {
+                alert('조합을 내 계정 데이터로 보관하려면 먼저 로그인을 해주세요!');
+                openModal('authModal');
+                return;
+            }
+
+            const numbers = comboStr.split(',').map(Number);
+            const data = getUserData(user.id);
+            if (!data.savedList) data.savedList = [];
+
+            // 중복 체크
+            const isDuplicate = data.savedList.some(item => item.numbers.join(',') === comboStr);
+            if (isDuplicate) {
+                alert('이미 내 보관함에 저장되어 있는 번호입니다.');
+                return;
+            }
+
+            const now = new Date();
+            const dateStr = String(now.getMonth() + 1) + '월 ' + String(now.getDate()) + '일';
+
+            data.savedList.unshift({
+                id: Date.now(),
+                label: `조합 ${String.fromCharCode(65 + idx)} (${dateStr})`,
+                numbers: numbers,
+                date: dateStr
+            });
+
+            saveUserData(user.id, data);
+            updateAuthHeader();
+            alert(`⭐ 번호 [${numbers.join(', ')}]가 내 보관함에 안전하게 저장되었습니다!\n상단 [내 데이터]에서 언제든 확인하실 수 있습니다.`);
+        }
+
+        // 내 데이터 모달 열기 및 탭 렌더링
+        let currentDataTab = 'saved'; // 'saved' or 'history'
+
+        function openUserDataModal() {
+            const user = getCurrentUser();
+            if (!user) {
+                openModal('authModal');
+                return;
+            }
+
+            const data = getUserData(user.id);
+            document.getElementById('userDisplayName').textContent = user.name;
+            document.getElementById('userAccountInfo').textContent = `계정 ID: ${user.id} · 최근 접속: ${user.loginAt || '오늘'}`;
+            
+            const badge = document.getElementById('userProviderBadge');
+            badge.textContent = user.provider;
+            badge.className = `text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                user.provider === '카카오' ? 'bg-[#FEE500] text-black' :
+                user.provider === '네이버' ? 'bg-[#03C75A] text-white' :
+                user.provider === '구글' ? 'bg-blue-600 text-white' : 'bg-slate-200 text-slate-800'
+            }`;
+
+            const avatar = document.getElementById('userAvatarIcon');
+            avatar.className = `w-12 h-12 rounded-2xl flex items-center justify-center text-white text-xl font-black shadow-inner ${
+                user.provider === '카카오' ? 'bg-amber-400 text-slate-900' :
+                user.provider === '네이버' ? 'bg-emerald-500' :
+                user.provider === '구글' ? 'bg-blue-500' : 'bg-indigo-600'
+            }`;
+
+            document.getElementById('savedCountStat').textContent = data.savedList ? data.savedList.length : 0;
+            document.getElementById('genCountStat').textContent = data.totalGenerations || 0;
+            document.getElementById('tabSavedCount').textContent = data.savedList ? data.savedList.length : 0;
+            document.getElementById('tabHistoryCount').textContent = data.historyList ? data.historyList.length : 0;
+
+            switchDataTab(currentDataTab);
+            openModal('userDataModal');
+        }
+
+        function switchDataTab(tab) {
+            currentDataTab = tab;
+            const tabSavedBtn = document.getElementById('tabSavedBtn');
+            const tabHistoryBtn = document.getElementById('tabHistoryBtn');
+            const content = document.getElementById('dataTabContent');
+            const user = getCurrentUser();
+            if (!user || !content) return;
+
+            const data = getUserData(user.id);
+
+            if (tab === 'saved') {
+                tabSavedBtn.className = 'py-2 px-4 border-b-2 border-indigo-600 text-indigo-600 transition flex items-center space-x-1.5';
+                tabHistoryBtn.className = 'py-2 px-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition flex items-center space-x-1.5';
+
+                const list = data.savedList || [];
+                if (list.length === 0) {
+                    content.innerHTML = `
+                        <div class="text-center py-10 text-slate-400 space-y-2">
+                            <i class="fa-regular fa-star text-3xl text-slate-300"></i>
+                            <p>아직 보관된 번호가 없습니다.</p>
+                            <p class="text-[11px] text-slate-400">AI 조합기에서 마음에 드는 조합의 [보관] 버튼을 눌러보세요!</p>
+                        </div>
+                    `;
+                } else {
+                    content.innerHTML = list.map((item, idx) => `
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 flex items-center justify-between shadow-2xs">
+                            <div>
+                                <div class="text-[11px] text-slate-400 font-bold mb-1.5 flex items-center space-x-2">
+                                    <span>${item.label}</span>
+                                </div>
+                                <div class="flex items-center space-x-1.5">
+                                    ${item.numbers.map(n => `<span class="ball !w-7 !h-7 !text-xs ${getBallClass(n)}">${n}</span>`).join('')}
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="copyToClipboard('${item.numbers.join(', ')}')"
+                                    class="text-xs text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2 py-1 rounded font-bold">
+                                    복사
+                                </button>
+                                <button onclick="deleteSavedItem(${item.id})"
+                                    class="text-xs text-rose-500 hover:text-rose-700 bg-rose-50 px-2 py-1 rounded font-bold">
+                                    삭제
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } else {
+                tabHistoryBtn.className = 'py-2 px-4 border-b-2 border-indigo-600 text-indigo-600 transition flex items-center space-x-1.5';
+                tabSavedBtn.className = 'py-2 px-4 border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition flex items-center space-x-1.5';
+
+                const list = data.historyList || [];
+                if (list.length === 0) {
+                    content.innerHTML = `
+                        <div class="text-center py-10 text-slate-400 space-y-2">
+                            <i class="fa-solid fa-clock-rotate-left text-3xl text-slate-300"></i>
+                            <p>아직 생성된 이력이 없습니다.</p>
+                            <p class="text-[11px] text-slate-400">AI 조합기에서 조합을 생성하면 자동으로 시간순 기록됩니다.</p>
+                        </div>
+                    `;
+                } else {
+                    content.innerHTML = list.map(item => `
+                        <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                            <div class="flex items-center justify-between text-[11px] text-slate-500 border-b border-slate-200 pb-1.5">
+                                <span class="font-bold text-slate-700"><i class="fa-solid fa-clock mr-1"></i>${item.time} 생성</span>
+                                <span>고정: ${item.fixed.length > 0 ? item.fixed.join(',') : '없음'} / 제외: ${item.exclude.length > 0 ? item.exclude.join(',') : '없음'}</span>
+                            </div>
+                            <div class="space-y-1.5">
+                                ${item.combinations.map((c, i) => `
+                                    <div class="flex items-center justify-between text-xs py-0.5">
+                                        <span class="text-[11px] font-bold text-slate-400">조합 ${String.fromCharCode(65 + i)}</span>
+                                        <div class="flex items-center space-x-1">
+                                            ${c.map(n => `<span class="ball !w-6 !h-6 !text-[11px] ${getBallClass(n)}">${n}</span>`).join('')}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            }
+        }
+
+        function deleteSavedItem(itemId) {
+            const user = getCurrentUser();
+            if (!user) return;
+            const data = getUserData(user.id);
+            data.savedList = (data.savedList || []).filter(item => item.id !== itemId);
+            saveUserData(user.id, data);
+            openUserDataModal();
+            updateAuthHeader();
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert(`📋 번호 [${text}]가 클립보드에 복사되었습니다!`);
+            }).catch(() => {
+                prompt("Ctrl+C를 눌러 번호를 복사하세요:", text);
+            });
+        }
+
+        function exportUserData() {
+            const user = getCurrentUser();
+            if (!user) return;
+            const data = getUserData(user.id);
+            const content = `[KMS 로또 빅데이터 랩] ${user.name} 님의 데이터 리포트\n` +
+                `계정: ${user.id} (${user.provider})\n` +
+                `총 생성 횟수: ${data.totalGenerations || 0}회\n\n` +
+                `--- [내가 보관한 번호 (${data.savedList ? data.savedList.length : 0}개)] ---\n` +
+                (data.savedList || []).map(s => `${s.label}: ${s.numbers.join(', ')}`).join('\n');
+
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `kms_lotto_${user.id}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // --- (E) 꿈해몽 검색 매핑 데이터베이스 ---
         const dreamData = {
             "돼지": { numbers: [12, 17, 34, 45], meaning: "재물운과 횡재수를 상징하는 대표적 길몽" },
             "조상": { numbers: [1, 21, 33, 40], meaning: "은덕과 도움, 새로운 번영의 기운을 뜻하는 꿈" },
@@ -765,7 +1263,7 @@
             }
         }
 
-        // --- (E) 모달 제어 함수 ---
+        // --- (F) 모달 제어 함수 ---
         function openModal(id) {
             const el = document.getElementById(id);
             if (el) el.classList.remove('hidden');
@@ -782,15 +1280,11 @@
             openModal('payModal');
         }
 
-        function handleLoginSuccess(provider) {
-            alert(`${provider} 인증이 완료되었습니다. 현재 초기 무료 운영 기간이므로 모든 기능을 무료로 이용하실 수 있습니다.`);
-            closeModal('authModal');
-        }
-
         // 초기 바인딩 실행
         document.addEventListener('DOMContentLoaded', () => {
             initNumberGrid();
             renderStores();
+            updateAuthHeader();
         });
     </script>
 </body>
