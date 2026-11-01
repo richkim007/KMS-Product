@@ -121,23 +121,101 @@
         </div>
     </header>
 
-    <!-- 2. 히어로 배너 -->
-    <section class="bg-gradient-to-b from-indigo-900 via-indigo-950 to-slate-900 text-white py-16 px-4">
-        <div class="max-w-4xl mx-auto text-center space-y-4">
-            <div
-                class="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 px-3.5 py-1 rounded-full text-xs font-semibold text-indigo-200">
-                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-                <span>초기 서비스 전면 무료 운영 중 · 소셜 계정 데이터 연동</span>
+    <!-- 2. 히어로 배너 (로또 추첨 기계 고화질 비주얼 탑재) -->
+    <section class="bg-gradient-to-b from-indigo-950 via-slate-950 to-slate-900 text-white py-12 md:py-20 px-4 relative overflow-hidden">
+        <!-- 배경 네온 조명 효과 -->
+        <div class="absolute -top-32 -left-32 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+            <!-- 좌측: 카피 및 실시간 통계 & CTA -->
+            <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                <div
+                    class="inline-flex items-center space-x-2 bg-indigo-500/20 border border-indigo-400/30 px-3.5 py-1.5 rounded-full text-xs font-semibold text-indigo-200 shadow-inner">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>초기 서비스 전면 무료 오픈 · 소셜 계정 데이터 연동</span>
+                </div>
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
+                    실제 로또 추첨 메커니즘과<br class="hidden sm:inline">
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-200 to-indigo-300">
+                        빅데이터 통계 알고리즘의 결합
+                    </span>
+                </h1>
+                <p class="text-sm md:text-base text-slate-300 max-w-xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                    프랑스 비너스(Venus) 추첨 기계의 물리적 무작위 특성과 역대 회차 전수 통계를 교차 분석하여, 가장 이상적인 황금 합계 구간과 홀짝 밸런스를 적용한 스마트 조합을 무료로 제공합니다.
+                </p>
+
+                <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-2">
+                    <a href="#generator"
+                        class="px-6 py-3.5 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 text-white font-extrabold rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center space-x-2 text-sm">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>AI 최적 5개 조합 무료 생성</span>
+                    </a>
+                    <a href="#places"
+                        class="px-5 py-3.5 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 font-bold rounded-xl transition text-sm flex items-center space-x-2">
+                        <i class="fa-solid fa-trophy text-amber-400"></i>
+                        <span>10대 명당 팩트체크 보기</span>
+                    </a>
+                </div>
+
+                <!-- 신뢰 지표 칩 -->
+                <div class="grid grid-cols-3 gap-3 pt-4 border-t border-slate-800/80 max-w-md mx-auto lg:mx-0 text-left">
+                    <div>
+                        <div class="text-[11px] text-slate-400">분석 데이터</div>
+                        <div class="text-base font-black text-amber-300">1회~최신회차</div>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-slate-400">1등 확률</div>
+                        <div class="text-base font-black text-indigo-300">1 / 8,145,060</div>
+                    </div>
+                    <div>
+                        <div class="text-[11px] text-slate-400">황금 합계 구간</div>
+                        <div class="text-base font-black text-emerald-300">130 ~ 155</div>
+                    </div>
+                </div>
             </div>
-            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight leading-tight">
-                빅데이터 통계 알고리즘 기반<br class="hidden sm:inline">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 to-indigo-300">
-                    스마트 로또 번호 분석 엔진
-                </span>
-            </h1>
-            <p class="text-sm md:text-base text-indigo-200/80 max-w-2xl mx-auto font-normal">
-                구글, 네이버, 카카오 계정으로 간편 로그인하고, 생성된 최적 조합과 개인 맞춤 통계 데이터를 내 계정에 안전하게 누적 보관하세요.
-            </p>
+
+            <!-- 우측: 로또 추첨 기계 고화질 비주얼 카드 -->
+            <div class="lg:col-span-5 relative">
+                <div class="relative mx-auto max-w-md lg:max-w-none group">
+                    <!-- 글로우 후광 효과 -->
+                    <div class="absolute -inset-1 bg-gradient-to-r from-amber-500/30 via-indigo-500/30 to-purple-500/30 rounded-3xl blur-xl opacity-75 group-hover:opacity-100 transition duration-500"></div>
+
+                    <!-- 메인 이미지 카드 -->
+                    <div class="relative bg-slate-900 border border-slate-700/80 rounded-3xl overflow-hidden shadow-2xl">
+                        <img src="images/lottery-machine.jpg" alt="로또 6/45 비너스 추첨 기계 시뮬레이션"
+                            class="w-full h-72 sm:h-80 md:h-96 object-cover object-center transform group-hover:scale-105 transition duration-700">
+
+                        <!-- 오버레이 그라데이션 및 캡션 -->
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex flex-col justify-end p-5">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <span class="bg-amber-500 text-slate-950 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center space-x-1">
+                                    <i class="fa-solid fa-satellite-dish animate-pulse"></i>
+                                    <span>LIVE SIMULATION</span>
+                                </span>
+                                <span class="text-xs text-slate-300 font-bold">비너스(Venus) 추첨 방식 시각화</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-snug">
+                                공기 유동에 의해 무작위 회전하는 45개 로또볼의 물리적 추첨 메커니즘을 빅데이터 엔진에 매핑합니다.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 플로팅 볼 뱃지 (좌측 상단) -->
+                    <div class="absolute -top-3 -left-3 bg-white/95 backdrop-blur-md text-slate-900 border border-slate-200 px-3.5 py-1.5 rounded-2xl shadow-xl flex items-center space-x-2 text-xs font-black">
+                        <span class="ball ball-yellow !w-6 !h-6 !text-[11px]">7</span>
+                        <span class="ball ball-blue !w-6 !h-6 !text-[11px]">14</span>
+                        <span class="ball ball-red !w-6 !h-6 !text-[11px]">23</span>
+                        <span class="text-indigo-600 text-[11px]">HOT 번호</span>
+                    </div>
+
+                    <!-- 플로팅 볼 뱃지 (우측 하단) -->
+                    <div class="absolute -bottom-3 -right-3 bg-slate-900/95 backdrop-blur-md text-white border border-slate-700 px-3.5 py-1.5 rounded-2xl shadow-xl flex items-center space-x-2 text-xs">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                        <span class="font-bold text-[11px] text-emerald-300">100% 무작위 독립 시행 검증</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -293,43 +371,94 @@
         </div>
     </section>
 
-    <!-- 5. 꿈 키워드 번호 변환기 -->
-    <section id="dream" class="bg-indigo-900 text-white py-16 px-4">
-        <div class="max-w-4xl mx-auto text-center space-y-4">
-            <span class="text-xs font-bold text-indigo-300 tracking-wider uppercase">Entertainment & Cultural
-                Tool</span>
-            <h2 class="text-2xl md:text-3xl font-extrabold">어젯밤 꾼 꿈의 상징 번호 찾기</h2>
+    <!-- 5. 꿈 키워드 번호 변환기 (비주얼 키워드 칩 추가) -->
+    <section id="dream" class="bg-gradient-to-b from-indigo-950 via-indigo-900 to-slate-900 text-white py-16 px-4 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center space-y-4 relative z-10">
+            <span class="text-xs font-bold text-indigo-300 tracking-wider uppercase bg-indigo-800/60 px-3 py-1 rounded-full border border-indigo-700">
+                Entertainment & Cultural Tool
+            </span>
+            <h2 class="text-2xl md:text-3xl font-extrabold flex items-center justify-center space-x-2">
+                <span>✨ 어젯밤 꾼 꿈의 상징 번호 찾기</span>
+            </h2>
             <p class="text-xs md:text-sm text-indigo-200 max-w-xl mx-auto">
                 전통 민간 꿈해몽 데이터베이스와 숫자를 매핑하여 재미로 보는 연관 행운수를 도출합니다. (엔터테인먼트 참고용)
             </p>
 
-            <div class="max-w-md mx-auto flex items-center bg-white rounded-xl p-1.5 shadow-lg mt-6">
-                <input type="text" id="dreamInput" placeholder="꿈 키워드 입력 (예: 돼지, 조상님, 뱀, 불, 비행기)"
-                    class="flex-1 px-3 py-2 text-slate-800 text-xs md:text-sm outline-none rounded-lg">
+            <!-- 빠른 원클릭 꿈 키워드 칩 -->
+            <div class="flex flex-wrap justify-center gap-2 pt-2 max-w-lg mx-auto">
+                <button onclick="quickDreamSearch('돼지')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
+                    <span>🐷</span> <span>돼지꿈</span>
+                </button>
+                <button onclick="quickDreamSearch('조상님')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
+                    <span>👴</span> <span>조상님</span>
+                </button>
+                <button onclick="quickDreamSearch('용')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
+                    <span>🐉</span> <span>용꿈</span>
+                </button>
+                <button onclick="quickDreamSearch('뱀')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
+                    <span>🐍</span> <span>뱀꿈</span>
+                </button>
+                <button onclick="quickDreamSearch('불')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
+                    <span>🔥</span> <span>불나는꿈</span>
+                </button>
+                <button onclick="quickDreamSearch('똥')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
+                    <span>💩</span> <span>똥꿈</span>
+                </button>
+                <button onclick="quickDreamSearch('비행기')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
+                    <span>✈️</span> <span>비행기</span>
+                </button>
+                <button onclick="quickDreamSearch('물')" class="px-3 py-1.5 bg-white/10 hover:bg-white/20 border border-white/20 rounded-xl text-xs font-semibold transition flex items-center space-x-1">
+                    <span>💧</span> <span>맑은물</span>
+                </button>
+            </div>
+
+            <div class="max-w-md mx-auto flex items-center bg-white rounded-2xl p-1.5 shadow-xl mt-4">
+                <input type="text" id="dreamInput" placeholder="직접 꿈 키워드 입력 (예: 호랑이, 금반지, 바다)"
+                    class="flex-1 px-3 py-2 text-slate-800 text-xs md:text-sm outline-none rounded-xl">
                 <button onclick="searchDreamNumber()"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg text-xs md:text-sm transition">
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-xl text-xs md:text-sm transition shadow-sm">
                     해몽 검색
                 </button>
             </div>
 
             <div id="dreamResult"
-                class="hidden max-w-md mx-auto bg-slate-800/80 border border-slate-700 rounded-xl p-4 text-left mt-4">
+                class="hidden max-w-md mx-auto bg-slate-800/90 border border-slate-700 rounded-2xl p-4 text-left mt-4 shadow-xl">
             </div>
         </div>
     </section>
 
-    <!-- 6. 전국 10대 명당 지도 -->
+    <!-- 6. 전국 10대 명당 지도 (판매점 구분 시각화 극대화) -->
     <section id="places" class="max-w-7xl mx-auto px-4 py-16">
-        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-6 border-b border-slate-200">
             <div>
-                <span class="text-xs font-bold text-indigo-600 tracking-wider uppercase">Statistical Distribution</span>
-                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900 mt-1">전국 역대 1등 다배출 10대 판매점 팩트체크</h2>
+                <div class="inline-flex items-center space-x-2 bg-amber-50 border border-amber-200 text-amber-800 px-3 py-1 rounded-full text-xs font-extrabold mb-2">
+                    <i class="fa-solid fa-crown text-amber-500"></i>
+                    <span>빅데이터 판매점 통계 전수조사</span>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">
+                    전국 역대 1등 다배출 10대 판매점 팩트체크
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-500 mt-1.5">
+                    "명당의 비밀은 기운이 아니라 <strong>압도적 판매량에 비례한 통계적 결과(대수의 법칙)</strong>입니다."
+                </p>
             </div>
-            <p class="text-sm text-slate-500 max-w-lg mt-2 md:mt-0">
-                "명당은 기운이 아니라 <strong>판매량에 비례한 통계적 결과(대수의 법칙)</strong>입니다." 인근 방문 시 참고할 수 있도록 정확한 위치 정보를 안내합니다.
-            </p>
+
+            <!-- 명당 등급 범례 안내 -->
+            <div class="flex flex-wrap items-center gap-2 mt-4 md:mt-0 text-xs font-bold">
+                <span class="px-2.5 py-1 bg-amber-50 border border-amber-300 text-amber-800 rounded-lg flex items-center space-x-1">
+                    <span>👑</span> <span>1위 전국챔피언 (50회+)</span>
+                </span>
+                <span class="px-2.5 py-1 bg-slate-100 border border-slate-300 text-slate-700 rounded-lg flex items-center space-x-1">
+                    <span>🥈</span> <span>2위 영남대표 (40회+)</span>
+                </span>
+                <span class="px-2.5 py-1 bg-orange-50 border border-orange-300 text-orange-800 rounded-lg flex items-center space-x-1">
+                    <span>🥉</span> <span>3위 대구대표 (30회+)</span>
+                </span>
+            </div>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="storeContainer"></div>
+
+        <!-- 10대 판매점 렌더링 컨테이너 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="storeContainer"></div>
     </section>
 
     <!-- 7. 멤버십 요금제 운영 정책 안내 (FREE & PRO) -->
@@ -912,41 +1041,265 @@
 
     <!-- 9. 메인 자바스크립트 엔진 -->
     <script>
-        // --- (A) 전국 10대 명당 바인딩 ---
+        // --- (A) 전국 10대 명당 상세 데이터 및 시각화 고도화 ---
         const topStores = [
-            { name: "스파", address: "서울 노원구 동일로 1493 (상계동)", count: "1등 50회 이상", tag: "전국 최다 배출" },
-            { name: "부일카서비스", address: "부산 동구 자성로133번길 35", count: "1등 40회 이상", tag: "영남권 대표 명당" },
-            { name: "일등복권편의점", address: "대구 달서구 대명천로 220", count: "1등 30회 이상", tag: "대구 대표 명당" },
-            { name: "로또휴게실", address: "경기 용인시 기흥구 용구대로 1885", count: "1등 20회 이상", tag: "경기권 고속도로 거점" },
-            { name: "잠실매점", address: "서울 송파구 올림픽로 269 잠실역 8번출구", count: "1등 18회 이상", tag: "서울 동남권 거점" },
-            { name: "목포로또복권", address: "전남 목포시 백년대로 382", count: "1등 15회 이상", tag: "호남권 대표" },
-            { name: "행운복권방", address: "충북 청주시 흥덕구 직지대로 630", count: "1등 14회 이상", tag: "충청권 명당" },
-            { name: "대박찬스", address: "충북 청주시 상당구 상당로 200", count: "1등 12회 이상", tag: "청주 상당구 거점" },
-            { name: "제이복권방", address: "서울 종로구 종로 225-1", count: "1등 12회 이상", tag: "서울 종로 도심" },
-            { name: "가판점", address: "서울 중구 신문로1가 1-23", count: "1등 11회 이상", tag: "광화문역 인근 거점" }
+            { 
+                rank: 1, 
+                name: "스파", 
+                region: "서울 노원", 
+                regionColor: "bg-red-500 text-white", 
+                address: "서울 노원구 동일로 1493 (상계동 666-3)", 
+                countText: "1등 52회 이상", 
+                countNum: 52,
+                barPercent: 100,
+                tag: "전국 역대 압도적 1위 🏆", 
+                desc: "전국에서 가장 많은 1등 당첨자를 배출한 전설적인 복권 성지",
+                subTags: ["#전국최다배출", "#줄서서사는곳", "#상계동성지"],
+                tier: "gold",
+                mapQuery: "상계동 스파 복권방"
+            },
+            { 
+                rank: 2, 
+                name: "부일카서비스", 
+                region: "부산 동구", 
+                regionColor: "bg-blue-600 text-white", 
+                address: "부산 동구 자성로133번길 35 (범일동)", 
+                countText: "1등 42회 이상", 
+                countNum: 42,
+                barPercent: 81,
+                tag: "영남권 부동의 1위 명당 🥈", 
+                desc: "카센터에서 시작하여 전국 2위의 당첨 신화를 기록 중인 부산 명소",
+                subTags: ["#부산대표명당", "#범일역도보", "#전국2위"],
+                tier: "silver",
+                mapQuery: "부산 부일카서비스"
+            },
+            { 
+                rank: 3, 
+                name: "일등복권편의점", 
+                region: "대구 달서", 
+                regionColor: "bg-amber-600 text-white", 
+                address: "대구 달서구 대명천로 220 (본리동)", 
+                countText: "1등 33회 이상", 
+                countNum: 33,
+                barPercent: 63,
+                tag: "대구·경북 대표 1위 🥉", 
+                desc: "본리네거리 인근에서 꾸준히 1등을 쏟아내는 대구 대표 복권방",
+                subTags: ["#대구명당", "#본리동성지", "#전국3위"],
+                tier: "bronze",
+                mapQuery: "대구 일등복권편의점"
+            },
+            { 
+                rank: 4, 
+                name: "로또휴게실", 
+                region: "경기 용인", 
+                regionColor: "bg-emerald-600 text-white", 
+                address: "경기 용인시 기흥구 용구대로 1885 (보라동)", 
+                countText: "1등 23회 이상", 
+                countNum: 23,
+                barPercent: 44,
+                tag: "수도권 남부 고속도로 거점", 
+                desc: "넓은 주차장과 한국민속촌 인근 드라이브 방문객들의 필수 구매 코스",
+                subTags: ["#용인명당", "#주차편리", "#경기남부1위"],
+                tier: "standard",
+                mapQuery: "용인 보라동 로또휴게실"
+            },
+            { 
+                rank: 5, 
+                name: "잠실매점", 
+                region: "서울 송파", 
+                regionColor: "bg-indigo-600 text-white", 
+                address: "서울 송파구 올림픽로 269 (잠실역 8번출구 앞)", 
+                countText: "1등 19회 이상", 
+                countNum: 19,
+                barPercent: 36,
+                tag: "서울 동남권 직장인 성지", 
+                desc: "잠실역 지하철 출구 앞 가판점에서 매주 높은 회전율을 기록하는 명당",
+                subTags: ["#잠실역8번출구", "#퇴근길명당", "#가판점신화"],
+                tier: "standard",
+                mapQuery: "잠실역 8번출구 잠실매점"
+            },
+            { 
+                rank: 6, 
+                name: "목포로또복권", 
+                region: "전남 목포", 
+                regionColor: "bg-purple-600 text-white", 
+                address: "전남 목포시 백년대로 382 (옥암동)", 
+                countText: "1등 16회 이상", 
+                countNum: 16,
+                barPercent: 31,
+                tag: "호남권 최고 당첨 배출점", 
+                desc: "전남 및 서남해안 권역에서 가장 높은 1등 당첨 빈도를 보유",
+                subTags: ["#목포명당", "#호남대표", "#포미타운"],
+                tier: "standard",
+                mapQuery: "목포로또복권 옥암동"
+            },
+            { 
+                rank: 7, 
+                name: "행운복권방", 
+                region: "충북 청주", 
+                regionColor: "bg-teal-600 text-white", 
+                address: "충북 청주시 흥덕구 직지대로 630 (봉명동)", 
+                countText: "1등 15회 이상", 
+                countNum: 15,
+                barPercent: 29,
+                tag: "충청권 최고 당첨 명소", 
+                desc: "청주 산업단지 인근 봉명사거리에서 탄생한 충청도 1등 배출처",
+                subTags: ["#청주봉명동", "#충북1위", "#행운성지"],
+                tier: "standard",
+                mapQuery: "청주 행운복권방 봉명동"
+            },
+            { 
+                rank: 8, 
+                name: "대박찬스", 
+                region: "충북 청주", 
+                regionColor: "bg-cyan-600 text-white", 
+                address: "충북 청주시 상당구 상당로 200 (영운동)", 
+                countText: "1등 13회 이상", 
+                countNum: 13,
+                barPercent: 25,
+                tag: "청주 구도심 핵심 명당", 
+                desc: "청주 상당구 일대에서 역대 다수의 1등을 연달아 배출한 행운점",
+                subTags: ["#청주상당구", "#영운동", "#대박명당"],
+                tier: "standard",
+                mapQuery: "청주 대박찬스 영운동"
+            },
+            { 
+                rank: 9, 
+                name: "제이복권방", 
+                region: "서울 종로", 
+                regionColor: "bg-rose-600 text-white", 
+                address: "서울 종로구 종로 225-1 (종로5가역 4번출구)", 
+                countText: "1등 13회 이상", 
+                countNum: 13,
+                barPercent: 25,
+                tag: "서울 도심 종로 성지", 
+                desc: "광장시장 맞은편 귀금속 골목과 인접한 종로의 대표 복권 명당",
+                subTags: ["#종로5가역", "#광장시장인근", "#도심명당"],
+                tier: "standard",
+                mapQuery: "종로5가 제이복권방"
+            },
+            { 
+                rank: 10, 
+                name: "광화문 가판점", 
+                region: "서울 중구", 
+                regionColor: "bg-sky-600 text-white", 
+                address: "서울 중구 신문로1가 1-23 (광화문역 6번출구)", 
+                countText: "1등 12회 이상", 
+                countNum: 12,
+                barPercent: 23,
+                tag: "대한민국 중심 광화문 명당", 
+                desc: "광화문 사거리 세종대로 직장인들의 로또 구매 랜드마크",
+                subTags: ["#광화문역", "#세종대로", "#오피스거리"],
+                tier: "standard",
+                mapQuery: "광화문역 6번출구 가판점 로또"
+            }
         ];
 
         function renderStores() {
             const container = document.getElementById('storeContainer');
             if (!container) return;
-            container.innerHTML = topStores.map((s, idx) => `
-                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:border-indigo-300 transition">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-xs font-extrabold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">
-                            NO.${idx + 1}
-                        </span>
-                        <span class="text-[11px] text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full font-bold">
-                            ${s.tag}
-                        </span>
+
+            container.innerHTML = topStores.map((s) => {
+                let cardStyle = "bg-white border border-slate-200 hover:border-indigo-400 shadow-sm";
+                let rankBadge = `<span class="text-xs font-black bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg">NO.${s.rank}</span>`;
+                let countColor = "text-indigo-600";
+                let barColor = "bg-indigo-500";
+
+                if (s.tier === "gold") {
+                    cardStyle = "bg-gradient-to-br from-amber-500/10 via-white to-amber-100/40 border-2 border-amber-400 shadow-xl ring-2 ring-amber-300/40";
+                    rankBadge = `<span class="text-xs font-black bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 px-3 py-1 rounded-lg shadow-sm flex items-center space-x-1">
+                        <span>👑</span> <span>전국 1위 챔피언</span>
+                    </span>`;
+                    countColor = "text-amber-600 font-black";
+                    barColor = "bg-amber-500";
+                } else if (s.tier === "silver") {
+                    cardStyle = "bg-gradient-to-br from-slate-100 via-white to-indigo-50/30 border-2 border-slate-300 shadow-lg ring-1 ring-slate-200";
+                    rankBadge = `<span class="text-xs font-black bg-slate-300 text-slate-800 px-3 py-1 rounded-lg shadow-sm flex items-center space-x-1">
+                        <span>🥈</span> <span>전국 2위 (영남 1위)</span>
+                    </span>`;
+                    countColor = "text-slate-800 font-black";
+                    barColor = "bg-slate-500";
+                } else if (s.tier === "bronze") {
+                    cardStyle = "bg-gradient-to-br from-orange-50/60 via-white to-amber-50/20 border-2 border-orange-300 shadow-lg ring-1 ring-orange-200";
+                    rankBadge = `<span class="text-xs font-black bg-orange-200 text-orange-900 px-3 py-1 rounded-lg shadow-sm flex items-center space-x-1">
+                        <span>🥉</span> <span>전국 3위 (대구 1위)</span>
+                    </span>`;
+                    countColor = "text-orange-600 font-black";
+                    barColor = "bg-orange-500";
+                }
+
+                return `
+                    <div class="${cardStyle} p-5 rounded-3xl transition duration-300 transform hover:-translate-y-1 relative flex flex-col justify-between">
+                        <div>
+                            <!-- 상단 랭크 & 지역 뱃지 -->
+                            <div class="flex items-center justify-between gap-2 mb-3">
+                                <div class="flex items-center space-x-1.5">
+                                    ${rankBadge}
+                                    <span class="text-[11px] font-black px-2 py-0.5 rounded-md ${s.regionColor}">
+                                        ${s.region}
+                                    </span>
+                                </div>
+                                <span class="text-[11px] text-amber-700 font-bold bg-amber-50/80 px-2 py-0.5 rounded-full border border-amber-200/50">
+                                    ${s.tag}
+                                </span>
+                            </div>
+
+                            <!-- 판매점 상호명 -->
+                            <h3 class="text-lg font-black text-slate-900 tracking-tight flex items-center justify-between">
+                                <span>${s.name}</span>
+                                <span class="text-base ${countColor}">${s.countText}</span>
+                            </h3>
+
+                            <!-- 주소 -->
+                            <p class="text-xs text-slate-500 mt-1 flex items-start space-x-1.5 leading-snug">
+                                <i class="fa-solid fa-location-dot text-slate-400 mt-0.5 flex-shrink-0"></i>
+                                <span>${s.address}</span>
+                            </p>
+
+                            <!-- 매장 설명 -->
+                            <p class="text-[11px] text-slate-600 mt-2 bg-slate-50/80 p-2.5 rounded-xl border border-slate-100 leading-relaxed">
+                                ${s.desc}
+                            </p>
+
+                            <!-- 해시태그 칩 -->
+                            <div class="flex flex-wrap gap-1 mt-2.5">
+                                ${s.subTags.map(t => `<span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md font-medium">${t}</span>`).join('')}
+                            </div>
+                        </div>
+
+                        <!-- 하단 게이지 바 및 지도 연결 -->
+                        <div class="mt-4 pt-3 border-t border-slate-100 space-y-2">
+                            <div>
+                                <div class="flex justify-between text-[10px] text-slate-400 mb-1 font-medium">
+                                    <span>당첨 실적 비중</span>
+                                    <span class="font-bold text-slate-700">${s.countNum}회 배출</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                                    <div class="${barColor} h-2 rounded-full transition-all duration-500" style="width: ${s.barPercent}%"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-1">
+                                <span class="text-[11px] text-slate-400">매장 위치 길찾기</span>
+                                <a href="https://map.naver.com/v5/search/${encodeURIComponent(s.mapQuery)}" target="_blank" rel="noopener noreferrer"
+                                    class="text-xs font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1 rounded-lg transition flex items-center space-x-1 shadow-2xs">
+                                    <i class="fa-solid fa-diamond-turn-right text-[10px]"></i>
+                                    <span>네이버 지도 보기</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <h3 class="text-base font-bold text-slate-900">${s.name}</h3>
-                    <p class="text-xs text-slate-500 mt-1">${s.address}</p>
-                    <div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                        <span class="text-slate-400">누적 당첨 실적</span>
-                        <span class="font-extrabold text-slate-800">${s.count}</span>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+        }
+
+        // 빠른 꿈해몽 검색 함수
+        function quickDreamSearch(keyword) {
+            const input = document.getElementById('dreamInput');
+            if (input) {
+                input.value = keyword;
+                searchDreamNumber();
+            }
         }
 
         // --- (B) 1~45 번호판 및 고정수/제외수 선택 로직 ---
