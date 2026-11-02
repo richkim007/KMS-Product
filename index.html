@@ -748,16 +748,16 @@
                     </label>
                 </div>
 
-                <button onclick="generateCombinations()"
-                    class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold rounded-xl transition shadow-md flex items-center justify-center space-x-2 text-sm">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>AI 5개 최적 조합 무료 생성</span>
+                <button type="button" id="btnGenerateCombinations" onclick="generateCombinations()"
+                    class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-extrabold rounded-xl transition-all shadow-md flex items-center justify-center space-x-2 text-sm sm:text-base cursor-pointer touch-manipulation select-none">
+                    <i class="fa-solid fa-wand-magic-sparkles" id="btnGenIcon"></i>
+                    <span id="btnGenText">AI 5개 최적 조합 무료 생성</span>
                 </button>
             </div>
 
             <!-- 우측 패널: 생성된 조합 결과 -->
-            <div
-                class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between min-h-[520px]">
+            <div id="generatorResultsPanel"
+                class="lg:col-span-7 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col justify-between min-h-[520px] scroll-mt-20">
                 <div>
                     <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
                         <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-2">
@@ -2368,7 +2368,8 @@
             grid.innerHTML = '';
             for (let i = 1; i <= 45; i++) {
                 const btn = document.createElement('button');
-                btn.className = `num-btn ${getBallClass(i)}`;
+                btn.type = 'button';
+                btn.className = `num-btn ${getBallClass(i)} touch-manipulation`;
                 btn.textContent = i;
                 btn.id = `num-btn-${i}`;
                 btn.onclick = () => toggleNumber(i);
@@ -2528,80 +2529,155 @@
         }
 
         let latestGeneratedCombinations = [];
+        let isGeneratingCombinations = false;
+
+        function showToastNotification(message) {
+            let toast = document.getElementById('globalToastNotification');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'globalToastNotification';
+                toast.className = 'fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-slate-900/90 text-white text-xs sm:text-sm font-bold px-4 py-2.5 rounded-full shadow-2xl backdrop-blur-sm flex items-center space-x-2 transition-all duration-300 opacity-0 pointer-events-none translate-y-3';
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i><span>${message}</span>`;
+            toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-3');
+            toast.classList.add('opacity-100', 'translate-y-0');
+
+            setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-3');
+            }, 2500);
+        }
 
         function generateCombinations() {
+            if (isGeneratingCombinations) return;
+
+            const btn = document.getElementById('btnGenerateCombinations');
+            const btnIcon = document.getElementById('btnGenIcon');
+            const btnText = document.getElementById('btnGenText');
             const container = document.getElementById('resultsContainer');
+            const resultsPanel = document.getElementById('generatorResultsPanel');
             if (!container) return;
 
-            const combinations = [];
-            for (let i = 0; i < 5; i++) {
-                combinations.push(generateSingleCombination());
+            isGeneratingCombinations = true;
+
+            // 터치/클릭 즉시 시각적 피드백 제공 (로딩 스피너)
+            if (btnIcon && btnText) {
+                btnIcon.className = 'fa-solid fa-spinner fa-spin';
+                btnText.textContent = 'AI 최적 조합 분석 및 추출 중...';
             }
-            latestGeneratedCombinations = combinations;
+            if (btn) {
+                btn.classList.add('opacity-80', 'cursor-wait');
+            }
 
-            // 계정에 데이터 자동 쌓기 (히스토리 누적)
-            saveGenerationHistory(combinations);
+            // 모바일 렌더링 루프를 위해 짧은 지연 후 실행
+            setTimeout(() => {
+                try {
+                    const combinations = [];
+                    for (let i = 0; i < 5; i++) {
+                        combinations.push(generateSingleCombination());
+                    }
+                    latestGeneratedCombinations = combinations;
 
-            // 첨부된 소스 파일(동행복권 당첨 영수증 슬립)과 100% 동일한 격자형 테이블 양식으로 렌더링
-            container.innerHTML = `
-                <div class="bg-white border-2 border-slate-300 rounded-2xl overflow-hidden shadow-lg animate-in fade-in duration-200">
-                    <!-- 상단 복권 슬립 헤더 -->
-                    <div class="bg-slate-50 border-b border-slate-200 px-4 py-3 flex items-center justify-between">
-                        <div class="flex items-center space-x-2">
-                            <span class="text-xs sm:text-sm font-black text-slate-800">로또 6/45 AI 최적 추천 조합</span>
-                            <span class="text-[10px] font-bold text-indigo-700 bg-indigo-100/70 px-2 py-0.5 rounded border border-indigo-200">
-                                공식 슬립 규격
-                            </span>
-                        </div>
-                        <span class="text-xs text-slate-500 font-bold">5개 게임 (A ~ E)</span>
-                    </div>
+                    // 계정에 데이터 자동 쌓기 (히스토리 누적)
+                    try {
+                        saveGenerationHistory(combinations);
+                    } catch (e) {
+                        console.warn("히스토리 저장 생략:", e);
+                    }
 
-                    <!-- 슬립 본체 테이블 (소스 파일 양식 일치) -->
-                    <div class="divide-y divide-slate-200">
-                        ${combinations.map((combo, idx) => {
-                const sum = combo.reduce((a, b) => a + b, 0);
-                const oddCount = combo.filter(n => n % 2 !== 0).length;
-                const evenCount = 6 - oddCount;
-                const comboStr = combo.join(',');
-                const rowChar = String.fromCharCode(65 + idx);
-
-                return `
-                                <div class="px-3 sm:px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3 hover:bg-slate-50/70 transition">
-                                    <div class="flex items-center space-x-2 sm:space-x-3 w-full md:w-auto">
-                                        <!-- A, B, C, D, E 및 1등추천 컬럼 -->
-                                        <div class="flex items-center space-x-2 border-r border-slate-200 pr-3 flex-shrink-0">
-                                            <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center font-black text-slate-700 text-sm">
-                                                ${rowChar}
-                                            </span>
-                                            <span class="text-xs font-bold text-slate-500 whitespace-nowrap">
-                                                1등당첨
-                                            </span>
-                                        </div>
-
-                                        <!-- 6개 로또 볼 (소스 파일과 동일한 3D 구형 스타일) -->
-                                        <div class="flex items-center space-x-1.5 sm:space-x-2.5 flex-1 justify-center md:justify-start">
-                                            ${combo.map(n => `<span class="ball ${getBallClass(n)}">${n}</span>`).join('')}
-                                        </div>
-                                    </div>
-
-                                    <!-- 우측 정보 및 보관 버튼 -->
-                                    <div class="flex items-center justify-end space-x-3 text-xs w-full md:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
-                                        <div class="text-[11px] text-slate-400 space-x-2">
-                                            <span>합계: <strong class="text-slate-700 font-bold">${sum}</strong></span>
-                                            <span>홀짝: <strong class="text-slate-700 font-bold">${oddCount}:${evenCount}</strong></span>
-                                        </div>
-                                        <button onclick="saveCombinationBookmark('${comboStr}', ${idx})"
-                                            class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 rounded-lg font-bold transition flex items-center space-x-1 shadow-2xs whitespace-nowrap">
-                                            <i class="fa-solid fa-star text-amber-500 text-[10px]"></i>
-                                            <span>보관</span>
-                                        </button>
-                                    </div>
+                    // 첨부된 소스 파일(동행복권 당첨 영수증 슬립)과 100% 동일한 격자형 테이블 양식으로 렌더링
+                    container.innerHTML = `
+                        <div class="bg-white border-2 border-indigo-500 rounded-2xl overflow-hidden shadow-xl animate-in fade-in duration-200 ring-2 ring-indigo-100">
+                            <!-- 상단 복권 슬립 헤더 -->
+                            <div class="bg-indigo-50/70 border-b border-indigo-100 px-4 py-3 flex items-center justify-between">
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs sm:text-sm font-black text-slate-800">로또 6/45 AI 최적 추천 조합</span>
+                                    <span class="text-[10px] font-bold text-white bg-indigo-600 px-2 py-0.5 rounded-full shadow-2xs">
+                                        방금 생성됨 ✨
+                                    </span>
                                 </div>
-                            `;
-            }).join('')}
-                    </div>
-                </div>
-            `;
+                                <div class="flex items-center space-x-2">
+                                    <span class="text-xs text-slate-500 font-bold hidden sm:inline">5개 게임 (A ~ E)</span>
+                                    <button type="button" onclick="generateCombinations()"
+                                        class="text-xs font-bold text-indigo-700 hover:text-indigo-900 bg-white border border-indigo-200 hover:border-indigo-400 px-2.5 py-1 rounded-lg transition shadow-2xs flex items-center space-x-1 cursor-pointer">
+                                        <i class="fa-solid fa-rotate-right text-[10px]"></i>
+                                        <span>다시 생성</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- 슬립 본체 테이블 (소스 파일 양식 일치) -->
+                            <div class="divide-y divide-slate-200">
+                                ${combinations.map((combo, idx) => {
+                                    const sum = combo.reduce((a, b) => a + b, 0);
+                                    const oddCount = combo.filter(n => n % 2 !== 0).length;
+                                    const evenCount = 6 - oddCount;
+                                    const comboStr = combo.join(',');
+                                    const rowChar = String.fromCharCode(65 + idx);
+
+                                    return `
+                                        <div class="px-3 sm:px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3 hover:bg-slate-50/70 transition">
+                                            <div class="flex items-center space-x-2 sm:space-x-3 w-full md:w-auto">
+                                                <!-- A, B, C, D, E 및 1등추천 컬럼 -->
+                                                <div class="flex items-center space-x-2 border-r border-slate-200 pr-3 flex-shrink-0">
+                                                    <span class="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center font-black text-slate-700 text-sm">
+                                                        ${rowChar}
+                                                    </span>
+                                                    <span class="text-xs font-bold text-slate-500 whitespace-nowrap">
+                                                        1등당첨
+                                                    </span>
+                                                </div>
+
+                                                <!-- 6개 로또 볼 (소스 파일과 동일한 3D 구형 스타일) -->
+                                                <div class="flex items-center space-x-1.5 sm:space-x-2.5 flex-1 justify-center md:justify-start">
+                                                    ${combo.map(n => `<span class="ball ${getBallClass(n)}">${n}</span>`).join('')}
+                                                </div>
+                                            </div>
+
+                                            <!-- 우측 정보 및 보관 버튼 -->
+                                            <div class="flex items-center justify-between md:justify-end space-x-3 text-xs w-full md:w-auto pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
+                                                <div class="text-[11px] text-slate-400 space-x-2">
+                                                    <span>합계: <strong class="text-slate-700 font-bold">${sum}</strong></span>
+                                                    <span>홀짝: <strong class="text-slate-700 font-bold">${oddCount}:${evenCount}</strong></span>
+                                                </div>
+                                                <button type="button" onclick="saveCombinationBookmark('${comboStr}', ${idx})"
+                                                    class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 border border-amber-300 rounded-lg font-bold transition flex items-center space-x-1 shadow-2xs whitespace-nowrap cursor-pointer">
+                                                    <i class="fa-solid fa-star text-amber-500 text-[10px]"></i>
+                                                    <span>보관</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+                    `;
+
+                    // 스마트폰/모바일 화면에서 사용자가 생성 결과를 바로 볼 수 있도록 부드럽게 결과 위치로 자동 스크롤
+                    if (resultsPanel && window.innerWidth < 1024) {
+                        setTimeout(() => {
+                            resultsPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 50);
+                    }
+
+                    // 토스트 알림 안내
+                    showToastNotification("✨ AI 5개 최적 조합 생성이 완료되었습니다!");
+
+                } catch (err) {
+                    console.error("조합 생성 중 오류:", err);
+                    alert("조합 생성 중 일시적인 오류가 발생했습니다. 다시 시도해 주세요.");
+                } finally {
+                    isGeneratingCombinations = false;
+                    if (btnIcon && btnText) {
+                        btnIcon.className = 'fa-solid fa-wand-magic-sparkles';
+                        btnText.textContent = 'AI 5개 최적 조합 무료 생성';
+                    }
+                    if (btn) {
+                        btn.classList.remove('opacity-80', 'cursor-wait');
+                    }
+                }
+            }, 200);
         }
 
         // --- (D) 소셜 로그인 및 사용자 데이터 관리 시스템 ---
@@ -2762,31 +2838,35 @@
 
         // 조합 생성 시 히스토리 데이터 자동 누적 함수
         function saveGenerationHistory(combinations) {
-            const user = getCurrentUser();
-            if (!user) return; // 비로그인 시 히스토리 저장 생략
+            try {
+                const user = getCurrentUser();
+                if (!user) return; // 비로그인 시 히스토리 저장 생략
 
-            const data = getUserData(user.id);
-            if (!data.historyList) data.historyList = [];
-            data.totalGenerations = (data.totalGenerations || 0) + 1;
+                const data = getUserData(user.id);
+                if (!data.historyList) data.historyList = [];
+                data.totalGenerations = (data.totalGenerations || 0) + 1;
 
-            const now = new Date();
-            const timeStr = String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+                const now = new Date();
+                const timeStr = String(now.getMonth() + 1).padStart(2, '0') + '/' + String(now.getDate()).padStart(2, '0') + ' ' + String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
 
-            data.historyList.unshift({
-                id: Date.now(),
-                time: timeStr,
-                combinations: combinations,
-                fixed: Array.from(fixedNumbers),
-                exclude: Array.from(excludeNumbers)
-            });
+                data.historyList.unshift({
+                    id: Date.now(),
+                    time: timeStr,
+                    combinations: combinations,
+                    fixed: Array.from(fixedNumbers),
+                    exclude: Array.from(excludeNumbers)
+                });
 
-            // 최대 50건 보관
-            if (data.historyList.length > 50) {
-                data.historyList.pop();
+                // 최대 50건 보관
+                if (data.historyList.length > 50) {
+                    data.historyList.pop();
+                }
+
+                saveUserData(user.id, data);
+                updateAuthHeader();
+            } catch (err) {
+                console.warn('히스토리 저장 중 오류 (무시됨):', err);
             }
-
-            saveUserData(user.id, data);
-            updateAuthHeader();
         }
 
         // 개별 조합 보관함 저장
