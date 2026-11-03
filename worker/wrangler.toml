@@ -1,0 +1,36 @@
+name = "kms-loddo-api"
+main = "src/index.ts"
+compatibility_date = "2026-11-01"
+compatibility_flags = ["nodejs_compat"]
+
+# 1. 엣지 커스텀 도메인 / 라우트 설정 (Cloudflare Pages와 연동)
+# routes = [
+#   { pattern = "loddo.co/api/*", zone_name = "loddo.co" }
+# ]
+
+# 2. Upstash Serverless Redis 환경 변수
+[vars]
+UPSTASH_REDIS_REST_URL = "https://your-upstash-redis-url.upstash.io"
+# 프로덕션에서는 wrangler secret put UPSTASH_REDIS_REST_TOKEN 권장
+UPSTASH_REDIS_REST_TOKEN = "your-upstash-redis-token"
+SERVER_HMAC_SECRET = "LODDO_HMAC_SECURE_SALT_2026"
+
+# 3. Cloudflare Queues 설정 (완등 트래픽 비동기 버퍼링)
+# 완등 제출 엣지 워커가 프로듀서로 큐에 인큐
+[[queues.producers]]
+queue = "loddo-expedition-queue"
+binding = "EXPEDITION_QUEUE"
+
+# 큐에 쌓인 로그를 배치로 소비(Consumer)하여 D1 SQLite에 벌크 인서트
+[[queues.consumers]]
+queue = "loddo-expedition-queue"
+max_batch_size = 100
+max_batch_timeout = 5
+max_retries = 3
+
+# 4. Cloudflare D1 Database 바인딩 (영구 보관 및 명예의 전당)
+[[d1_databases]]
+binding = "DB"
+database_name = "loddo-production-db"
+database_id = "your-d1-database-uuid"
+

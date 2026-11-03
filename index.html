@@ -31,6 +31,10 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Pretendard', sans-serif;
         }
@@ -188,6 +192,10 @@
                     <span>로또 스토리</span>
                 </a>
                 <a href="#places" class="hover:text-indigo-600 transition">전국 10대 명당</a>
+                <a href="#game"
+                    class="bg-gradient-to-r from-amber-500 via-orange-500 to-indigo-600 hover:from-amber-600 hover:to-indigo-700 text-white font-extrabold px-3.5 py-1.5 rounded-full text-xs transition shadow-md hover:shadow-lg flex items-center space-x-1.5 animate-pulse">
+                    <span>⚡ 히말라야 로또 원정대</span>
+                </a>
                 <a href="/about.html" class="hover:text-indigo-600 transition">소개</a>
                 <a href="/contact.html" class="hover:text-indigo-600 transition">문의</a>
             </nav>
@@ -240,6 +248,11 @@
                         class="px-5 py-3.5 bg-slate-800/80 hover:bg-slate-700/80 text-slate-200 border border-slate-700 font-bold rounded-xl transition text-sm flex items-center space-x-2">
                         <i class="fa-solid fa-trophy text-amber-400"></i>
                         <span>10대 명당 팩트체크 보기</span>
+                    </a>
+                    <a href="#game"
+                        class="px-5 py-3.5 bg-gradient-to-r from-amber-500/90 to-orange-600/90 hover:from-amber-400 hover:to-orange-500 text-slate-950 border border-amber-300/60 font-black rounded-xl transition text-sm flex items-center space-x-2 shadow-lg shadow-orange-500/20">
+                        <span>⚡</span>
+                        <span>히말라야 원정대 즉시 플레이</span>
                     </a>
                 </div>
 
@@ -688,6 +701,132 @@
         </div>
     </section>
 
+    <!-- 3.5. 🏔️ 히말라야 로또 원정대 (loddo.co 즉시 플레이 게임 아레나) -->
+    <section id="game"
+        class="py-14 sm:py-20 bg-gradient-to-b from-slate-950 via-indigo-950 to-slate-950 text-white relative overflow-hidden border-y border-indigo-900/40">
+        <!-- 배경 네온 & 오로라 블러 효과 -->
+        <div class="absolute top-1/4 -left-32 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-1/4 -right-32 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none">
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 relative z-10">
+            <!-- 섹션 헤더 -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2 mb-2">
+                        <span
+                            class="bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5 shadow-md shadow-orange-500/20">
+                            <i class="fa-solid fa-gamepad animate-bounce"></i>
+                            <span>INSTANT PLAY ON LODDO.CO</span>
+                        </span>
+                        <span
+                            class="text-xs bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-bold px-2.5 py-1 rounded-full">
+                            100% 무설치 · 브라우저 완결형
+                        </span>
+                        <span
+                            class="text-xs bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold px-2.5 py-1 rounded-full">
+                            글로벌 8개 국어 지원
+                        </span>
+                    </div>
+                    <h2
+                        class="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white flex items-center gap-3">
+                        <span>🏔️ 히말라야 로또 원정대</span>
+                        <span
+                            class="text-xs sm:text-sm font-extrabold bg-red-600/80 text-white px-2.5 py-0.5 rounded-lg uppercase tracking-tight">LIVE</span>
+                    </h2>
+                    <p class="text-sm sm:text-base text-slate-300 mt-2 max-w-2xl leading-relaxed">
+                        <strong>10대부터 100세까지</strong> 전 세대의 명예를 건 무한 수열·연산 두뇌 스피드런!<br class="hidden sm:inline">
+                        1억 명이 접속해도 <strong>100% 다른 문제</strong>가 생성되며, 내가 푼 문제는 평생 다시 나오지 않습니다.
+                    </p>
+                </div>
+
+                <!-- 빠른 조작 & 전체화면 컨트롤 바 -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <button onclick="toggleGameFullscreen()"
+                        class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-expand text-amber-400"></i>
+                        <span>전체화면 몰입</span>
+                    </button>
+                    <button onclick="reloadGameFrame()"
+                        class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-rotate-right text-sky-400"></i>
+                        <span>게임 새로고침</span>
+                    </button>
+                    <a href="/game.html" target="_blank"
+                        class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold rounded-xl text-xs transition flex items-center gap-1.5 shadow-lg shadow-indigo-600/30">
+                        <span>새 창으로 분리</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- 게임 프레임 컨테이너 -->
+            <div
+                class="relative bg-slate-900 border-2 border-indigo-500/40 rounded-3xl overflow-hidden shadow-2xl shadow-indigo-950/80">
+                <!-- 상단 미니 툴바 -->
+                <div
+                    class="bg-slate-950/90 px-4 py-2.5 border-b border-indigo-900/50 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400">
+                    <div class="flex items-center space-x-2">
+                        <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        <span class="font-bold text-slate-300">loddo.co 실시간 엣지 게임 엔진 가동 중</span>
+                        <span class="hidden sm:inline text-slate-600">|</span>
+                        <span class="hidden sm:inline text-[11px] text-slate-400">🇰🇷 🇺🇸 🇨🇳 🇯🇵 🇻🇳 🇪🇸 🇫🇷
+                            🇸🇦 8개 국어 지원</span>
+                    </div>
+                    <div class="flex items-center space-x-3 text-[11px]">
+                        <span class="text-amber-400 font-bold"><i class="fa-solid fa-trophy mr-1"></i>매일 밤 22:00 랭킹
+                            마감</span>
+                    </div>
+                </div>
+
+                <!-- 반응형 Iframe (게임 렌더링) -->
+                <iframe id="gameFrame" src="/game.html" class="w-full border-0 bg-slate-950 block"
+                    style="height: 880px; min-height: 720px;" allow="fullscreen; clipboard-read; clipboard-write;"
+                    title="히말라야 로또 원정대 게임">
+                </iframe>
+            </div>
+
+            <!-- 하단 핵심 기능 안내 그리드 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-start space-x-3">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-400/30 flex items-center justify-center text-amber-400 flex-shrink-0">
+                        <i class="fa-solid fa-infinity text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-white">무한 절차적 문제 생성</h4>
+                        <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">수학적 알고리즘으로 매번 새로운 문제를 실시간 생성하며, 한 번 푼
+                            문제는 평생 다시 나오지 않습니다.</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-start space-x-3">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-sky-500/10 border border-sky-400/30 flex items-center justify-center text-sky-400 flex-shrink-0">
+                        <i class="fa-solid fa-stopwatch text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-white">출퇴근 10분 통근 타임어택</h4>
+                        <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">지하철 3~5정거장 동안 6개 캠프(36문제)를 돌파하여 나의
+                            세대(10대~100세) 1등에 도전하세요.</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-start space-x-3">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-indigo-500/10 border border-indigo-400/30 flex items-center justify-center text-indigo-400 flex-shrink-0">
+                        <i class="fa-solid fa-medal text-sm"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-white">전세계 국가·연령 리그전</h4>
+                        <p class="text-[11px] text-slate-400 mt-0.5 leading-snug">실시간 Cloudflare 엣지 CDN 랭킹으로 국가별, 연령대별
+                            최단 시간 완등 챔피언이 매일 밤 22시에 결정됩니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- 4. 스마트 AI 조합기 인터페이스 -->
     <section id="generator" class="max-w-7xl mx-auto px-4 py-16">
         <div class="text-center max-w-2xl mx-auto mb-10">
@@ -1097,7 +1236,8 @@
 
             <div class="text-slate-400 space-y-2 text-xs">
                 <p class="font-medium text-slate-600 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2">
-                    <img src="/images/brand-logo.jpg" alt="KSS Global" class="w-5 h-5 rounded-full object-cover inline-block shadow-sm border border-amber-300/80">
+                    <img src="/images/brand-logo.jpg" alt="KSS Global"
+                        class="w-5 h-5 rounded-full object-cover inline-block shadow-sm border border-amber-300/80">
                     <span>상호: <strong>케이에스에스글로벌 (KSS Global)</strong></span>
                     <span class="text-slate-300">|</span>
                     <span>대표자: 김민수</span>
@@ -1105,7 +1245,8 @@
                     <span>사업자등록번호: 365-07-02826</span>
                 </p>
                 <p>운영자 공식 문의: <a href="mailto:contact@loddo.co"
-                        class="text-indigo-600 hover:underline font-semibold">contact@loddo.co</a> | 웹사이트: https://loddo.co</p>
+                        class="text-indigo-600 hover:underline font-semibold">contact@loddo.co</a> | 웹사이트:
+                    https://loddo.co</p>
                 <p>© 2026 케이에스에스글로벌 (KSS Global · loddo.co). All rights reserved.</p>
             </div>
         </div>
@@ -2627,13 +2768,13 @@
                             <!-- 슬립 본체 테이블 (소스 파일 양식 일치) -->
                             <div class="divide-y divide-slate-200">
                                 ${combinations.map((combo, idx) => {
-                                    const sum = combo.reduce((a, b) => a + b, 0);
-                                    const oddCount = combo.filter(n => n % 2 !== 0).length;
-                                    const evenCount = 6 - oddCount;
-                                    const comboStr = combo.join(',');
-                                    const rowChar = String.fromCharCode(65 + idx);
+                        const sum = combo.reduce((a, b) => a + b, 0);
+                        const oddCount = combo.filter(n => n % 2 !== 0).length;
+                        const evenCount = 6 - oddCount;
+                        const comboStr = combo.join(',');
+                        const rowChar = String.fromCharCode(65 + idx);
 
-                                    return `
+                        return `
                                         <div class="px-2 sm:px-4 py-2 sm:py-3 flex flex-col md:flex-row items-center justify-between gap-2 sm:gap-3 hover:bg-slate-50/70 transition">
                                             <div class="flex items-center space-x-1.5 sm:space-x-3 w-full md:w-auto justify-between sm:justify-start">
                                                 <!-- A, B, C, D, E 및 1등추천 컬럼 -->
@@ -2666,7 +2807,7 @@
                                             </div>
                                         </div>
                                     `;
-                                }).join('')}
+                    }).join('')}
                             </div>
                             <!-- 슬립 하단 5개 게임 안내 바 -->
                             <div class="bg-slate-50/90 border-t border-slate-200 px-3 sm:px-4 py-2 flex items-center justify-between text-[11px] text-slate-500">
@@ -3416,6 +3557,30 @@
                     }
                 }
             });
+        }
+
+        // --- (G) 히말라야 로또 원정대 게임 프레임 제어 함수 ---
+        function toggleGameFullscreen() {
+            const frame = document.getElementById('gameFrame');
+            if (!frame) return;
+            if (!document.fullscreenElement) {
+                if (frame.requestFullscreen) {
+                    frame.requestFullscreen();
+                } else if (frame.webkitRequestFullscreen) {
+                    frame.webkitRequestFullscreen();
+                } else if (frame.msRequestFullscreen) {
+                    frame.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) document.exitFullscreen();
+            }
+        }
+
+        function reloadGameFrame() {
+            const frame = document.getElementById('gameFrame');
+            if (frame) {
+                frame.src = frame.src;
+            }
         }
 
         // 초기 바인딩 실행

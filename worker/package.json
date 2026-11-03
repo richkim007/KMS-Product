@@ -1,0 +1,20 @@
+{
+  "name": "kms-loddo-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Worker for Loddo Post-Verification & Upstash Redis ZSET Ranking",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@upstash/redis": "^1.34.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241022.0",
+    "typescript": "^5.6.3",
+    "wrangler": "^3.83.0"
+  }
+}
+

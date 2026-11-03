@@ -1,9 +1,9 @@
 {
-  "name": "kms-product",
+  "name": "kms-loddo",
   "version": "1.0.0",
-  "description": "KMS Product Web",
+  "description": "KMS Loddo Web",
   "scripts": {
-    "start": "live-server --port=5500 --open=/"
+    "start": "node ./node_modules/live-server/live-server.js --port=5500 --open=/"
   },
   "devDependencies": {
     "live-server": "^1.2.2"
