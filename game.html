@@ -72,6 +72,26 @@
         html[dir="rtl"] table th, html[dir="rtl"] table td { text-align: right; }
         html[dir="rtl"] table th.text-center, html[dir="rtl"] table td.text-center { text-align: center; }
         html[dir="rtl"] table th.text-right, html[dir="rtl"] table td.text-right { text-align: left; }
+        html[dir="rtl"] #weatherHud { text-align: right; left: 0.75rem; right: auto; }
+        html[dir="rtl"] #weatherHud .text-left { text-align: right !important; }
+
+        /* ❄️ 극지방 서리 & 화이트아웃 비네트 효과 */
+        .frost-vignette-0 { box-shadow: none; }
+        .frost-vignette-1 { box-shadow: inset 0 0 22px rgba(186,230,253,0.14); }
+        .frost-vignette-2 { box-shadow: inset 0 0 38px rgba(147,197,253,0.22); }
+        .frost-vignette-3 { box-shadow: inset 0 0 58px rgba(96,165,250,0.32); }
+        .frost-vignette-4 { box-shadow: inset 0 0 80px rgba(59,130,246,0.42), inset 0 0 30px rgba(255,255,255,0.22); }
+        .frost-vignette-5 {
+            box-shadow: inset 0 0 100px rgba(239,68,68,0.38), inset 0 0 50px rgba(186,230,253,0.52);
+            animation: deathZonePulse 2.2s infinite ease-in-out;
+        }
+        @keyframes deathZonePulse {
+            0%, 100% { box-shadow: inset 0 0 95px rgba(239,68,68,0.32), inset 0 0 45px rgba(186,230,253,0.45); }
+            50% { box-shadow: inset 0 0 130px rgba(239,68,68,0.55), inset 0 0 65px rgba(186,230,253,0.7); }
+        }
+        .frost-vignette-6 {
+            box-shadow: inset 0 0 85px rgba(251,191,36,0.5), inset 0 0 35px rgba(254,240,138,0.35);
+        }
     </style>
 </head>
 
@@ -244,12 +264,17 @@
                     <div id="o2Bar" class="h-full bg-gradient-to-r from-sky-500 to-cyan-300 transition-all duration-500" style="width:100%"></div>
                 </div>
 
-                <!-- 산맥 지도 -->
-                <div id="mapBox" class="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 rounded-3xl overflow-hidden" style="aspect-ratio: 3 / 2;">
-                    <div id="snowLayer" class="absolute inset-0 pointer-events-none"></div>
-                    <svg viewBox="0 0 600 400" class="absolute inset-0 w-full h-full" preserveAspectRatio="none">
+                <!-- 산맥 지도 및 실시간 고산 눈보라 기상 시뮬레이터 -->
+                <div id="mapBox" class="relative bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-900 border border-slate-800 rounded-3xl overflow-hidden transition-colors duration-1000 shadow-2xl" style="aspect-ratio: 3 / 2;">
+                    <!-- 🌨️ 60FPS 캔버스 고산 눈보라 물리 시뮬레이터 -->
+                    <canvas id="blizzardCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-10"></canvas>
+                    <!-- ❄️ 극지방 서리 & 화이트아웃 비네트 -->
+                    <div id="frostVignette" class="absolute inset-0 pointer-events-none rounded-3xl transition-all duration-700 z-15 frost-vignette-0"></div>
+                    <div id="snowLayer" class="absolute inset-0 pointer-events-none z-12"></div>
+                    
+                    <svg viewBox="0 0 600 400" id="mountainSvg" class="absolute inset-0 w-full h-full transition-all duration-1000" preserveAspectRatio="none">
                         <defs>
-                            <linearGradient id="mtn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#94a3b8" /><stop offset="1" stop-color="#1e293b" /></linearGradient>
+                            <linearGradient id="mtn" x1="0" y1="0" x2="0" y2="1"><stop id="mtnStop0" offset="0" stop-color="#94a3b8" /><stop id="mtnStop1" offset="1" stop-color="#1e293b" /></linearGradient>
                             <linearGradient id="mtnBack" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#475569" /><stop offset="1" stop-color="#0f172a" /></linearGradient>
                         </defs>
                         <g fill="#fff" opacity=".6">
@@ -258,27 +283,41 @@
                         </g>
                         <polygon fill="url(#mtnBack)" points="0,400 0,250 70,190 130,230 200,150 260,200 330,130 380,170 440,110 520,160 600,120 600,400" />
                         <polygon fill="url(#mtn)" points="0,400 30,380 110,340 190,300 260,260 330,210 390,160 440,110 470,55 500,95 540,150 600,210 600,400" />
-                        <polygon fill="#f8fafc" opacity=".95" points="470,55 440,110 452,104 462,118 474,100 486,114 500,95" />
+                        <polygon id="summitSnowCap" fill="#f8fafc" opacity=".95" points="470,55 440,110 452,104 462,118 474,100 486,114 500,95" />
                         <polygon fill="#e2e8f0" opacity=".6" points="390,160 420,128 430,140 412,160" />
                         <!-- 마의 구간 표시 -->
-                        <polygon fill="#ef4444" opacity=".14" points="355,200 415,140 470,62 500,95 440,170 390,215" />
+                        <polygon id="deathZoneOverlay" fill="#ef4444" opacity=".14" points="355,200 415,140 470,62 500,95 440,170 390,215" />
                         <polyline fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5 6" opacity=".5" points="40,375 130,335 210,295 285,255 355,200 415,140 470,62" />
                         <polyline id="routeDone" fill="none" stroke="#facc15" stroke-width="3" points="40,375" />
                     </svg>
-                    <div id="campLayer" class="absolute inset-0"></div>
+                    <div id="campLayer" class="absolute inset-0 z-20"></div>
                     <!-- 등반가 말 (국기 + 연령대 뱃지) -->
-                    <div id="climber" class="absolute -translate-x-1/2 -translate-y-full select-none flex flex-col items-center pointer-events-none" style="left:6.6%; top:93.7%;">
+                    <div id="climber" class="absolute -translate-x-1/2 -translate-y-full select-none flex flex-col items-center pointer-events-none z-20" style="left:6.6%; top:93.7%;">
                         <span id="climberCountryBadge" class="text-[10px] font-bold bg-slate-950/90 px-1.5 py-0.5 rounded-full border border-amber-400 text-amber-300 shadow-md whitespace-nowrap">
                             🇰🇷 40대 나
                         </span>
                         <span class="text-2xl mt-0.5">🧗</span>
                     </div>
-                    <div class="absolute top-3 left-3 bg-slate-950/80 border border-slate-700 rounded-xl px-3 py-2 text-xs">
+                    <div class="absolute top-3 left-3 bg-slate-950/80 border border-slate-700 rounded-xl px-3 py-2 text-xs z-25">
                         <div class="text-slate-500 text-[10px]" data-i18n="estIqLabel">현재 두뇌 등급</div>
                         <div class="font-extrabold text-emerald-300 text-xs sm:text-sm tracking-tight truncate max-w-[130px] sm:max-w-none" id="liveIq">-</div>
                     </div>
+                    <!-- 🌤️ 실시간 히말라야 고산 기상 관측소 HUD -->
+                    <div id="weatherHud" class="absolute top-3 right-3 bg-slate-950/90 backdrop-blur border border-sky-400/40 rounded-xl px-2.5 py-1.5 text-xs shadow-xl z-25 flex items-center gap-2 transition-all duration-700">
+                        <span id="weatherIcon" class="text-base select-none">☀️</span>
+                        <div class="leading-tight text-left">
+                            <div id="weatherStatus" class="font-extrabold text-white text-[11px] truncate max-w-[155px]">출발선 · 맑은 고원 미풍</div>
+                            <div class="text-[9px] text-slate-400 font-mono flex items-center gap-1.5 mt-0.5">
+                                <span id="weatherAlt" class="text-emerald-300 font-bold">2,860m</span>
+                                <span>|</span>
+                                <span id="weatherTemp" class="text-sky-300">-5°C</span>
+                                <span>|</span>
+                                <span id="weatherWind" class="text-amber-300">2.5m/s</span>
+                            </div>
+                        </div>
+                    </div>
                     <!-- 라이벌 추적 표시 -->
-                    <div id="rivalPill" class="absolute bottom-3 right-3 bg-slate-950/90 border border-amber-500/50 rounded-xl px-3 py-1.5 text-xs text-right shadow-lg">
+                    <div id="rivalPill" class="absolute bottom-3 right-3 bg-slate-950/90 border border-amber-500/50 rounded-xl px-3 py-1.5 text-xs text-right shadow-lg z-25">
                         <div class="text-[10px] text-amber-300 font-bold flex items-center justify-end gap-1"><i class="fa-solid fa-stopwatch text-amber-400"></i><span data-i18n="rivalLabel">내 연령대 라이벌</span></div>
                         <div id="rivalText" class="font-extrabold text-white text-xs">🇺🇸 40대 Apex (9분 18초)</div>
                     </div>
@@ -694,7 +733,9 @@
                 footerAbout: '소개', footerTerms: '이용약관 및 면책조항', footerPrivacy: '개인정보처리방침', footerContact: '문의하기',
                 rankSuffix: '등급', rankChallenge: '등급 도전', rankPosSuffix: '위', expComplete: 'EXPEDITION COMPLETE', summitConquered: '정상 정복 완료!',
                 allClearedDesc: '모든 구간을 돌파했습니다! 완등 시간을 단축하여 전세계 1위를 굳혀보세요.', secWithin: '초 내외', numberLabel: '번호', doneLabel: '완료', climberMe: '나', leagueSuffix: '리그',
-                qType_수열_추리: '수열 추리', qType_방정식: '방정식', qType_연상_퀴즈: '연상 퀴즈', qType_올림피아드: '수학올림피아드'
+                qType_수열_추리: '수열 추리', qType_방정식: '방정식', qType_연상_퀴즈: '연상 퀴즈', qType_올림피아드: '수학올림피아드',
+                qType_피라미드_삼각형: '피라미드 삼각형', qType_3D_입체_큐브: '3D 입체 큐브', qType_도형_기하학: '도형 기하학', qType_격자_사각형: '격자 사각형', qType_오각별_각도: '오각별 각도', qType_계산_퍼즐: '계산 퍼즐',
+                weatherLukla: '출발선 · 맑은 고원 미풍', weatherBasecamp: '베이스캠프 · 맑은 설풍', weatherIcefall: '쿰부 빙폭 · 싸락눈과 설연', weatherValley: '서부 설원 · 거세지는 눈보라', weatherGale: '로체 급경사 · 강풍 경보', weatherDeathZone: '🌪️ [데스존] 마의 화이트아웃 극한 눈보라!', weatherSummitStorm: '⚡ 에베레스트 정상 암벽 · 극한의 설풍', weatherSummitGlory: '👑 에베레스트 정상 정복! 구름 위의 황금빛 서광'
             },
             en: {
                 viewLeaderboard: 'View Leaderboard', brandTitle: 'KMS Lotto Lab', brandBadge: 'INFINITE BRAIN',
@@ -732,7 +773,9 @@
                 footerAbout: 'About', footerTerms: 'Terms of Service', footerPrivacy: 'Privacy Policy', footerContact: 'Contact',
                 rankSuffix: ' Tier', rankChallenge: ' Tier Challenge', rankPosSuffix: 'th', expComplete: 'EXPEDITION COMPLETE', summitConquered: 'Everest Conquered!',
                 allClearedDesc: 'All stages cleared! Improve your time to secure #1 in the world.', secWithin: 's pace', numberLabel: 'Ball', doneLabel: 'Done', climberMe: 'ME', leagueSuffix: 'League',
-                qType_수열_추리: 'Sequence', qType_방정식: 'Equation', qType_연상_퀴즈: 'Association', qType_올림피아드: 'Math Olympiad'
+                qType_수열_추리: 'Sequence', qType_방정식: 'Equation', qType_연상_퀴즈: 'Association', qType_올림피아드: 'Math Olympiad',
+                qType_피라미드_삼각형: 'Pyramid Triangle', qType_3D_입체_큐브: '3D Cubes', qType_도형_기하학: 'Geometry', qType_격자_사각형: 'Square Grid', qType_오각별_각도: 'Star Angles', qType_계산_퍼즐: 'Math Puzzle',
+                weatherLukla: 'Start · Mild Alpine Breeze', weatherBasecamp: 'Basecamp · Clear Mountain Breeze', weatherIcefall: 'Khumbu Icefall · Light Snow Drift', weatherValley: 'Western Cwm · Rising Snowstorm', weatherGale: 'Lhotse Wall · 85 km/h Gale Warning', weatherDeathZone: '🌪️ [Death Zone] Whiteout Blizzard!', weatherSummitStorm: '⚡ Everest Peak Wall · Extreme Ridge Wind', weatherSummitGlory: '👑 Everest Conquered! Golden Cloud Sunrise'
             },
             zh: {
                 viewLeaderboard: '查看排行榜', brandTitle: 'KMS 彩票实验室', brandBadge: 'INFINITE BRAIN',
@@ -770,7 +813,9 @@
                 footerAbout: '关于', footerTerms: '用户条款与免责声明', footerPrivacy: '隐私权政策', footerContact: '联系我们',
                 rankSuffix: '级', rankChallenge: '级挑战', rankPosSuffix: '位', expComplete: '远征圆满完成', summitConquered: '征服珠峰顶峰！',
                 allClearedDesc: '已突破所有路段！请继续缩短用时，巩固全球第1的宝座。', secWithin: '秒左右', numberLabel: '号码', doneLabel: '完成', climberMe: '我', leagueSuffix: '联赛',
-                qType_수열_추리: '数列推理', qType_방정식: '方程求解', qType_연상_퀴즈: '联想谜题', qType_올림피아드: '奥林匹克'
+                qType_수열_추리: '数列推理', qType_방정식: '方程求解', qType_연상_퀴즈: '联想谜题', qType_올림피아드: '奥林匹克',
+                qType_피라미드_삼각형: '金字塔三角形', qType_3D_입체_큐브: '3D立体方块', qType_도형_기하학: '图形几何', qType_격자_사각형: '网格正方形', qType_오각별_각도: '五角星角度', qType_계산_퍼즐: '运算谜题',
+                weatherLukla: '起点 · 高原晴风', weatherBasecamp: '大本营 · 晴朗雪风', weatherIcefall: '昆布冰瀑 · 细雪飘零', weatherValley: '西库姆雪原 · 风雪渐强', weatherGale: '洛子峰冰壁 · 85km/h大风预警', weatherDeathZone: '🌪️ [死亡地带] 极度白化狂风暴雪!', weatherSummitStorm: '⚡ 珠峰绝壁 · 极地暴风', weatherSummitGlory: '👑 征服珠峰之巅！云海金色朝晖'
             },
             ja: {
                 viewLeaderboard: 'ランキングを見る', brandTitle: 'KMS ロトラボ', brandBadge: 'INFINITE BRAIN',
@@ -808,7 +853,9 @@
                 footerAbout: '概要', footerTerms: '利用規約・免責事項', footerPrivacy: 'プライバシーポリシー', footerContact: 'お問い合わせ',
                 rankSuffix: '等級', rankChallenge: '等級挑戦', rankPosSuffix: '位', expComplete: '遠征完了', summitConquered: '山頂制覇完了！',
                 allClearedDesc: '全区間を踏破しました！タイムを縮めて世界1位を確固たるものに。', secWithin: '秒前後', numberLabel: '番号', doneLabel: '完了', climberMe: '自分', leagueSuffix: 'リーグ',
-                qType_수열_추리: '数列推理', qType_방정식: '方程式', qType_연상_퀴즈: '連想パズル', qType_올림피아드: 'オリンピック'
+                qType_수열_추리: '数列推理', qType_방정식: '方程式', qType_연상_퀴즈: '連想パズル', qType_올림피아드: 'オリンピック',
+                qType_피라미드_삼각형: 'ピラミッド三角形', qType_3D_입체_큐브: '3D立体キューブ', qType_도형_기하학: '図形幾何学', qType_격자_사각형: 'グリッド正方形', qType_오각별_각도: '星型角度推理', qType_계산_퍼즐: '計算パズル',
+                weatherLukla: '出発地 · 穏やかな高原の風', weatherBasecamp: 'ベースキャンプ · 晴れた雪風', weatherIcefall: 'クンブ氷瀑 · 小雪と粉雪', weatherValley: '西部雪原 · 強まる吹雪', weatherGale: 'ローツェ急斜面 · 時速85km強風警報', weatherDeathZone: '🌪️ [デスゾーン] 猛烈なホワイトアウト極限吹雪!', weatherSummitStorm: '⚡ エベレスト岩壁 · 極限の強風雪', weatherSummitGlory: '👑 エベレスト頂上征服！雲上の黄金の夜明け'
             },
             vi: {
                 viewLeaderboard: 'Xem bảng xếp hạng', brandTitle: 'KMS Lotto Lab', brandBadge: 'INFINITE BRAIN',
@@ -846,7 +893,9 @@
                 footerAbout: 'Giới thiệu', footerTerms: 'Điều khoản & Miễn trừ', footerPrivacy: 'Chính sách bảo mật', footerContact: 'Liên hệ',
                 rankSuffix: ' Cấp', rankChallenge: ' Thử thách cấp', rankPosSuffix: '', expComplete: 'HOÀN THÀNH THÁM HIỂM', summitConquered: 'Chinh phục đỉnh Everest thành công!',
                 allClearedDesc: 'Đã vượt qua tất cả các chặng! Hãy rút ngắn thời gian để giữ vững vị trí số 1 toàn cầu.', secWithin: 's', numberLabel: 'Số', doneLabel: 'Hoàn thành', climberMe: 'Tôi', leagueSuffix: 'Giải',
-                qType_수열_추리: 'Dãy số', qType_방정식: 'Phương trình', qType_연상_퀴즈: 'Liên tưởng', qType_올림피아드: 'Olympiad'
+                qType_수열_추리: 'Dãy số', qType_방정식: 'Phương trình', qType_연상_퀴즈: 'Liên tưởng', qType_올림피아드: 'Olympiad',
+                qType_피라미드_삼각형: 'Tam giác kim tự tháp', qType_3D_입체_큐브: 'Khối 3D', qType_도형_기하학: 'Hình học', qType_격자_사각형: 'Lưới ô vuông', qType_오각별_각도: 'Góc ngôi sao', qType_계산_퍼즐: 'Đố tính toán',
+                weatherLukla: 'Khởi điểm · Gió cao nguyên nhẹ', weatherBasecamp: 'Basecamp · Gió tuyết quang đãng', weatherIcefall: 'Thác băng Khumbu · Tuyết rơi nhẹ', weatherValley: 'Thung lũng Cwm · Bão tuyết tăng', weatherGale: 'Dốc Lhotse · Cảnh báo gió 85km/h', weatherDeathZone: '🌪️ [Vùng tử địa] Bão tuyết Whiteout mù mịt!', weatherSummitStorm: '⚡ Vách đỉnh Everest · Gió tuyết cực hạn', weatherSummitGlory: '👑 Đã chinh phục đỉnh Everest! Ánh dương vàng trên mây'
             },
             es: {
                 viewLeaderboard: 'Ver clasificación', brandTitle: 'KMS Lotto Lab', brandBadge: 'INFINITE BRAIN',
@@ -884,7 +933,9 @@
                 footerAbout: 'Acerca de', footerTerms: 'Términos y condiciones', footerPrivacy: 'Política de privacidad', footerContact: 'Contacto',
                 rankSuffix: 'º Grado', rankChallenge: ' Desafío de grado', rankPosSuffix: 'º', expComplete: 'EXPEDICIÓN COMPLETADA', summitConquered: '¡Cima conquistada con éxito!',
                 allClearedDesc: '¡Superaste todas las etapas! Mejora tu tiempo para afianzar el puesto #1 del mundo.', secWithin: 's aprox.', numberLabel: 'Número', doneLabel: 'Listo', climberMe: 'YO', leagueSuffix: 'Liga',
-                qType_수열_추리: 'Sucesión', qType_방정식: 'Ecuación', qType_연상_퀴즈: 'Asociación', qType_올림피아드: 'Olimpiada'
+                qType_수열_추리: 'Sucesión', qType_방정식: 'Ecuación', qType_연상_퀴즈: 'Asociación', qType_올림피아드: 'Olimpiada',
+                qType_피라미드_삼각형: 'Triángulo piramidal', qType_3D_입체_큐브: 'Cubos 3D', qType_도형_기하학: 'Geometría', qType_격자_사각형: 'Cuadrícula', qType_오각별_각도: 'Ángulo estrellado', qType_계산_퍼즐: 'Puzle de cálculo',
+                weatherLukla: 'Inicio · Brisa alpina suave', weatherBasecamp: 'Campo Base · Brisa despejada', weatherIcefall: 'Cascada Khumbu · Nieve ligera', weatherValley: 'Valle Cwm · Ventisca creciente', weatherGale: 'Pared de Lhotse · Vendaval 85 km/h', weatherDeathZone: '🌪️ [Zona de muerte] ¡Ventisca blanca extrema!', weatherSummitStorm: '⚡ Pared de cumbre · Viento glacial extremo', weatherSummitGlory: '👑 ¡Everest Conquistado! Amanecer dorado entre nubes'
             },
             fr: {
                 viewLeaderboard: 'Voir le classement', brandTitle: 'KMS Lotto Lab', brandBadge: 'INFINITE BRAIN',
@@ -922,7 +973,9 @@
                 footerAbout: 'À propos', footerTerms: 'Conditions d\'utilisation', footerPrivacy: 'Politique de confidentialité', footerContact: 'Contact',
                 rankSuffix: 'e Grade', rankChallenge: ' Défi de grade', rankPosSuffix: 'e', expComplete: 'EXPÉDITION TERMINÉE', summitConquered: 'Sommet conquis avec succès !',
                 allClearedDesc: 'Toutes les étapes franchies ! Améliorez votre temps pour consolider votre 1ère place mondiale.', secWithin: 's env.', numberLabel: 'Numéro', doneLabel: 'Terminé', climberMe: 'MOI', leagueSuffix: 'Ligue',
-                qType_수열_추리: 'Suite logique', qType_방정식: 'Équation', qType_연상_퀴즈: 'Association', qType_올림피아드: 'Olympiade'
+                qType_수열_추리: 'Suite logique', qType_방정식: 'Équation', qType_연상_퀴즈: 'Association', qType_올림피아드: 'Olympiade',
+                qType_피라미드_삼각형: 'Triangle pyramidal', qType_3D_입체_큐브: 'Cubes 3D', qType_도형_기하학: 'Géométrie', qType_격자_사각형: 'Grille carrée', qType_오각별_각도: 'Angle d\'étoile', qType_계산_퍼즐: 'Casse-tête calcul',
+                weatherLukla: 'Départ · Brise alpine calme', weatherBasecamp: 'Camp de base · Brise claire', weatherIcefall: 'Cascade Khumbu · Neige légère', weatherValley: 'Combe occidentale · Tempête naissante', weatherGale: 'Face du Lhotse · Coup de vent 85 km/h', weatherDeathZone: '🌪️ [Zone de mort] Blizzard blanc extrême !', weatherSummitStorm: '⚡ Crête sommitale · Vent polaire extrême', weatherSummitGlory: '👑 Everest vaincu ! Aurore dorée au-dessus des nuages'
             },
             ar: {
                 viewLeaderboard: 'عرض لوحة الصدارة', brandTitle: 'مختبر KMS لوتو', brandBadge: 'INFINITE BRAIN',
@@ -960,7 +1013,9 @@
                 footerAbout: 'عن المنصة', footerTerms: 'الشروط والأحكام', footerPrivacy: 'سياسة الخصوصية', footerContact: 'اتصل بنا',
                 rankSuffix: ' درجة', rankChallenge: ' تحدي الدرجة', rankPosSuffix: '', expComplete: 'اكتملت الرحلة بنجاح', summitConquered: 'تم فتح القمة بنجاح!',
                 allClearedDesc: 'تم اجتياز جميع المراحل! اختصر وقتك لترسيخ صدارتك للمركز الأول عالمياً.', secWithin: 'ثانية تقريباً', numberLabel: 'رقم', doneLabel: 'تم', climberMe: 'أنا', leagueSuffix: 'دوري',
-                qType_수열_추리: 'متتالية عددية', qType_방정식: 'معادلة رياضية', qType_연상_퀴즈: 'لغز ترابطي', qType_올림피아드: 'أولمبياد الرياضيات'
+                qType_수열_추리: 'متتالية عددية', qType_방정식: 'معادلة رياضية', qType_연상_퀴즈: 'لغز ترابطي', qType_올림피아드: 'أولمبياد الرياضيات',
+                qType_피라미드_삼각형: 'مثلث هرمي', qType_3D_입체_큐브: 'مكعبات 3D', qType_도형_기하학: 'الهندسة الرياضية', qType_격자_사각형: 'شبكة المربعات', qType_오각별_각도: 'زوايا النجمة', qType_계산_퍼즐: 'لغز حسابي',
+                weatherLukla: 'نقطة الانطلاق · نسيم جبلي عليل', weatherBasecamp: 'المعسكر الرئيسي · نسيم ثلجي صافٍ', weatherIcefall: 'جليد خومبو · ثلوج خفيفة', weatherValley: 'وادي كوم · عاصفة ثلجية متصاعدة', weatherGale: 'جدار لوتسي · تحذير رياح 85 كم/ساعة', weatherDeathZone: '🌪️ [منطقة الموت] عاصفة ثلجية بيضاء عمياء عاتية!', weatherSummitStorm: '⚡ جدار القمة · رياح قطبية بالغة الشدة', weatherSummitGlory: '👑 تم فتح قمة إيفرست! شروق ذهبي مهيب فوق السحاب'
             }
         };
 
@@ -1041,12 +1096,12 @@
 
         const STAGES_I18N = {
             ko: [
-                { name: '베이스캠프', topics: '단순 수열 · 기초 계산 · 쉬운 연상', desc: '몸풀기 구간! 15초 내외로 빠른 판단을 내려보세요.' },
-                { name: '캠프1 · 쿰부 아이스폴', topics: '피보나치 · 제곱수 · 곱셈 수열', desc: '얼음탑 지대. 1, 1, 2, 3, 5처럼 빠르게 이어지는 수를 캐치하세요.' },
-                { name: '캠프2 · 웨스턴 쿰', topics: '교차 수열 · 소수 · 학과 문제', desc: '"침묵의 계곡". 방심하면 시간이 순식간에 흘러갑니다.' },
-                { name: '캠프3 · 로체 페이스', topics: '함수 대응 · 2계 차분 · 상식 연상', desc: '45도 빙벽. 직관적 두뇌 스피드가 필요한 구간입니다.' },
-                { name: '캠프4 · 사우스 콜 (마의 구간)', topics: '연산 기호 퍼즐 · 트리보나치 · 나이 방정식', desc: '⚠️ 마의 2등급 구간! 전세계 등반가의 70%가 탈락하는 죽음의 지대입니다.' },
-                { name: '에베레스트 정상', topics: '세계수학올림피아드(IMO) · 오일러 피 함수 · 카탈랑 수 · 르장드르 공식', desc: '세계의 지붕 8,848m! 국제 수학경시대회(IMO/AIME) 수준의 극한 정수론·조합론 테스트를 통과해야만 정상에 오릅니다.' },
+                { name: '베이스캠프', topics: '피라미드 삼각형 추리 · 기초 수열 · 사칙연산', desc: '몸풀기 구간! 10개 삼각형 세기 등 시각 퍼즐과 수열을 빠르게 풀어보세요.' },
+                { name: '캠프1 · 쿰부 아이스폴', topics: '3D 입체 큐브 · 2단 피라미드 · 피보나치', desc: '얼음탑 지대. 3D 입체 블록과 연속 수열의 법칙을 캐치하세요.' },
+                { name: '캠프2 · 웨스턴 쿰', topics: '3×3 격자 사각형 · 역삼각 분할망 · 소수', desc: '"침묵의 계곡". 바둑판 사각형 및 기하학적 격자를 신속히 파악하세요.' },
+                { name: '캠프3 · 로체 페이스', topics: '오각별 각도 추리 · 중선 삼각형(16개) · 함수 대응', desc: '45도 빙벽. 별 모양 내각의 합과 중선 도형 추리가 펼쳐집니다.' },
+                { name: '캠프4 · 사우스 콜 (마의 구간)', topics: '복합 3D 큐브 Voxel · 기호 연산 · 트리보나치', desc: '⚠️ 마의 2등급 구간! 숨겨진 3D 블록과 고난도 기호 연산의 데스존입니다.' },
+                { name: '에베레스트 정상', topics: 'IMO 오일러 다면체 정리(V-E+F=2) · 피 함수 · 카탈랑 수', desc: '세계의 지붕 8,848m! 국제 수학올림피아드(IMO) 수준의 정수론·입체기하학을 돌파하세요.' },
             ],
             en: [
                 { name: 'Base Camp', topics: 'Arithmetic · Basic Ops · Quick Association', desc: 'Warm-up zone! Aim to make swift decisions in under 15 seconds.' },
@@ -1350,6 +1405,143 @@
             };
         }
 
+        // ================= 📐 [신규] 시각적 기하·도형 퍼즐 SVG 생성기 =================
+        function geoQ(type, head, svgHtml, ans, hint, exp, key = '') {
+            return {
+                type,
+                a: ans,
+                hint,
+                exp,
+                key: key || ('GEO:' + ans + ':' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 6)),
+                html: qHead(head) + `<div class="my-2 flex justify-center items-center bg-slate-950/70 border border-slate-800/80 rounded-2xl p-2.5 shadow-inner">${svgHtml}</div>`
+            };
+        }
+
+        function geoTriangleCountSvg(baseSegments, levels, uid = 'gt') {
+            const apexX = 140, apexY = 20, baseY = 165, baseL = 30, baseR = 250;
+            let svg = `<svg viewBox="0 0 280 180" class="w-full max-w-[280px] mx-auto filter drop-shadow select-none">`;
+            svg += `<defs><linearGradient id="${uid}_grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3"/><stop offset="100%" stop-color="#6366f1" stop-opacity="0.08"/></linearGradient></defs>`;
+            svg += `<polygon points="${apexX},${apexY} ${baseL},${baseY} ${baseR},${baseY}" fill="url(#${uid}_grad)" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round"/>`;
+            for (let i = 1; i < baseSegments; i++) {
+                const bx = baseL + (baseR - baseL) * (i / baseSegments);
+                svg += `<line x1="${apexX}" y1="${apexY}" x2="${bx.toFixed(1)}" y2="${baseY}" stroke="#818cf8" stroke-width="2"/>`;
+                svg += `<circle cx="${bx.toFixed(1)}" cy="${baseY}" r="3" fill="#818cf8"/>`;
+            }
+            for (let lvl = 1; lvl < levels; lvl++) {
+                const t = lvl / levels;
+                const ly = apexY + (baseY - apexY) * t;
+                const lx = apexX + (baseL - apexX) * t;
+                const rx = apexX + (baseR - apexX) * t;
+                svg += `<line x1="${lx.toFixed(1)}" y1="${ly.toFixed(1)}" x2="${rx.toFixed(1)}" y2="${ly.toFixed(1)}" stroke="#f59e0b" stroke-width="2.2"/>`;
+                svg += `<circle cx="${lx.toFixed(1)}" cy="${ly.toFixed(1)}" r="3" fill="#f59e0b"/>`;
+                svg += `<circle cx="${rx.toFixed(1)}" cy="${ly.toFixed(1)}" r="3" fill="#f59e0b"/>`;
+            }
+            svg += `<circle cx="${apexX}" cy="${apexY}" r="4" fill="#fbbf24"/>`;
+            svg += `<circle cx="${baseL}" cy="${baseY}" r="4" fill="#38bdf8"/>`;
+            svg += `<circle cx="${baseR}" cy="${baseY}" r="4" fill="#38bdf8"/>`;
+            svg += `</svg>`;
+            return svg;
+        }
+
+        function geoInvertedTrianglePyramidSvg(rows = 3, uid = 'git') {
+            const apexX = 140, apexY = 20, baseY = 165, baseL = 30, baseR = 250;
+            let svg = `<svg viewBox="0 0 280 180" class="w-full max-w-[280px] mx-auto filter drop-shadow select-none">`;
+            svg += `<polygon points="${apexX},${apexY} ${baseL},${baseY} ${baseR},${baseY}" fill="rgba(56,189,248,0.12)" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round"/>`;
+            for (let r = 1; r < rows; r++) {
+                const t = r / rows;
+                const y = apexY + (baseY - apexY) * t;
+                const lx = apexX + (baseL - apexX) * t;
+                const rx = apexX + (baseR - apexX) * t;
+                svg += `<line x1="${lx.toFixed(1)}" y1="${y.toFixed(1)}" x2="${rx.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#818cf8" stroke-width="2"/>`;
+                const blx = baseL + (baseR - baseL) * (r / rows);
+                const brx = baseR - (baseR - baseL) * (r / rows);
+                const alx = apexX + (baseL - apexX) * (1 - t);
+                const arx = apexX + (baseR - apexX) * (1 - t);
+                svg += `<line x1="${blx.toFixed(1)}" y1="${baseY}" x2="${arx.toFixed(1)}" y2="${(apexY + (baseY - apexY) * (1 - t)).toFixed(1)}" stroke="#f59e0b" stroke-width="1.8"/>`;
+                svg += `<line x1="${brx.toFixed(1)}" y1="${baseY}" x2="${alx.toFixed(1)}" y2="${(apexY + (baseY - apexY) * (1 - t)).toFixed(1)}" stroke="#f59e0b" stroke-width="1.8"/>`;
+            }
+            svg += `</svg>`;
+            return svg;
+        }
+
+        function geoIsometricCubeSvg(grid, uid = 'gic') {
+            const originX = 140, originY = 95;
+            const tileW = 26, tileH = 15, cubeH = 22;
+            const rows = grid.length, cols = grid[0].length;
+            let svg = `<svg viewBox="0 0 280 180" class="w-full max-w-[280px] mx-auto filter drop-shadow select-none">`;
+            for (let d = 0; d < rows + cols; d++) {
+                for (let r = 0; r < rows; r++) {
+                    const c = d - r;
+                    if (c < 0 || c >= cols) continue;
+                    const height = grid[r][c];
+                    for (let z = 0; z < height; z++) {
+                        const sx = originX + (c - r) * tileW;
+                        const sy = originY + (c + r) * tileH - z * cubeH;
+                        const top = `${sx},${sy - tileH} ${sx + tileW},${sy} ${sx},${sy + tileH} ${sx - tileW},${sy}`;
+                        const left = `${sx - tileW},${sy} ${sx},${sy + tileH} ${sx},${sy + tileH + cubeH} ${sx - tileW},${sy + cubeH}`;
+                        const right = `${sx},${sy + tileH} ${sx + tileW},${sy} ${sx + tileW},${sy + cubeH} ${sx},${sy + tileH + cubeH}`;
+                        svg += `<polygon points="${top}" fill="#38bdf8" stroke="#bae6fd" stroke-width="1.2"/>`;
+                        svg += `<polygon points="${left}" fill="#0284c7" stroke="#0369a1" stroke-width="1.2"/>`;
+                        svg += `<polygon points="${right}" fill="#0369a1" stroke="#075985" stroke-width="1.2"/>`;
+                    }
+                }
+            }
+            svg += `</svg>`;
+            return svg;
+        }
+
+        function geoGridSquareSvg(size = 3, uid = 'ggs') {
+            const startX = 65, startY = 15, cellSize = 50;
+            const totalW = size * cellSize;
+            let svg = `<svg viewBox="0 0 280 180" class="w-full max-w-[280px] mx-auto filter drop-shadow select-none">`;
+            svg += `<rect x="${startX}" y="${startY}" width="${totalW}" height="${totalW}" fill="rgba(99,102,241,0.12)" stroke="#818cf8" stroke-width="3" rx="4"/>`;
+            for (let i = 1; i < size; i++) {
+                const pos = startX + i * cellSize;
+                const posY = startY + i * cellSize;
+                svg += `<line x1="${pos}" y1="${startY}" x2="${pos}" y2="${startY + totalW}" stroke="#38bdf8" stroke-width="1.8"/>`;
+                svg += `<line x1="${startX}" y1="${posY}" x2="${startX + totalW}" y2="${posY}" stroke="#38bdf8" stroke-width="1.8"/>`;
+            }
+            svg += `</svg>`;
+            return svg;
+        }
+
+        function geoStarAngleSvg(angles, missingIdx = 4, uid = 'gsa') {
+            const cx = 140, cy = 90, rOuter = 70, rInner = 28;
+            const pts = [];
+            for (let i = 0; i < 10; i++) {
+                const r = (i % 2 === 0) ? rOuter : rInner;
+                const angle = -Math.PI / 2 + (i * Math.PI / 5);
+                pts.push(`${(cx + r * Math.cos(angle)).toFixed(1)},${(cy + r * Math.sin(angle)).toFixed(1)}`);
+            }
+            let svg = `<svg viewBox="0 0 280 180" class="w-full max-w-[280px] mx-auto filter drop-shadow select-none">`;
+            svg += `<polygon points="${pts.join(' ')}" fill="rgba(245,158,11,0.15)" stroke="#f59e0b" stroke-width="2.5" stroke-linejoin="round"/>`;
+            for (let i = 0; i < 5; i++) {
+                const angle = -Math.PI / 2 + (i * 2 * Math.PI / 5);
+                const lx = cx + (rOuter + 14) * Math.cos(angle);
+                const ly = cy + (rOuter + 14) * Math.sin(angle) + 4;
+                const txt = (i === missingIdx) ? '?°' : `${angles[i]}°`;
+                const col = (i === missingIdx) ? '#fbbf24' : '#e2e8f0';
+                const fw = (i === missingIdx) ? '900' : '700';
+                svg += `<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" font-size="12" font-weight="${fw}" fill="${col}" text-anchor="middle" font-family="monospace">${txt}</text>`;
+            }
+            svg += `</svg>`;
+            return svg;
+        }
+
+        function geoTriangleMediansSvg(uid = 'gtm') {
+            const apexX = 140, apexY = 20, baseY = 165, baseL = 30, baseR = 250;
+            const midBaseX = (baseL + baseR) / 2, midBaseY = baseY;
+            const midLeftX = (apexX + baseL) / 2, midLeftY = (apexY + baseY) / 2;
+            const midRightX = (apexX + baseR) / 2, midRightY = (apexY + baseY) / 2;
+            let svg = `<svg viewBox="0 0 280 180" class="w-full max-w-[280px] mx-auto filter drop-shadow select-none">`;
+            svg += `<polygon points="${apexX},${apexY} ${baseL},${baseY} ${baseR},${baseY}" fill="rgba(56,189,248,0.12)" stroke="#38bdf8" stroke-width="2.5" stroke-linejoin="round"/>`;
+            svg += `<line x1="${apexX}" y1="${apexY}" x2="${midBaseX}" y2="${midBaseY}" stroke="#f59e0b" stroke-width="2"/>`;
+            svg += `<line x1="${baseL}" y1="${baseY}" x2="${midRightX}" y2="${midRightY}" stroke="#f59e0b" stroke-width="2"/>`;
+            svg += `<line x1="${baseR}" y1="${baseY}" x2="${midLeftX}" y2="${midLeftY}" stroke="#f59e0b" stroke-width="2"/>`;
+            svg += `</svg>`;
+            return svg;
+        }
+
         // ================= ♾️ [1단계] IndexedDB + Bloom Filter 로컬 영구 중복 배제 =================
         // 수십만 문제를 풀어도 브라우저 메모리 Bloom Set에서 O(1) 초고속 검색 후 백그라운드 IndexedDB 저장
         class LoddoPuzzleDB {
@@ -1531,10 +1723,32 @@
                     if (candidates.length < 3) return null;
                     const sampled = candidates.sort(() => Math.random() - 0.5).slice(0, 3).map(c => c.name);
                     return assocQ(sampled, targetNum, '모두 같은 숫자를 상징합니다.', `공통 숫자: ${targetNum}`);
+                },
+                // 1.6 [시각 기하] 피라미드 삼각형 개수 추리 (유저 지정: 10개 삼각형 출제)
+                () => {
+                    const variants = [
+                        { n: 4, k: 1, ans: 10, hint: '밑변 4개 구간에 따라 4 + 3 + 2 + 1 로 합산하세요.', exp: '1구간(4) + 2구간(3) + 3구간(2) + 전체(1) = 10개 삼각형' },
+                        { n: 3, k: 1, ans: 6, hint: '1칸짜리 3개, 2칸짜리 2개, 전체 1개', exp: '3 + 2 + 1 = 6개 삼각형' },
+                        { n: 5, k: 1, ans: 15, hint: '5 + 4 + 3 + 2 + 1 로 계산하세요.', exp: '5 + 4 + 3 + 2 + 1 = 15개 삼각형' }
+                    ];
+                    const v = pick(variants);
+                    const svg = geoTriangleCountSvg(v.n, v.k, 't1_' + v.ans + '_' + Date.now().toString(36));
+                    return geoQ('피라미드 삼각형', '도형 그림 안에 크고 작은 <b>삼각형은 총 몇 개</b>가 있습니까?', svg, v.ans, v.hint, v.exp, `GEO_TRI_${v.n}_${v.k}_${Date.now()}`);
+                },
+                // 1.7 [시각 공간] 기초 3D 입체 큐브 블록 추리
+                () => {
+                    const variants = [
+                        { grid: [[1, 2], [0, 1]], ans: 4, exp: '1 + 2 + 0 + 1 = 4개 큐브' },
+                        { grid: [[2, 1], [1, 2]], ans: 6, exp: '2 + 1 + 1 + 2 = 6개 큐브' },
+                        { grid: [[1, 1], [1, 1]], ans: 4, exp: '1×4 = 4개 큐브' }
+                    ];
+                    const v = pick(variants);
+                    const svg = geoIsometricCubeSvg(v.grid, 'c1_' + v.ans + '_' + Date.now().toString(36));
+                    return geoQ('3D 입체 큐브', '보이지 않는 아래 블록을 포함하여 정육면체 <b>큐브는 총 몇 개</b>입니까?', svg, v.ans, '각 기둥의 높이를 차례로 합산해보세요.', v.exp, `GEO_CUBE_${v.ans}_${Date.now()}`);
                 }
             ],
 
-            // Tier 2: 5등 캠프1 (피보나치 변형, 계차수열, 제곱수 ± k, 두 배 연산)
+            // Tier 2: 5등 캠프1 (피보나치 변형, 계차수열, 제곱수 ± k, 두 배 연산, 시각 기하)
             2: [
                 // 2.1 무한 피보나치 변형 (초기값 a, b 무작위)
                 () => {
@@ -1569,10 +1783,30 @@
                     for (let i = 1; i < 5; i++) s.push(s[i - 1] * 2 + k);
                     if (s[4] > 45) return null;
                     return seqQ(s.slice(0, 4), s[4], '두 배를 한 뒤 일정한 수를 더하거나 뺍니다.', `규칙: ×2 ${k >= 0 ? '+' : '-'} ${Math.abs(k)} → ${s[3]} × 2 ${k >= 0 ? '+' : '-'} ${Math.abs(k)} = ${s[4]}`);
+                },
+                // 2.5 [시각 기하] 2단 가로선 피라미드 삼각형 개수 추리 (12개, 20개)
+                () => {
+                    const variants = [
+                        { n: 3, k: 2, ans: 12, exp: '윗단 6개 + 전체단 6개 = 총 12개 삼각형' },
+                        { n: 4, k: 2, ans: 20, exp: '윗단 10개 + 전체단 10개 = 총 20개 삼각형' }
+                    ];
+                    const v = pick(variants);
+                    const svg = geoTriangleCountSvg(v.n, v.k, 't2_' + v.ans + '_' + Date.now().toString(36));
+                    return geoQ('피라미드 삼각형', '가로선으로 분할된 피라미드 안에 크고 작은 <b>삼각형은 총 몇 개</b>?', svg, v.ans, '가로선 위쪽 영역과 전체 삼각형에서 각각 몇 개가 나오는지 합산하세요.', v.exp, `GEO_TRI2_${v.n}_${v.k}_${Date.now()}`);
+                },
+                // 2.6 [시각 공간] 3D 계단형 입체 큐브 쌓기
+                () => {
+                    const variants = [
+                        { grid: [[1, 2, 3], [0, 1, 2], [0, 0, 1]], ans: 10, exp: '(1+2+3) + (1+2) + 1 = 10개 큐브' },
+                        { grid: [[1, 2], [2, 3]], ans: 8, exp: '1 + 2 + 2 + 3 = 8개 큐브' }
+                    ];
+                    const v = pick(variants);
+                    const svg = geoIsometricCubeSvg(v.grid, 'c2_' + v.ans + '_' + Date.now().toString(36));
+                    return geoQ('3D 입체 큐브', '입체 모형을 만들기 위해 쌓인 <b>정육면체 큐브의 총 개수</b>는?', svg, v.ans, '각 열의 층수를 바닥부터 차례로 세어 합산하세요.', v.exp, `GEO_CUBE_S_${v.ans}_${Date.now()}`);
                 }
             ],
 
-            // Tier 3: 4등 캠프2 (교차 지퍼 수열, 소수 시프트, 삼각수, 동물 다리 연립방정식)
+            // Tier 3: 4등 캠프2 (교차 지퍼 수열, 소수 시프트, 삼각수, 동물 다리 연립방정식, 시각 사각형)
             3: [
                 // 3.1 무한 교차 지퍼 수열 (홀수항/짝수항 독립)
                 () => {
@@ -1607,6 +1841,16 @@
                     const s = range(6, i => T(startN + i));
                     if (s[5] > 45) return null;
                     return seqQ(s.slice(0, 5), s[5], '차이가 +1, +2, +3… 처럼 1씩 계속 늘어납니다.', `삼각수(Triangular number): 차이가 1씩 증가 → 정답 ${s[5]}`);
+                },
+                // 3.5 [시각 기하] 3×3 정사각형 격자 개수 추리 (14개)
+                () => {
+                    const svg = geoGridSquareSvg(3, 'g3_14_' + Date.now().toString(36));
+                    return geoQ('격자 사각형', '3×3 바둑판 격자 안에 크고 작은 <b>정사각형은 총 몇 개</b>가 있습니까?', svg, 14, '1×1 크기(9개), 2×2 크기(4개), 3×3 전체(1개)를 합산하세요.', '1² + 2² + 3² = 1 + 4 + 9 = 14개 정사각형', `GEO_SQ_3X3_${Date.now()}`);
+                },
+                // 3.6 [시각 기하] 역삼각형 피라미드 분할 삼각형 (3줄 = 13개)
+                () => {
+                    const svg = geoInvertedTrianglePyramidSvg(3, 'git3_' + Date.now().toString(36));
+                    return geoQ('피라미드 삼각형', '정삼각형 격자망 안에 바로 선 삼각형과 뒤집힌 <b>삼각형은 총 몇 개</b>?', svg, 13, '크기 1짜리(9개), 크기 2짜리(3개), 전체 크기 3(1개)를 합산하세요.', '9(소) + 3(중) + 1(대) = 13개 삼각형', `GEO_INV_TRI_3_${Date.now()}`);
                 }
             ],
 
@@ -1645,10 +1889,25 @@
                         return seqQ([2, 6, 12, 20, 30], 42, '1×2, 2×3, 3×4, 4×5…', 'n × (n+1) 규칙: 6 × 7 = 42');
                     }
                     return seqQ(s.slice(0, 5), s[5], '연속한 두 수의 곱입니다.', `n × (n+1) = ${s[5]}`);
+                },
+                // 4.4 [시각 기하] 오각별 꼭짓점 각도 추리 (합 = 180°)
+                () => {
+                    const a = ri(30, 40), b = ri(32, 40), c = ri(30, 38), d = ri(30, 42);
+                    const sum = a + b + c + d;
+                    const missing = 180 - sum;
+                    if (missing < 20 || missing > 50) return null;
+                    const angles = [a, b, c, d, missing];
+                    const svg = geoStarAngleSvg(angles, 4, 'star_' + missing + '_' + Date.now().toString(36));
+                    return geoQ('오각별 각도', '5개의 꼭짓점으로 이루어진 별 모양에서 <b>물음표(?°)의 각도</b>는?', svg, missing, '모든 5각별 꼭짓점 5개의 내각의 합은 항상 180°입니다!', `180° - (${a}° + ${b}° + ${c}° + ${d}°) = ${missing}°`, `GEO_STAR_${missing}_${Date.now()}`);
+                },
+                // 4.5 [시각 기하] 중선으로 분할된 삼각형 개수 추리 (16개)
+                () => {
+                    const svg = geoTriangleMediansSvg('gtm16_' + Date.now().toString(36));
+                    return geoQ('도형 기하학', '세 변의 중선을 모두 연결한 삼각형 안에 <b>크고 작은 삼각형은 총 몇 개</b>?', svg, 16, '가장 작은 삼각형 6개, 2칸 합친 것 3개, 중선으로 나뉜 반쪽 6개, 전체 1개', '작은 것 6 + 2칸짜리 3 + 반쪽 6 + 전체 1 = 16개 삼각형', `GEO_MEDIAN_16_${Date.now()}`);
                 }
             ],
 
-            // Tier 5: 2등 캠프4 - 마의 구간 (트리보나치, 3중 예시 기호 연산, 나이 역산 방정식)
+            // Tier 5: 2등 캠프4 - 마의 구간 (트리보나치, 3중 예시 기호 연산, 나이 역산 방정식, 복합 3D 큐브)
             5: [
                 // 5.1 무한 트리보나치 변형 (앞의 3개 수를 합산)
                 () => {
@@ -1698,6 +1957,17 @@
                         }
                     }
                     return null;
+                },
+                // 5.4 [시각 공간] 고난도 3D 입체 큐브 Voxel 모형
+                () => {
+                    const variants = [
+                        { grid: [[2, 3, 1], [1, 2, 2], [1, 1, 1]], ans: 15, exp: '(2+3+1) + (1+2+2) + (1+1+1) = 15개 큐브' },
+                        { grid: [[3, 2, 1], [2, 3, 2], [1, 2, 3]], ans: 19, exp: '(3+2+1) + (2+3+2) + (1+2+3) = 19개 큐브' },
+                        { grid: [[2, 4, 2], [1, 3, 1], [0, 2, 0]], ans: 15, exp: '8 + 5 + 2 = 15개 큐브' }
+                    ];
+                    const v = pick(variants);
+                    const svg = geoIsometricCubeSvg(v.grid, 'c5_' + v.ans + '_' + Date.now().toString(36));
+                    return geoQ('3D 입체 큐브', '숨겨진 아래 블록을 포함하여 복합 입체 구조물에 사용된 <b>큐브는 총 몇 개</b>?', svg, v.ans, '가려진 아랫부분도 빈틈없이 채워져 있다고 가정하고 각 좌표별 높이를 합산하세요.', v.exp, `GEO_CUBE_ADV_${v.ans}_${Date.now()}`);
                 }
             ],
 
@@ -1947,6 +2217,25 @@
                         `홀수항: ×2 거듭제곱 (${range(5, A).join(', ')}) / 짝수항: +${b}씩 증가 → 다음 홀수항은 ${ans}`,
                         '교차 거듭제곱 수열',
                         `EXP_INTERLEAVE:${s}_${b}_${ans}`
+                    );
+                },
+
+                // 6.11 [IMO 입체기하학] 오일러 다면체 정리 (V - E + F = 2)
+                () => {
+                    const polyhedra = [
+                        { name: '정십이면체(Dodecahedron)', v: 20, e: 30, f: 12 },
+                        { name: '정이십면체(Icosahedron)', v: 12, e: 30, f: 20 },
+                        { name: '깎은 정팔면체(Truncated Octahedron)', v: 24, e: 36, f: 14 }
+                    ];
+                    const item = pick(polyhedra);
+                    return textQ(
+                        'IMO 입체기하 · 오일러 정리',
+                        '볼록 다면체 꼭짓점·모서리·면 공식 (V - E + F = 2)',
+                        `볼록 다면체인 <b>${item.name}</b>은 <b>${item.f}개의 면(F)</b>과 <b>${item.e}개의 모서리(E)</b>를 가집니다. 이 다면체의 <b>꼭짓점(V)의 총 개수</b>는?`,
+                        item.v,
+                        '오일러의 다면체 정리 공식: V - E + F = 2 (즉, V = E - F + 2)',
+                        `V = E - F + 2 = ${item.e} - ${item.f} + 2 = ${item.v}개`,
+                        `IMO_EULER_POLY:${item.v}_${Date.now()}`
                     );
                 }
             ]
@@ -2500,7 +2789,10 @@
                 <p class="text-[10px] text-slate-600 mt-4">※ 밤 22:00까지 순위가 실시간 집계됩니다. 다시 도전해 시간을 단축하고 ${myProfile.age} 1위에 올라서세요!</p>`;
 
             addLog(success ? `🏆 완등! 총 시간 <b class="text-amber-300">${formatDurationHuman(S.totalSec)}</b> · ${myProfile.age} ${ageRankPos}위` : `🆘 하산. 총 시간 ${formatDurationHuman(S.totalSec)} · ${myProfile.age} ${ageRankPos}위`);
-            if (success) burstSnow(80);
+            if (success) {
+                burstSnow(80);
+                if (weatherEngine) weatherEngine.setStage(6, true);
+            }
             showModal(success ? '🏆' : '🆘', success ? '1등급 정상 정복!' : '산소 고갈 · 원정 종료', body, '⚡ 다시 도전해 시간 단축하기', true);
             render();
             renderGlobalBoard();
@@ -2540,6 +2832,7 @@
             $('ansInput').disabled = lock;
 
             renderCamps();
+            if (weatherEngine) weatherEngine.setStage(S.stage, done);
             $('logList').innerHTML = S.log.map(t => `<li>${t}</li>`).join('');
         }
 
@@ -2991,6 +3284,211 @@
             }).join('') + '</div>';
         }
 
+        // ================= 🌪️ [신규] 60FPS 실시간 히말라야 고산 눈보라 물리 시뮬레이터 =================
+        class HimalayanWeatherEngine {
+            constructor(canvasId) {
+                this.canvas = $(canvasId);
+                if (!this.canvas) return;
+                this.ctx = this.canvas.getContext('2d');
+                this.particles = [];
+                this.stage = 0;
+                this.isSummitVictory = false;
+                this.w = 0;
+                this.h = 0;
+                this.animId = null;
+                this.lastTime = performance.now();
+                this.cfg = {
+                    count: 30,
+                    windX: 0.8,
+                    windY: 1.2,
+                    turb: 0.2,
+                    streak: 0,
+                    color: '#ffffff',
+                    fogAlpha: 0.0,
+                    temp: -5,
+                    windMs: 2.5,
+                    icon: '☀️',
+                    statusKey: 'weatherLukla',
+                    statusDefault: '출발선 · 맑은 고원 미풍'
+                };
+                this.initResize();
+                this.initParticles();
+                this.loop = this.loop.bind(this);
+                this.animId = requestAnimationFrame(this.loop);
+            }
+
+            initResize() {
+                const mapBox = $('mapBox');
+                const resize = () => {
+                    if (!mapBox || !this.canvas) return;
+                    const rect = mapBox.getBoundingClientRect();
+                    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+                    this.w = rect.width;
+                    this.h = rect.height;
+                    this.canvas.width = Math.round(rect.width * dpr);
+                    this.canvas.height = Math.round(rect.height * dpr);
+                    if (this.ctx.resetTransform) {
+                        this.ctx.resetTransform();
+                    } else {
+                        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                    }
+                    this.ctx.scale(dpr, dpr);
+                };
+                window.addEventListener('resize', resize);
+                setTimeout(resize, 60);
+                resize();
+            }
+
+            initParticles() {
+                this.particles = [];
+                for (let i = 0; i < 480; i++) {
+                    this.particles.push({
+                        x: Math.random() * (this.w || 600),
+                        y: Math.random() * (this.h || 400),
+                        z: 0.3 + Math.random() * 0.7,
+                        size: 1 + Math.random() * 2.4,
+                        wobble: Math.random() * Math.PI * 2,
+                        wobbleSpeed: 0.02 + Math.random() * 0.05,
+                        gold: Math.random() < 0.45
+                    });
+                }
+            }
+
+            setStage(stageNum, isVictory = false) {
+                this.stage = stageNum;
+                this.isSummitVictory = isVictory;
+                const frostEl = $('frostVignette');
+                const weatherStatusEl = $('weatherStatus');
+                const weatherIconEl = $('weatherIcon');
+                const weatherAltEl = $('weatherAlt');
+                const weatherTempEl = $('weatherTemp');
+                const weatherWindEl = $('weatherWind');
+
+                if (isVictory) {
+                    this.cfg = {
+                        count: 220,
+                        windX: 0.6,
+                        windY: 1.2,
+                        turb: 0.3,
+                        streak: 0,
+                        color: '#fbbf24',
+                        fogAlpha: 0.0,
+                        temp: -28,
+                        windMs: 1.5,
+                        icon: '👑',
+                        statusKey: 'weatherSummitGlory',
+                        statusDefault: '👑 에베레스트 정상 정복! 구름 위의 황금빛 서광'
+                    };
+                    if (frostEl) frostEl.className = 'absolute inset-0 pointer-events-none rounded-3xl transition-all duration-1000 z-15 frost-vignette-6';
+                    if ($('mtnStop0')) $('mtnStop0').setAttribute('stop-color', '#fbbf24');
+                    if ($('mtnStop1')) $('mtnStop1').setAttribute('stop-color', '#78350f');
+                } else {
+                    const stageConfigs = [
+                        { count: 30, windX: 0.8, windY: 1.2, turb: 0.2, streak: 0, fogAlpha: 0.0, temp: -5, windMs: 2.5, icon: '☀️', key: 'weatherLukla', def: '출발선 · 맑은 고원 미풍', alt: '2,860m', vignette: 'frost-vignette-0' },
+                        { count: 65, windX: 1.6, windY: 1.6, turb: 0.4, streak: 0, fogAlpha: 0.02, temp: -12, windMs: 5.2, icon: '🌤️', key: 'weatherBasecamp', def: '베이스캠프 · 맑은 설풍', alt: '5,364m', vignette: 'frost-vignette-1' },
+                        { count: 120, windX: 4.2, windY: 2.4, turb: 0.8, streak: 3, fogAlpha: 0.06, temp: -18, windMs: 9.8, icon: '🌨️', key: 'weatherIcefall', def: '쿰부 빙폭 · 싸락눈과 설연', alt: '6,065m', vignette: 'frost-vignette-2' },
+                        { count: 200, windX: 8.0, windY: 3.6, turb: 1.4, streak: 7, fogAlpha: 0.12, temp: -25, windMs: 16.5, icon: '❄️', key: 'weatherValley', def: '서부 설원 · 거세지는 눈보라', alt: '6,400m', vignette: 'frost-vignette-3' },
+                        { count: 320, windX: 14.5, windY: 5.2, turb: 2.2, streak: 14, fogAlpha: 0.20, temp: -34, windMs: 24.2, icon: '🌬️', key: 'weatherGale', def: '로체 급경사 · 강풍 경보', alt: '7,161m', vignette: 'frost-vignette-4' },
+                        { count: 460, windX: 24.0, windY: 7.8, turb: 3.6, streak: 26, fogAlpha: 0.35, temp: -42, windMs: 34.0, icon: '🌪️', key: 'weatherDeathZone', def: '🌪️ [데스존] 마의 화이트아웃 극한 눈보라!', alt: '7,920m', vignette: 'frost-vignette-5' },
+                        { count: 480, windX: 28.0, windY: 8.5, turb: 4.2, streak: 30, fogAlpha: 0.40, temp: -48, windMs: 38.0, icon: '⚡', key: 'weatherSummitStorm', def: '⚡ 에베레스트 정상 암벽 · 극한의 설풍', alt: '8,848m', vignette: 'frost-vignette-5' }
+                    ];
+                    const c = stageConfigs[Math.min(stageNum, stageConfigs.length - 1)];
+                    this.cfg = {
+                        count: c.count,
+                        windX: c.windX,
+                        windY: c.windY,
+                        turb: c.turb,
+                        streak: c.streak,
+                        color: '#ffffff',
+                        fogAlpha: c.fogAlpha,
+                        temp: c.temp,
+                        windMs: c.windMs,
+                        icon: c.icon,
+                        statusKey: c.key,
+                        statusDefault: c.def
+                    };
+                    if (frostEl) frostEl.className = 'absolute inset-0 pointer-events-none rounded-3xl transition-all duration-700 z-15 ' + c.vignette;
+                    if ($('mtnStop0')) $('mtnStop0').setAttribute('stop-color', stageNum === 5 ? '#ef4444' : '#94a3b8');
+                    if ($('mtnStop1')) $('mtnStop1').setAttribute('stop-color', stageNum === 5 ? '#450a0a' : '#1e293b');
+                }
+
+                if (weatherIconEl) weatherIconEl.textContent = this.cfg.icon;
+                if (weatherStatusEl) weatherStatusEl.textContent = t(this.cfg.statusKey, this.cfg.statusDefault);
+                const curAlt = S ? (S.stage === 0 ? START.alt : STAGES[Math.min(S.stage - 1, STAGES.length - 1)].alt) : 2860;
+                if (weatherAltEl) weatherAltEl.textContent = fmt(curAlt) + 'm';
+                if (weatherTempEl) weatherTempEl.textContent = `${this.cfg.temp}°C`;
+                if (weatherWindEl) weatherWindEl.textContent = `${this.cfg.windMs}m/s`;
+            }
+
+            loop(now) {
+                this.animId = requestAnimationFrame(this.loop);
+                if (!this.ctx || !this.w || !this.h) return;
+                this.lastTime = now;
+
+                this.ctx.clearRect(0, 0, this.w, this.h);
+
+                // 화이트아웃 안개 레이어
+                if (this.cfg.fogAlpha > 0.01) {
+                    this.ctx.fillStyle = `rgba(224, 242, 254, ${this.cfg.fogAlpha})`;
+                    this.ctx.fillRect(0, 0, this.w, this.h);
+                }
+
+                const activeCount = Math.min(this.cfg.count, this.particles.length);
+                const timeSec = now / 1000;
+
+                for (let i = 0; i < activeCount; i++) {
+                    const p = this.particles[i];
+                    p.wobble += p.wobbleSpeed;
+                    const turbOffset = Math.sin(timeSec * 2 + p.wobble) * this.cfg.turb * 3;
+
+                    p.x += (this.cfg.windX * p.z + turbOffset);
+                    p.y += (this.cfg.windY * p.z);
+
+                    if (p.x > this.w + 40) p.x = -40;
+                    if (p.x < -40) p.x = this.w + 40;
+                    if (p.y > this.h + 20) {
+                        p.y = -20;
+                        p.x = Math.random() * (this.w + 60) - 30;
+                    }
+
+                    this.ctx.save();
+                    if (this.isSummitVictory) {
+                        // 정상 정복 황금빛 별빛 축포
+                        this.ctx.fillStyle = p.gold ? '#fbbf24' : '#fef08a';
+                        this.ctx.globalAlpha = 0.6 + Math.sin(p.wobble) * 0.35;
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, p.size * 1.2, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    } else if (this.cfg.streak > 3) {
+                        // 고속 모션 블러 블리자드 스노우 스트릭
+                        const tailLen = this.cfg.streak * p.z;
+                        const angle = Math.atan2(this.cfg.windY, this.cfg.windX);
+                        const tx = p.x - Math.cos(angle) * tailLen;
+                        const ty = p.y - Math.sin(angle) * tailLen;
+
+                        this.ctx.strokeStyle = (this.stage === 5) ? '#fecaca' : '#ffffff';
+                        this.ctx.globalAlpha = 0.5 + p.z * 0.45;
+                        this.ctx.lineWidth = Math.max(1, p.size * 0.9);
+                        this.ctx.lineCap = 'round';
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(p.x, p.y);
+                        this.ctx.lineTo(tx, ty);
+                        this.ctx.stroke();
+                    } else {
+                        // 일반 설송
+                        this.ctx.fillStyle = '#ffffff';
+                        this.ctx.globalAlpha = 0.45 + p.z * 0.45;
+                        this.ctx.beginPath();
+                        this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        this.ctx.fill();
+                    }
+                    this.ctx.restore();
+                }
+            }
+        }
+
+        let weatherEngine = null;
+
         // ================= 연출 =================
         function burstSnow(count) {
             for (let i = 0; i < count; i++) {
@@ -3025,6 +3523,7 @@
         }
 
         // 초기화
+        weatherEngine = new HimalayanWeatherEngine('blizzardCanvas');
         burstSnow(25);
         const initialLang = detectInitialLanguage();
         switchLanguage(initialLang);
