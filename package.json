@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "KMS Loddo Web",
   "scripts": {
-    "start": "node ./node_modules/live-server/live-server.js --port=5500 --open=/"
+    "start": "node ./node_modules/live-server/live-server.js --port=5500 --open=/",
+    "build": "echo 'Build OK'"
   },
   "devDependencies": {
     "live-server": "^1.2.2"
