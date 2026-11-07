@@ -6,11 +6,15 @@ body {
     color: #333;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Change: Align content to the top */
-    min-height: 100vh; /* Use min-height to ensure background covers screen */
+    align-items: flex-start;
+    /* Change: Align content to the top */
+    min-height: 100vh;
+    /* Use min-height to ensure background covers screen */
     margin: 0;
-    padding: 20px 0; /* Add some vertical padding */
-    box-sizing: border-box; /* Include padding in height calculation */
+    padding: 20px 0;
+    /* Add some vertical padding */
+    box-sizing: border-box;
+    /* Include padding in height calculation */
     overflow: auto;
 }
 
@@ -18,17 +22,22 @@ body {
     background-image: url('https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
     background-size: cover;
     background-position: center;
-    color: #FFFF00; /* Yellow text */
-    padding: 20px 30px; /* A bit more padding for a title */
+    color: #FFFF00;
+    /* Yellow text */
+    padding: 20px 30px;
+    /* A bit more padding for a title */
     border: 2px solid #FFF;
-    border-radius: 15px; /* Match lotto-box radius */
-    font-size: 26px; /* Slightly larger font */
+    border-radius: 15px;
+    /* Match lotto-box radius */
+    font-size: 26px;
+    /* Slightly larger font */
     font-weight: bold;
     text-shadow: 2px 2px 4px #000;
     text-align: center;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 20px; /* Space below the title */
+    margin-bottom: 20px;
+    /* Space below the title */
 }
 
 .container {
@@ -56,18 +65,22 @@ body {
 }
 
 .highlight {
-    color: #4A90E2; /* A striking blue color */
-    font-weight: 900;  /* Extra bold */
+    color: #4A90E2;
+    /* A striking blue color */
+    font-weight: 900;
+    /* Extra bold */
 }
 
 .description {
     margin-top: 20px;
     color: #555;
-    text-align: left; /* Left-align the description text */
+    text-align: left;
+    /* Left-align the description text */
 }
 
 .description p {
-    margin-bottom: 1.2em; /* Space between paragraphs */
+    margin-bottom: 1.2em;
+    /* Space between paragraphs */
     font-size: 16px;
     line-height: 1.6;
 }
@@ -78,8 +91,10 @@ body {
 
 .long-line {
     font-size: 15px;
-    color: #191970; /* Deep Navy Blue */
-    font-weight: bold; /* Make it bold */
+    color: #191970;
+    /* Deep Navy Blue */
+    font-weight: bold;
+    /* Make it bold */
 }
 
 .user-inputs {
@@ -88,15 +103,15 @@ body {
 
 .input-group-row {
     display: flex;
-    align-items: flex-start; 
-    gap: 15px; 
+    align-items: flex-start;
+    gap: 15px;
 }
 
 #birthdate-group {
     flex: 1.7;
 }
 
-#zodiac-group { 
+#zodiac-group {
     flex: 1.3;
 }
 
@@ -156,7 +171,8 @@ body {
 #lotto-numbers-container {
     margin-top: 30px;
     padding: 20px;
-    background-color: transparent; /* Make background transparent */
+    background-color: transparent;
+    /* Make background transparent */
     border-radius: 5px;
     display: none;
     border: 1px solid #FFF;
@@ -183,27 +199,37 @@ body {
     font-weight: bold;
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-    box-shadow: inset -2px -2px 5px rgba(0,0,0,0.4), 2px 2px 5px rgba(255,255,255,0.4);
+    box-shadow: inset -2px -2px 5px rgba(0, 0, 0, 0.4), 2px 2px 5px rgba(255, 255, 255, 0.4);
 }
 
 .lotto-ball.c-yellow {
     background-color: #fbc400;
+    color: #111827;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .lotto-ball.c-blue {
-    background-color: #69c8f2;
+    background-color: #2563eb;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75), 0 0 1.5px rgba(0, 0, 0, 0.9);
 }
 
 .lotto-ball.c-red {
-    background-color: #ff7272;
+    background-color: #ef4444;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75), 0 0 1.5px rgba(0, 0, 0, 0.9);
 }
 
 .lotto-ball.c-gray {
-    background-color: #aaa;
+    background-color: #cbd5e1;
+    color: #111827;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
 .lotto-ball.c-green {
-    background-color: #b0d840;
+    background-color: #84cc16;
+    color: #111827;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 }
 
 .birthdate-label-container {
@@ -224,10 +250,12 @@ body {
 }
 
 .radio-group input[type="radio"] {
-    width: auto; /* override the 100% width from the general input style */
+    width: auto;
+    /* override the 100% width from the general input style */
 }
 
 .date-input-container {
     position: relative;
-    cursor: pointer; /* 마우스를 올리면 클릭 커서로 변경 */
+    cursor: pointer;
+    /* 마우스를 올리면 클릭 커서로 변경 */
 }

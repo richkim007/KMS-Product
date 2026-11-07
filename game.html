@@ -27,8 +27,11 @@
         .ball.empty { background: #0f172a; border: 2px dashed #334155; box-shadow: none; color: #475569; }
         .ball.pop { animation: pop .5s cubic-bezier(.2,1.6,.4,1) both; }
         @keyframes pop { from { transform: scale(0) rotate(-180deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
-        .b-yellow { background: #f5b800; } .b-blue { background: #3b82f6; } .b-red { background: #ef4444; }
-        .b-gray { background: #6b7280; } .b-green { background: #22c55e; }
+        .b-yellow { background: #ffd943; color: #111827 !important; text-shadow: 0 1px 0 rgba(255,255,255,0.5) !important; }
+        .b-blue { background: #2563eb; color: #ffffff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.75), 0 0 1.5px rgba(0,0,0,0.9) !important; }
+        .b-red { background: #ef4444; color: #ffffff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.75), 0 0 1.5px rgba(0,0,0,0.9) !important; }
+        .b-gray { background: #cbd5e1; color: #111827 !important; text-shadow: 0 1px 0 rgba(255,255,255,0.6) !important; }
+        .b-green { background: #84cc16; color: #111827 !important; text-shadow: 0 1px 0 rgba(255,255,255,0.45) !important; }
 
         .seq { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
         .seq span { min-width: 2.8rem; padding: .55rem .7rem; border-radius: .75rem; background: #0f172a; border: 1.5px solid #334155; font-weight: 800; font-size: 1.25rem; color: #fff; text-align: center; }
@@ -99,6 +102,13 @@
     <!-- 비사행성 상단 공지 바 -->
     <div class="bg-slate-900 text-slate-400 text-xs py-2 px-4 text-center border-b border-slate-800">
         <span data-i18n="topNotice">🧠 본 게임은 <strong class="text-slate-200">100% 무료 무한 절차적 생성 두뇌 콘텐츠</strong>이며, 1억 명이 접속해도 서로 다른 문제가 출제되고 이전에 푼 문제는 영구 배제됩니다.</span>
+    </div>
+
+    <!-- 🚀 차세대 메타버스 & 로블록스 독립 프로젝트 전환 안내 바 -->
+    <div class="bg-gradient-to-r from-indigo-950 via-purple-950 to-indigo-950 border-b border-indigo-700/50 py-1.5 px-4 text-xs text-center flex flex-wrap items-center justify-center gap-2">
+        <span class="bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black px-2 py-0.5 rounded text-[10px] uppercase">Roadmap Notice</span>
+        <span class="text-indigo-200">본 히말라야 타임어택 고도화 버전은 <strong>3D 메타버스 & 로블록스(Roblox) 플랫폼 독립 프로젝트</strong>로 분리 개발 중인 연구용 프로토타입입니다.</span>
+        <a href="/" class="text-amber-300 hover:text-white underline font-bold ml-1">loddo.co 메인 웹사이트로 이동 &rarr;</a>
     </div>
 
     <!-- 🔥 일일 전세계 랭킹 마감 카운트다운 바 -->

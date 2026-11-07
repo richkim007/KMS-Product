@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>수학적 균형의 미학: 합계·홀짝·고저 밸런스와 번호 조합의 원리 | KMS 로또 빅데이터 랩</title>
+    <meta name="description" content="로또 6/45의 조합론적 분포, 정규분포를 따르는 번호 총합(130~155 구간), 홀짝 비율 및 고저 밸런스에 담긴 통계학적 대칭성과 수학적 원리를 알기 쉽게 해설합니다.">
+    <link rel="canonical" href="https://www.loddo.co/articles/math-balance-guide.html">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800;900&display=swap');
+        body { font-family: 'Pretendard', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+    <div class="bg-slate-900 text-slate-300 text-xs py-2 px-4 text-center border-b border-slate-800">
+        <span>📢 본 사이트는 순수 통계 및 시뮬레이션 연구를 위한 <strong>100% 무료 정보 도구</strong>이며, 유료 번호 리딩이나 복권 대행 구매를 일절 하지 않습니다.</span>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-xs">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center space-x-2.5">
+                <img src="/images/brand-logo.jpg" alt="KSS Global" class="w-9 h-9 rounded-full object-cover shadow-sm border border-amber-300/80">
+                <div class="flex flex-col">
+                    <span class="text-lg font-black text-slate-900 tracking-tight leading-none">KMS 로또 랩</span>
+                    <span class="text-[10px] text-indigo-600 font-bold mt-0.5">www.loddo.co</span>
+                </div>
+            </a>
+            <nav class="flex items-center space-x-4 text-sm font-semibold text-slate-600">
+                <a href="/" class="hover:text-indigo-600 transition">홈으로</a>
+                <a href="/#articles" class="text-indigo-600 font-bold">로또 스토리</a>
+                <a href="/#about" class="hover:text-indigo-600 transition">소개</a>
+                <a href="/#contact" class="hover:text-indigo-600 transition">문의</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-4xl mx-auto px-4 py-12 w-full">
+        <article class="bg-white rounded-3xl p-6 sm:p-12 shadow-sm border border-slate-200 space-y-8">
+            <div class="border-b border-slate-100 pb-6 space-y-3">
+                <div class="flex flex-wrap items-center gap-2 text-xs">
+                    <span class="bg-indigo-50 text-indigo-700 font-extrabold px-3 py-1 rounded-full border border-indigo-200">
+                        제12화 · 수학 & 통계 분석
+                    </span>
+                    <span class="text-slate-400">•</span>
+                    <span class="text-slate-500 font-medium"><i class="fa-regular fa-clock mr-1"></i>읽는 시간 약 4분</span>
+                </div>
+                <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+                    수학적 균형의 미학: 합계·홀짝·고저 밸런스와 번호 조합의 원리
+                </h1>
+                <p class="text-sm sm:text-base text-slate-500 leading-relaxed font-normal">
+                    전체 8,145,060개 조합 중 75% 이상이 집중되는 통계적 정규분포의 비밀. 합계 구간과 홀짝 밸런스를 통해 살펴보는 수학의 아름다움.
+                </p>
+            </div>
+
+            <div class="text-sm sm:text-base leading-relaxed text-slate-700 space-y-6">
+                <p>
+                    로또 6/45의 모든 8,145,060개 조합은 추첨 기계 안에서 완전히 동등한 당첨 확률(약 0.0000123%)을 지닙니다. 그러나 수많은 조합들을 '총합(Sum)', '홀짝 비율(Odd/Even)', '고저 밸런스(High/Low)'라는 거시적 지표로 그룹화하여 관찰하면, <strong>놀랍도록 정교한 수학적 대칭성과 정규분포 곡선</strong>이 나타납니다.
+                </p>
+
+                <div class="p-6 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-3">
+                    <h2 class="text-base sm:text-lg font-black text-indigo-950 flex items-center space-x-2">
+                        <i class="fa-solid fa-chart-area text-indigo-600"></i>
+                        <span>로또 번호 총합의 '황금 구간' (130 ~ 155)</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                        로또 6개 번호의 가능한 최소 합은 [1+2+3+4+5+6 = 21]이고, 최대 합은 [40+41+42+43+44+45 = 255]입니다. 정중앙 평균값은 정확히 <strong>138</strong>입니다.
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1 text-center text-xs">
+                        <div class="bg-white p-3.5 rounded-xl border border-indigo-200">
+                            <span class="text-slate-500">극단 저합 (21~100)</span>
+                            <div class="font-bold text-slate-700 mt-1">출현율 약 8%</div>
+                        </div>
+                        <div class="bg-indigo-600 text-white p-3.5 rounded-xl font-bold shadow-xs">
+                            <span class="text-indigo-200">황금 합계 (120~160)</span>
+                            <div class="font-black text-base text-amber-300 mt-1">출현율 약 65%</div>
+                        </div>
+                        <div class="bg-white p-3.5 rounded-xl border border-indigo-200">
+                            <span class="text-slate-500">극단 고합 (180~255)</span>
+                            <div class="font-bold text-slate-700 mt-1">출현율 약 9%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-black text-slate-900 pt-3">
+                    1. 홀수와 짝수의 대칭적 조화
+                </h3>
+                <p>
+                    45개의 번호 중 홀수는 23개, 짝수는 22개입니다. 거의 1:1에 가까운 구성 덕분에 6개 번호 중 [홀수 3개 : 짝수 3개] 또는 [홀수 2개 : 짝수 4개], [홀수 4개 : 짝수 2개]가 나올 확률이 전체의 <strong>약 82%</strong>에 달합니다. 극단적으로 6개 모두 홀수이거나 6개 모두 짝수인 조합은 각각 약 1% 미만으로 매우 희귀합니다.
+                </p>
+
+                <h3 class="text-lg font-black text-slate-900 pt-3">
+                    2. 고저(High-Low) 밸런스의 수학
+                </h3>
+                <p>
+                    1~22를 저번호(Low), 23~45를 고번호(High)로 구분할 때 역시, 한쪽 구간에 6개가 전부 몰리기보다는 저번호 3개와 고번호 3개가 골고루 섞이는 분포가 가장 빈번합니다. 이는 자연계의 엔트로피 법칙과 통계학의 큰 수의 법칙(Law of Large Numbers)이 복권 시뮬레이션에서도 고스란히 재현됨을 보여줍니다.
+                </p>
+
+                <div class="p-6 rounded-2xl bg-slate-900 text-white space-y-3 shadow-lg">
+                    <div class="flex items-center space-x-2 text-indigo-400 font-bold text-xs uppercase tracking-wider">
+                        <i class="fa-solid fa-calculator"></i>
+                        <span>KMS 로또 랩의 알고리즘 철학</span>
+                    </div>
+                    <blockquote class="text-base sm:text-lg font-extrabold leading-snug">
+                        "통계적 필터링은 미래의 당첨 번호를 예언하는 마법이 아닙니다. 극단적으로 치우친 비현실적 조합을 배제하고, 자연스러운 수학적 균형 구간 안에서 최적의 조합을 시뮬레이션하는 과학적 접근입니다."
+                    </blockquote>
+                    <p class="text-xs text-slate-300">
+                        KMS 로또 랩의 AI 스마트 조합기는 이러한 정규분포 이론을 기반으로 합계와 홀짝의 건강한 밸런스를 기본 적용합니다.
+                    </p>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-200 flex flex-wrap items-center justify-between gap-4">
+                <a href="/articles/paper-preservation.html" class="text-xs sm:text-sm font-bold text-slate-600 hover:text-indigo-600 flex items-center space-x-1.5 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>이전 화: 복권 용지 보관법과 소멸 시효</span>
+                </a>
+                <a href="/#generator" class="px-5 py-2.5 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white rounded-xl text-xs sm:text-sm font-black transition shadow-md flex items-center space-x-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-amber-300"></i>
+                    <span>무료 AI 스마트 조합기 바로가기 &rarr;</span>
+                </a>
+            </div>
+        </article>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 py-8 px-4 text-xs text-slate-500 text-center">
+        <p>© 2026 케이에스에스글로벌 (KSS Global · <a href="https://www.loddo.co" class="text-indigo-600 font-bold hover:underline">www.loddo.co</a>). All rights reserved.</p>
+    </footer>
+</body>
+</html>
