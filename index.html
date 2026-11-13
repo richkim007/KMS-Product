@@ -999,30 +999,47 @@
                 </p>
             </div>
 
-            <!-- 2. 화면 중앙 통합 컨트롤바 (정렬 & 분석 다이렉트 전환 버튼) -->
+            <!-- 2. 화면 중앙 통합 컨트롤바 (4개 핵심 아코디언 탭 버튼) -->
             <div class="mt-6 flex flex-col items-center justify-center gap-3">
-                <!-- 주요 통계/정렬 기준 버튼 (화면 중앙 배치) -->
-                <div class="inline-flex items-center p-1.5 bg-slate-100 rounded-2xl border border-slate-200/90 shadow-2xs max-w-full overflow-x-auto">
-                    <button id="statViewBtn_desc" onclick="switchStatView('desc')"
-                        class="px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black rounded-xl transition-all bg-indigo-600 text-white shadow-sm whitespace-nowrap touch-manipulation">
-                        <i class="fa-solid fa-fire-flame-curved mr-1.5 text-rose-300"></i>최다출현순 (1위~45위)
+                <!-- 주요 4개 핵심 탭 버튼 (클릭 시 아코디언 토글 전개) -->
+                <div class="grid grid-cols-2 sm:flex sm:flex-wrap items-center justify-center gap-1.5 sm:gap-2 p-1.5 bg-slate-100 rounded-2xl border border-slate-200/90 shadow-2xs w-full max-w-2xl">
+                    <button id="statViewBtn_desc" onclick="toggleStatView('desc')"
+                        class="px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation flex items-center justify-center gap-1.5 group">
+                        <i class="fa-solid fa-fire-flame-curved text-rose-500 group-hover:scale-110 transition-transform"></i>
+                        <span>최다출현순 (1위~45위)</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 stat-arrow transition-transform duration-200"></i>
                     </button>
-                    <button id="statViewBtn_asc" onclick="switchStatView('asc')"
-                        class="px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation">
-                        <i class="fa-solid fa-snowflake mr-1.5 text-sky-500"></i>최소출현순
+                    <button id="statViewBtn_asc" onclick="toggleStatView('asc')"
+                        class="px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation flex items-center justify-center gap-1.5 group">
+                        <i class="fa-solid fa-snowflake text-sky-500 group-hover:scale-110 transition-transform"></i>
+                        <span>최소출현순</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 stat-arrow transition-transform duration-200"></i>
                     </button>
-                    <button id="statViewBtn_unshown" onclick="switchStatView('unshown')"
-                        class="px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation">
-                        <i class="fa-solid fa-hourglass-half mr-1.5 text-amber-500"></i>기간별 미출현
+                    <button id="statViewBtn_unshown" onclick="toggleStatView('unshown')"
+                        class="px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation flex items-center justify-center gap-1.5 group">
+                        <i class="fa-solid fa-hourglass-half text-amber-500 group-hover:scale-110 transition-transform"></i>
+                        <span>기간별 미출현</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 stat-arrow transition-transform duration-200"></i>
                     </button>
-                    <button id="statViewBtn_pattern" onclick="switchStatView('pattern')"
-                        class="px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation">
-                        <i class="fa-solid fa-calculator mr-1.5 text-emerald-500"></i>홀짝 패턴
+                    <button id="statViewBtn_pattern" onclick="toggleStatView('pattern')"
+                        class="px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation flex items-center justify-center gap-1.5 group">
+                        <i class="fa-solid fa-calculator text-emerald-500 group-hover:scale-110 transition-transform"></i>
+                        <span>홀짝 패턴</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 stat-arrow transition-transform duration-200"></i>
                     </button>
                 </div>
 
-                <!-- 보너스 번호 포함 옵션 & 평균 출현 요약 뱃지 (화면 중앙 배치) -->
-                <div id="statFreqOptionBar" class="flex items-center justify-center space-x-3 text-xs pt-0.5">
+                <!-- 터치 안내 힌트 (접혀 있을 때 모바일 사용자 친화적 힌트) -->
+                <p id="statTapGuideHint" class="text-[11px] text-slate-400 flex items-center gap-1 animate-pulse">
+                    <i class="fa-regular fa-hand-pointer text-indigo-500"></i>
+                    <span>위 탭을 터치하시면 상세 분석 그래프가 아래로 펼쳐집니다.</span>
+                </p>
+            </div>
+
+            <!-- 3. 하단 상세 통계 뷰 컨테이너 (기본 접힘 상태 · 탭 클릭 시 부드럽게 펼쳐짐) -->
+            <div id="statDirectContentArea" class="mt-4 pt-4 border-t border-slate-100 hidden transition-all duration-300">
+                <!-- 보너스 번호 포함 옵션 & 평균 출현 요약 뱃지 (최다/최소출현순일 때만 표시) -->
+                <div id="statFreqOptionBar" class="flex items-center justify-center space-x-3 text-xs pb-4">
                     <label class="flex items-center space-x-1.5 cursor-pointer select-none bg-slate-50 hover:bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 transition">
                         <input type="checkbox" id="statBonusToggle" onchange="renderFrequencyStats()"
                             class="w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
@@ -1032,10 +1049,6 @@
                         평균 출현: 166.4회
                     </span>
                 </div>
-            </div>
-
-            <!-- 3. 하단 다이렉트 통계 뷰 컨테이너 (상시 노출) -->
-            <div id="statDirectContentArea" class="mt-6 pt-5 border-t border-slate-100">
                 <!-- 뷰 1: 번호별 빈도 및 정렬 (최다출현순 / 최소출현순 다이렉트 표시 - 45개 전체 한눈에 보기) -->
                 <div id="statPanelFreq" class="space-y-3">
                     <div id="freqChartContainer"
@@ -1442,76 +1455,104 @@
 
             <!-- 2. 4대 실시간 요약 지표 HUD 대시보드 -->
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5 max-w-5xl mx-auto">
+                <!-- 1. 총 누적 당첨 인증 -->
                 <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-lg shadow-slate-950/60 text-center space-y-1 hover:border-amber-400/60 transition">
                     <div class="text-[11px] sm:text-xs text-slate-400 font-bold flex items-center justify-center gap-1.5">
                         <i class="fa-solid fa-receipt text-amber-400"></i>
                         <span>총 누적 당첨 인증</span>
                     </div>
-                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight" id="reviewStatTotalCount">1,428건</div>
+                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight" id="reviewStatTotalCount">2건</div>
                     <div class="text-[10px] sm:text-[11px] text-emerald-400 font-semibold flex items-center justify-center gap-1">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        <span>실시간 검증 영수증</span>
+                        <span>실시간 자율 등록 집계</span>
                     </div>
                 </div>
 
+                <!-- 2. 인증 최고 당첨 등급 -->
                 <div class="bg-slate-900/90 border border-amber-500/30 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-lg shadow-slate-950/60 text-center space-y-1 hover:border-amber-400/60 transition">
                     <div class="text-[11px] sm:text-xs text-slate-400 font-bold flex items-center justify-center gap-1.5">
                         <i class="fa-solid fa-crown text-amber-400"></i>
-                        <span>역대 최고 당첨 배출</span>
+                        <span>인증 최고 당첨 등급</span>
                     </div>
-                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight">1등 22.4억원</div>
-                    <div class="text-[10px] sm:text-[11px] text-amber-300 font-semibold">제 1242회 (AI 5필터 조합)</div>
+                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight" id="reviewStatTopPrize">4등 (50,000원)</div>
+                    <div class="text-[10px] sm:text-[11px] text-amber-300 font-semibold" id="reviewStatTopRound">제 1248회 (AI 스마트 조합기)</div>
                 </div>
 
+                <!-- 3. 실시간 등록 대기 현황 -->
                 <div class="bg-slate-900/90 border border-indigo-500/30 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-lg shadow-slate-950/60 text-center space-y-1 hover:border-indigo-400/60 transition">
                     <div class="text-[11px] sm:text-xs text-slate-400 font-bold flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-fire text-orange-400"></i>
-                        <span>최근 4주 당첨 배출</span>
+                        <i class="fa-solid fa-trophy text-orange-400"></i>
+                        <span>1~3등 주인공 대기</span>
                     </div>
-                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-cyan-300 tracking-tight">89건 배출</div>
-                    <div class="text-[10px] sm:text-[11px] text-indigo-300 font-semibold">1등·2등·3등·4등 포함</div>
+                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-cyan-300 tracking-tight" id="reviewStatHighRankStatus">첫 인증 도전 중!</div>
+                    <div class="text-[10px] sm:text-[11px] text-indigo-300 font-semibold">1·2·3등 등록 즉시 명예의 전당 등재</div>
                 </div>
 
+                <!-- 4. 인증 후기 만족도 -->
                 <div class="bg-slate-900/90 border border-indigo-500/30 rounded-2xl p-4 sm:p-5 backdrop-blur-md shadow-lg shadow-slate-950/60 text-center space-y-1 hover:border-indigo-400/60 transition">
                     <div class="text-[11px] sm:text-xs text-slate-400 font-bold flex items-center justify-center gap-1.5">
-                        <i class="fa-solid fa-star text-amber-400"></i>
-                        <span>이용자 만족도</span>
+                        <i class="fa-solid fa-heart text-rose-400"></i>
+                        <span>후기 공감 & 축하</span>
                     </div>
-                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight">4.96 / 5.0</div>
-                    <div class="text-[10px] sm:text-[11px] text-slate-300 font-semibold">★★★★★ (평가 3,820명)</div>
+                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight" id="reviewStatLikesCount">117회 축하</div>
+                    <div class="text-[10px] sm:text-[11px] text-slate-300 font-semibold" id="reviewStatCommentsCount">회원 간 실시간 응원 진행 중</div>
                 </div>
             </div>
 
-            <!-- 3. 필터 탭 & [후기 작성하기] CTA 액션 바 -->
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-indigo-900/60 pb-5 max-w-7xl mx-auto">
-                <!-- 카테고리 필터 탭 -->
-                <div class="flex flex-wrap items-center justify-center md:justify-start gap-1.5 sm:gap-2 text-xs font-bold" id="reviewFilterTabs">
-                    <button onclick="reviewEngine.setFilter('all')" id="revTab-all"
-                        class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 font-black shadow-md shadow-amber-500/20 transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-list-ul"></i>
-                        <span>전체 후기</span>
+            <!-- 3. 등급별 독립 디렉토리 탭 메뉴 & [후기 작성하기] CTA 액션 바 -->
+            <div class="space-y-4 border-b border-indigo-900/60 pb-6 max-w-7xl mx-auto">
+                <!-- 등급별 5대 독립 디렉토리 탭 (1등 ~ 5등 완벽 분리) -->
+                <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 text-xs font-bold" id="reviewFilterTabs">
+                    <!-- 1등 명예의 전당 디렉토리 (최우상단 강조) -->
+                    <button onclick="reviewEngine.setFilter('rank1')" id="revTab-rank1"
+                        class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition flex items-center gap-2 ring-2 ring-amber-300/60 transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-crown text-slate-950 text-sm animate-bounce"></i>
+                        <span>👑 1등 명예의 전당 디렉토리</span>
+                        <span id="revBadge-rank1" class="bg-slate-950 text-amber-300 text-[10px] font-black px-1.5 py-0.5 rounded-full ml-1">0</span>
                     </button>
-                    <button onclick="reviewEngine.setFilter('rank1_2')" id="revTab-rank1_2"
-                        class="px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5">
-                        <span>👑 1등·2등 명예의 전당</span>
+                    <!-- 2등 당첨 인증 디렉토리 -->
+                    <button onclick="reviewEngine.setFilter('rank2')" id="revTab-rank2"
+                        class="px-3.5 py-2.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-medal text-cyan-400"></i>
+                        <span>🥈 2등 당첨 인증 디렉토리</span>
+                        <span id="revBadge-rank2" class="bg-slate-800 text-slate-400 text-[10px] font-bold px-1.5 py-0.5 rounded-full ml-1">0</span>
                     </button>
+                    <!-- 3등 당첨 인증 디렉토리 -->
                     <button onclick="reviewEngine.setFilter('rank3')" id="revTab-rank3"
-                        class="px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5">
-                        <span>🥉 3등 당첨 인증</span>
+                        class="px-3.5 py-2.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-award text-emerald-400"></i>
+                        <span>🥉 3등 당첨 인증 디렉토리</span>
+                        <span id="revBadge-rank3" class="bg-slate-800 text-slate-400 text-[10px] font-bold px-1.5 py-0.5 rounded-full ml-1">0</span>
                     </button>
-                    <button onclick="reviewEngine.setFilter('rank4_5')" id="revTab-rank4_5"
-                        class="px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5">
-                        <span>🎖️ 4·5등 소소한 기쁨</span>
+                    <!-- 4등 당첨 소소한 기쁨 디렉토리 -->
+                    <button onclick="reviewEngine.setFilter('rank4')" id="revTab-rank4"
+                        class="px-3.5 py-2.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-gift text-indigo-400"></i>
+                        <span>🎖️ 4등 당첨 소소한 기쁨 디렉토리</span>
+                        <span id="revBadge-rank4" class="bg-slate-800 text-slate-400 text-[10px] font-bold px-1.5 py-0.5 rounded-full ml-1">0</span>
+                    </button>
+                    <!-- 5등 당첨 본전치기 디렉토리 -->
+                    <button onclick="reviewEngine.setFilter('rank5')" id="revTab-rank5"
+                        class="px-3.5 py-2.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5">
+                        <i class="fa-solid fa-rotate text-purple-400"></i>
+                        <span>🎁 5등 당첨 본전치기 디렉토리</span>
+                        <span id="revBadge-rank5" class="bg-slate-800 text-slate-400 text-[10px] font-bold px-1.5 py-0.5 rounded-full ml-1">0</span>
                     </button>
                 </div>
 
-                <!-- [후기 작성하기] 최우선 CTA 버튼 -->
-                <button onclick="reviewEngine.openWriteModal()"
-                    class="px-6 py-3 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 active:scale-95 text-slate-950 font-black rounded-2xl text-xs sm:text-sm transition-all duration-150 shadow-xl shadow-amber-500/30 hover:shadow-amber-500/50 hover:-translate-y-0.5 flex items-center gap-2.5 group cursor-pointer">
-                    <i class="fa-solid fa-pen-nib text-slate-950 text-sm group-hover:rotate-12 transition-transform"></i>
-                    <span>✍️ 당첨 후기 &amp; 영수증 인증하기</span>
-                    <span class="bg-slate-950 text-amber-300 text-[10px] font-black px-2 py-0.5 rounded-full ml-0.5">실시간 등록</span>
-                </button>
+                <!-- 디렉토리 서브 배너 & [✍️ 이 등급에 실시간 당첨 후기 등록하기] CTA 바 -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/70 border border-slate-800/80 rounded-2xl p-3 sm:p-4 backdrop-blur-md">
+                    <div class="flex items-center gap-2.5 text-xs text-slate-300" id="currentDirectoryNotice">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+                        <span class="font-bold text-white text-sm" id="directoryTitleText">👑 1등 명예의 전당 디렉토리</span>
+                        <span class="text-slate-400 hidden md:inline">| 역대 1등 당첨 회원들의 전용 인증 피드</span>
+                    </div>
+                    <button onclick="reviewEngine.openWriteModalForCurrent()"
+                        class="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 active:scale-95 text-slate-950 font-black rounded-xl text-xs sm:text-sm transition-all duration-150 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 flex items-center justify-center gap-2 group cursor-pointer">
+                        <i class="fa-solid fa-pen-nib text-slate-950 text-xs group-hover:rotate-12 transition-transform"></i>
+                        <span id="currentDirectoryCtaText">✍️ 이 등급에 실시간 당첨 후기 &amp; 영수증 등록하기</span>
+                    </button>
+                </div>
             </div>
 
             <!-- 4. 실시간 후기 카드 렌더링 그리드 컨테이너 -->
@@ -2197,11 +2238,16 @@
 
             <!-- 스크롤 가능한 폼 영역 -->
             <div class="flex-1 overflow-y-auto py-4 space-y-4 pr-1 text-xs">
-                <!-- 1) 닉네임 & 당첨 회차 -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <!-- 1) 닉네임 & 비밀번호 & 당첨 회차 -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
                         <label class="block font-bold text-slate-300 mb-1">작성자 닉네임 <span class="text-rose-400">*</span></label>
                         <input type="text" id="reviewFormNickname" placeholder="예: 황금손_로또천사" maxlength="15"
+                            class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1">비밀번호 <span class="text-slate-400 font-normal">(수정·삭제용)</span> <span class="text-rose-400">*</span></label>
+                        <input type="password" id="reviewFormPassword" placeholder="4자리 이상 숫자/문자" maxlength="20"
                             class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400">
                     </div>
                     <div>
@@ -2221,35 +2267,53 @@
                     </div>
                 </div>
 
-                <!-- 2) 당첨 등수 선택 (버튼 그룹) -->
-                <div>
-                    <label class="block font-bold text-slate-300 mb-1.5">당첨 등수 선택 <span class="text-rose-400">*</span></label>
-                    <div class="grid grid-cols-5 gap-1.5" id="reviewRankButtons">
-                        <button type="button" onclick="reviewEngine.selectRank(1)" id="revRankBtn-1"
-                            class="py-2.5 rounded-xl border border-amber-400/80 bg-amber-500/20 text-amber-300 font-black text-center text-xs transition shadow-xs flex flex-col items-center gap-0.5">
-                            <span class="text-sm">👑</span>
-                            <span>1등</span>
-                        </button>
-                        <button type="button" onclick="reviewEngine.selectRank(2)" id="revRankBtn-2"
-                            class="py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5">
-                            <span class="text-sm">🥈</span>
-                            <span>2등</span>
-                        </button>
-                        <button type="button" onclick="reviewEngine.selectRank(3)" id="revRankBtn-3"
-                            class="py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5">
-                            <span class="text-sm">🥉</span>
-                            <span>3등</span>
-                        </button>
-                        <button type="button" onclick="reviewEngine.selectRank(4)" id="revRankBtn-4"
-                            class="py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5">
-                            <span class="text-sm">🎖️</span>
-                            <span>4등</span>
-                        </button>
-                        <button type="button" onclick="reviewEngine.selectRank(5)" id="revRankBtn-5"
-                            class="py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5">
-                            <span class="text-sm">🎁</span>
-                            <span>5등</span>
-                        </button>
+                <!-- 2) 당첨 등수 선택 & 당첨 금액 입력 필드 -->
+                <div class="space-y-3">
+                    <div>
+                        <label class="block font-bold text-slate-300 mb-1.5">당첨 등수 디렉토리 선택 <span class="text-rose-400">*</span></label>
+                        <div class="grid grid-cols-5 gap-1.5" id="reviewRankButtons">
+                            <button type="button" onclick="reviewEngine.selectRank(1)" id="revRankBtn-1"
+                                class="py-2.5 rounded-xl border border-amber-400/80 bg-amber-500/20 text-amber-300 font-black text-center text-xs transition shadow-xs flex flex-col items-center gap-0.5">
+                                <span class="text-sm">👑</span>
+                                <span>1등</span>
+                            </button>
+                            <button type="button" onclick="reviewEngine.selectRank(2)" id="revRankBtn-2"
+                                class="py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5">
+                                <span class="text-sm">🥈</span>
+                                <span>2등</span>
+                            </button>
+                            <button type="button" onclick="reviewEngine.selectRank(3)" id="revRankBtn-3"
+                                class="py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5">
+                                <span class="text-sm">🥉</span>
+                                <span>3등</span>
+                            </button>
+                            <button type="button" onclick="reviewEngine.selectRank(4)" id="revRankBtn-4"
+                                class="py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5">
+                                <span class="text-sm">🎖️</span>
+                                <span>4등</span>
+                            </button>
+                            <button type="button" onclick="reviewEngine.selectRank(5)" id="revRankBtn-5"
+                                class="py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5">
+                                <span class="text-sm">🎁</span>
+                                <span>5등</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 당첨 금액 (자동 권장 또는 직접 수동 입력) -->
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <label class="font-bold text-slate-300">당첨 금액 <span class="text-rose-400">*</span></label>
+                            <span class="text-[10px] text-amber-300/80">등수 변경 시 자동 추천되며, 직접 수정 가능합니다.</span>
+                        </div>
+                        <div class="relative">
+                            <input type="text" id="reviewFormPrize" placeholder="예: 1등 22억 4,120만원" maxlength="30"
+                                class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-amber-300 font-bold text-xs focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400">
+                            <button type="button" onclick="reviewEngine.resetDefaultPrize()"
+                                class="absolute right-2.5 top-1/2 -translate-y-1/2 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 font-semibold rounded-lg transition">
+                                기본금액 재설정
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -2259,10 +2323,11 @@
                     <select id="reviewFormMethod"
                         class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white text-xs focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400">
                         <option value="AI 스마트 조합기" selected>🪄 AI 스마트 조합기 (필터링 적용)</option>
-                        <option value="빅데이터 분석">📊 빅데이터 정밀 통계 (최다빈출/미출현 분석)</option>
                         <option value="꿈 해몽 번호">🌙 꿈 해몽 상징 행운수 고정</option>
-                        <option value="전국 명당 방문">🏆 전국 10대 명당 직접 구매</option>
-                        <option value="수동 조합">✍️ 개인 수동 조합 및 연구</option>
+                        <option value="빅데이터 통계">📊 빅데이터 통계 분석 (최다빈출/미출현 분석)</option>
+                        <option value="단순 자동">🎲 단순 자동 구매</option>
+                        <option value="전국 10대 명당">🏆 전국 10대 명당 직접 구매</option>
+                        <option value="수동 조합">✍️ 개인 수동 연구 조합</option>
                     </select>
                 </div>
 
@@ -2662,23 +2727,67 @@
         }
 
         // ==========================================
-        // [신규] 동행복권 lt645/stats 벤치마킹 분석 엔진 (상시 노출 & 중앙 집중형 다이렉트 뷰)
+        // [신규] 동행복권 lt645/stats 벤치마킹 분석 엔진 (아코디언 토글 전개/접힘 구조)
         // ==========================================
-        let currentStatView = 'desc'; // 'desc' | 'asc' | 'unshown' | 'pattern'
+        let currentStatView = null; // 기본 상태: 접힘 (null)
         let currentFreqSort = 'desc'; // 'desc' | 'asc'
 
-        function switchStatView(viewMode) {
-            currentStatView = viewMode;
+        function toggleStatView(viewMode) {
+            // 동일한 탭을 다시 누른 경우 -> 부드럽게 접기(Collapse)
+            if (currentStatView === viewMode) {
+                collapseStatView();
+                return;
+            }
 
-            // 1. 상단 중앙 4개 버튼 활성/비활성 스타일 전환
+            // 새로운 탭을 누른 경우 -> 펼치기(Expand)
+            expandStatView(viewMode);
+        }
+
+        function collapseStatView() {
+            currentStatView = null;
+            const contentArea = document.getElementById('statDirectContentArea');
+            const hintEl = document.getElementById('statTapGuideHint');
+
+            if (contentArea) contentArea.classList.add('hidden');
+            if (hintEl) hintEl.classList.remove('hidden');
+
+            // 4개 버튼 모두 기본 비활성 스타일로 복원 & 화살표 아래 방향
             const viewKeys = ['desc', 'asc', 'unshown', 'pattern'];
             viewKeys.forEach(k => {
                 const btn = document.getElementById(`statViewBtn_${k}`);
                 if (!btn) return;
+                btn.className = 'px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation flex items-center justify-center gap-1.5 group';
+                const arrow = btn.querySelector('.stat-arrow');
+                if (arrow) arrow.style.transform = 'rotate(0deg)';
+            });
+        }
+
+        function expandStatView(viewMode) {
+            currentStatView = viewMode;
+            const contentArea = document.getElementById('statDirectContentArea');
+            const hintEl = document.getElementById('statTapGuideHint');
+
+            if (contentArea) contentArea.classList.remove('hidden');
+            if (hintEl) hintEl.classList.add('hidden');
+
+            // 1. 상단 4개 버튼 활성/비활성 스타일 전환 및 회전 화살표 표시
+            const viewKeys = ['desc', 'asc', 'unshown', 'pattern'];
+            viewKeys.forEach(k => {
+                const btn = document.getElementById(`statViewBtn_${k}`);
+                if (!btn) return;
+                const arrow = btn.querySelector('.stat-arrow');
                 if (k === viewMode) {
-                    btn.className = 'px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-black rounded-xl transition-all bg-indigo-600 text-white shadow-sm whitespace-nowrap touch-manipulation';
+                    btn.className = 'px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-black rounded-xl transition-all bg-indigo-600 text-white shadow-md shadow-indigo-600/20 whitespace-nowrap touch-manipulation flex items-center justify-center gap-1.5 ring-2 ring-indigo-400/40 group';
+                    if (arrow) {
+                        arrow.style.transform = 'rotate(180deg)';
+                        arrow.className = 'fa-solid fa-chevron-down text-[10px] text-white stat-arrow transition-transform duration-200';
+                    }
                 } else {
-                    btn.className = 'px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation';
+                    btn.className = 'px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold rounded-xl transition-all text-slate-600 hover:text-slate-900 hover:bg-white/80 whitespace-nowrap touch-manipulation flex items-center justify-center gap-1.5 group';
+                    if (arrow) {
+                        arrow.style.transform = 'rotate(0deg)';
+                        arrow.className = 'fa-solid fa-chevron-down text-[10px] text-slate-400 stat-arrow transition-transform duration-200';
+                    }
                 }
             });
 
@@ -2687,7 +2796,7 @@
             const patternPanel = document.getElementById('statPanelPattern');
             const freqOptionBar = document.getElementById('statFreqOptionBar');
 
-            // 2. 해당 통계 뷰 패널 다이렉트 전환 및 렌더링
+            // 2. 해당 통계 뷰 패널만 단독으로 노출하고 데이터 렌더링
             if (viewMode === 'desc' || viewMode === 'asc') {
                 if (freqPanel) freqPanel.classList.remove('hidden');
                 if (unshownPanel) unshownPanel.classList.add('hidden');
@@ -2710,6 +2819,16 @@
                 if (freqOptionBar) freqOptionBar.classList.add('hidden');
 
                 renderPatternStats();
+            }
+
+            // 모바일 화면 배려: 펼쳐진 통계 영역으로 시선이 자연스럽게 이동하도록 부드러운 스크롤
+            if (window.innerWidth < 768 && contentArea) {
+                setTimeout(() => {
+                    const rect = contentArea.getBoundingClientRect();
+                    if (rect.top < 60 || rect.top > window.innerHeight - 150) {
+                        contentArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }, 50);
             }
         }
 
@@ -5801,107 +5920,95 @@
 
         // --- (8) 🏆 실시간 당첨 후기 및 명예의 전당 엔진 (reviewEngine) ---
         const reviewEngine = {
-            storageKey: 'kms_loddo_reviews_v1',
-            currentFilter: 'all',
+            storageKey: 'kms_loddo_reviews_v2', // v2로 업데이트하여 1~3등 깨끗한 초기 상태 보장
+            currentFilter: 'rank1', // 1등 명예의 전당 디렉토리가 기본 활성화
             selectedRank: 1,
             uploadedImage: null,
             uploadedFileName: '',
 
-            // 기본 시드 당첨 후기 6편 (1등, 2등, 3등, 4등, 5등 전수 완비)
+            // 디렉토리 메타데이터 매핑
+            directoryMeta: {
+                rank1: {
+                    rank: 1,
+                    title: '👑 1등 명예의 전당 디렉토리',
+                    notice: '👑 1등 명예의 전당 디렉토리',
+                    subNotice: '역대 1등 당첨 회원들의 전용 실시간 영수증 인증 피드',
+                    defaultPrize: '1등 22억 4,120만원',
+                    cta: '✍️ 1등 명예의 전당에 실시간 후기 & 영수증 등록하기',
+                    emptyTitle: '아직 1등 당첨 인증 내역이 없습니다.',
+                    emptyDesc: '역대 1등 당첨의 영광을 함께할 첫 번째 주인공이 되어보세요!',
+                    btnText: '✍️ 1등 첫 번째 후기 등록하기'
+                },
+                rank2: {
+                    rank: 2,
+                    title: '🥈 2등 당첨 인증 디렉토리',
+                    notice: '🥈 2등 당첨 인증 디렉토리 (보너스 번호 일치)',
+                    subNotice: '2등 당첨 회원들의 생생한 인증과 당첨금 수령 후기',
+                    defaultPrize: '2등 5,820만원',
+                    cta: '✍️ 2등 당첨 인증 디렉토리에 후기 등록하기',
+                    emptyTitle: '등록된 2등 당첨 인증 내역이 없습니다.',
+                    emptyDesc: '보너스 번호 적중의 짜릿한 순간을 첫 번째로 인증해 보세요!',
+                    btnText: '✍️ 2등 후기 등록하기'
+                },
+                rank3: {
+                    rank: 3,
+                    title: '🥉 3등 당첨 인증 디렉토리',
+                    notice: '🥉 3등 당첨 인증 디렉토리 (5개 번호 적중)',
+                    subNotice: '실속파 회원들의 3등 적중 비결과 조합 노하우',
+                    defaultPrize: '3등 148만원',
+                    cta: '✍️ 3등 당첨 인증 디렉토리에 후기 등록하기',
+                    emptyTitle: '등록된 3등 당첨 인증 내역이 없습니다.',
+                    emptyDesc: '5개 번호를 맞춘 실속파 당첨 후기의 첫 주인이 되어보세요!',
+                    btnText: '✍️ 3등 후기 등록하기'
+                },
+                rank4: {
+                    rank: 4,
+                    title: '🎖️ 4등 당첨 소소한 기쁨 디렉토리',
+                    notice: '🎖️ 4등 당첨 소소한 기쁨 디렉토리 (5만원 고정)',
+                    subNotice: '소소한 일상의 기쁨! 소고기 파티와 주말 외식 인증',
+                    defaultPrize: '4등 50,000원',
+                    cta: '✍️ 4등 당첨 소소한 기쁨 후기 등록하기',
+                    emptyTitle: '등록된 4등 당첨 후기가 없습니다.',
+                    emptyDesc: '소소하지만 확실한 행복! 4등 당첨의 기쁨을 나눠보세요.',
+                    btnText: '✍️ 4등 후기 등록하기'
+                },
+                rank5: {
+                    rank: 5,
+                    title: '🎁 5등 당첨 본전치기 디렉토리',
+                    notice: '🎁 5등 당첨 본전치기 디렉토리 (5천원 복권 교환)',
+                    subNotice: '무료 재도전의 기회! 꾸준한 도전자들의 본전 인증',
+                    defaultPrize: '5등 5,000원',
+                    cta: '✍️ 5등 당첨 본전치기 후기 등록하기',
+                    emptyTitle: '등록된 5등 당첨 후기가 없습니다.',
+                    emptyDesc: '다음 주 1등을 향한 재도전 티켓! 5등 본전치기를 인증해 보세요.',
+                    btnText: '✍️ 5등 후기 등록하기'
+                }
+            },
+
+            // 1~3등은 빈 상태 처리, 4등 및 5등만 샘플 인증 건수 각 1건씩 유지
             defaultReviews: [
                 {
-                    id: 'rev-1242-1',
-                    author: '인생역전_황금손',
-                    authorType: 'verified',
-                    round: 1242,
-                    rank: 1,
-                    prize: '1등 22억 4,120만원',
-                    method: 'AI 스마트 조합기',
-                    numbers: [6, 14, 21, 28, 33, 42],
-                    title: "AI 스마트 조합기 '고저 3:3' + '연속번호 제한' 필터 걸고 인생 첫 1등 당첨!",
-                    content: "매주 자동으로만 사다가 KMS 로또 랩에서 AI 스마트 조합기 필터를 꼼꼼하게 설정하고 뽑은 5게임 중 3번째 줄에서 1등이 나왔습니다. 농협 본점 다녀와서 아직도 심장이 떨립니다. loddo.co 운영진 분들께 진심으로 감사드립니다!",
-                    date: '2026.04.18',
-                    likes: 342,
-                    likedByUser: false,
-                    comments: [
-                        { id: 'c1', author: '대박기원', text: '와 대박입니다! 1등 기운 듬뿍 받아갑니다 축하드립니다!! 🎉', date: '2026.04.18' },
-                        { id: 'c2', author: '행운의별', text: '농협 본점 가신 후기 읽으니 가슴이 웅장해지네요. 저도 다음 주 1등 도전합니다!', date: '2026.04.19' }
-                    ]
-                },
-                {
-                    id: 'rev-1246-2',
-                    author: '용꿈꾸고대박',
-                    authorType: 'verified',
-                    round: 1246,
-                    rank: 2,
-                    prize: '2등 5,820만원',
-                    method: '꿈 해몽 번호',
-                    numbers: [8, 12, 19, 25, 34, 41],
-                    title: "꿈 해몽 번호에서 황금용 번호 고정수로 박고 2등 당첨 인증합니다!",
-                    content: "꿈에서 큰 황금용이 승천하는 꿈을 꾸고 사이트 꿈해몽 번호에서 용 상징수(8, 25)를 고정수로 넣고 AI 스마트 조합기를 돌렸는데 보너스 볼까지 맞아 2등 됐네요! 부모님께 안마의자 선물해 드렸습니다 ㅎㅎ",
-                    date: '2026.04.25',
-                    likes: 215,
-                    likedByUser: false,
-                    comments: [
-                        { id: 'c3', author: '로또매니아', text: '꿈해몽 상징수 연동이 진짜 적중했네요 대박 축하드려요~', date: '2026.04.26' }
-                    ]
-                },
-                {
-                    id: 'rev-1247-3',
-                    author: '통계학석사',
-                    authorType: 'verified',
-                    round: 1247,
-                    rank: 3,
-                    prize: '3등 148만원',
-                    method: '빅데이터 분석',
-                    numbers: [7, 15, 23, 31, 34, 40],
-                    title: "빅데이터 전수 통계에서 최다 빈출수 2개 + 장기 미출현수 2개 조합으로 3등!",
-                    content: "통계 데이터 탭에서 15주 이상 미출현했던 31번과 역대 빈출 1위 34번을 조합해서 넣었더니 5개 번호가 적중했습니다! 당첨금 148만원 바로 계좌로 수령했습니다. 다음엔 꼭 1등으로 오겠습니다.",
-                    date: '2026.05.02',
-                    likes: 128,
-                    likedByUser: false,
-                    comments: [
-                        { id: 'c4', author: '숫자연구원', text: '통계적 접근이 통했네요! 축하드립니다.', date: '2026.05.02' }
-                    ]
-                },
-                {
                     id: 'rev-1248-4',
+                    password: 'demo',
                     author: '주말의행복',
                     authorType: 'verified',
                     round: 1248,
                     rank: 4,
-                    prize: '4등 10만원 (2줄 당첨)',
+                    prize: '4등 50,000원',
                     method: 'AI 스마트 조합기',
                     numbers: [11, 16, 22, 38, 43, 45],
-                    title: "최신 1248회 AI 조합기로 뽑은 5줄 중 4등 2줄 동시 당첨!",
-                    content: "가볍게 5천원어치 샀는데 4등이 2줄이나 나와서 10만원 벌었습니다. 오늘 저녁 가족들이랑 소고기 파티했습니다. loddo.co 알고리즘 정말 신기하네요!",
+                    title: "최신 1248회 AI 스마트 조합기로 뽑은 5줄 중 4등 당첨!",
+                    content: "가볍게 5천원어치 샀는데 4등이 나와서 기분 좋게 주말 외식했습니다. loddo.co 알고리즘 정말 신기하네요!",
                     date: '2026.05.09',
                     likes: 74,
                     likedByUser: false,
                     comments: [
-                        { id: 'c5', author: '맛있는소고기', text: '소고기 나이스입니다 ㅋㅋㅋ 축하드려요!', date: '2026.05.09' }
-                    ]
-                },
-                {
-                    id: 'rev-1245-5',
-                    author: '로또는기부다',
-                    authorType: 'verified',
-                    round: 1245,
-                    rank: 3,
-                    prize: '3등 152만원',
-                    method: 'AI 스마트 조합기',
-                    numbers: [3, 9, 18, 27, 36, 44],
-                    title: "로또 스토리 읽고 좋은 마음으로 샀더니 3등 당첨! 당첨금 일부 기부했습니다.",
-                    content: "로또 스토리 코너의 기부문화 글 읽고 감명받아 건전하게 소액으로 즐기다 3등에 당첨되었습니다. 약속했던 대로 당첨금 중 30만원은 소외계층 아동 후원금으로 보탰습니다. 마음이 뿌듯합니다.",
-                    date: '2026.04.19',
-                    likes: 189,
-                    likedByUser: false,
-                    comments: [
-                        { id: 'c6', author: '선한영향력', text: '기부까지 실천하시다니 정말 멋지십니다! 더 큰 복 받으실 거예요!', date: '2026.04.20' }
+                        { id: 'c5', author: '맛있는소고기', text: '외식 나이스입니다 축하드려요!', date: '2026.05.09' }
                     ]
                 },
                 {
                     id: 'rev-1248-6',
+                    password: 'demo',
                     author: '소소한일상',
                     authorType: 'member',
                     round: 1248,
@@ -6080,17 +6187,31 @@
 
             setFilter(filter) {
                 this.currentFilter = filter;
-                const tabs = ['all', 'rank1_2', 'rank3', 'rank4_5'];
+                const tabs = ['rank1', 'rank2', 'rank3', 'rank4', 'rank5'];
                 tabs.forEach(t => {
                     const btn = document.getElementById(`revTab-${t}`);
                     if (!btn) return;
                     if (t === filter) {
-                        btn.className = 'px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 font-black shadow-md shadow-amber-500/20 transition flex items-center gap-1.5';
+                        btn.className = 'px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition flex items-center gap-2 ring-2 ring-amber-300/60 transform hover:-translate-y-0.5';
                     } else {
-                        btn.className = 'px-3.5 py-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5';
+                        btn.className = 'px-3.5 py-2.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5';
                     }
                 });
+
+                // 디렉토리 서브 타이틀 및 CTA 문구 동적 갱신
+                const meta = this.directoryMeta[filter] || this.directoryMeta['rank1'];
+                const dirTitleEl = document.getElementById('directoryTitleText');
+                if (dirTitleEl) dirTitleEl.innerText = meta.title;
+                const dirCtaEl = document.getElementById('currentDirectoryCtaText');
+                if (dirCtaEl) dirCtaEl.innerText = meta.cta;
+
                 this.render();
+            },
+
+            // 현재 선택된 디렉토리 등급으로 모달 띄우기
+            openWriteModalForCurrent() {
+                const targetRank = (this.directoryMeta[this.currentFilter] && this.directoryMeta[this.currentFilter].rank) || 1;
+                this.openWriteModal(targetRank);
             },
 
             selectRank(rank) {
@@ -6104,14 +6225,30 @@
                         btn.className = 'py-2.5 rounded-xl border border-slate-800 bg-slate-950 text-slate-300 font-bold text-center text-xs hover:border-slate-700 transition flex flex-col items-center gap-0.5';
                     }
                 }
+                // 등수 바뀔 때 기본 추천 금액 세팅
+                const prizeInput = document.getElementById('reviewFormPrize');
+                if (prizeInput) {
+                    const metaKey = `rank${rank}`;
+                    const def = (this.directoryMeta[metaKey] && this.directoryMeta[metaKey].defaultPrize) || '';
+                    prizeInput.value = def;
+                }
             },
 
-            openWriteModal() {
+            resetDefaultPrize() {
+                const metaKey = `rank${this.selectedRank}`;
+                const def = (this.directoryMeta[metaKey] && this.directoryMeta[metaKey].defaultPrize) || '';
+                const prizeInput = document.getElementById('reviewFormPrize');
+                if (prizeInput) prizeInput.value = def;
+            },
+
+            openWriteModal(defaultRank = null) {
                 const user = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
                 const nicknameInput = document.getElementById('reviewFormNickname');
                 if (nicknameInput) {
                     nicknameInput.value = user && user.name ? user.name : '';
                 }
+                const pwInput = document.getElementById('reviewFormPassword');
+                if (pwInput) pwInput.value = '';
                 const titleInput = document.getElementById('reviewFormTitle');
                 if (titleInput) titleInput.value = '';
                 const contentInput = document.getElementById('reviewFormContent');
@@ -6123,7 +6260,8 @@
                     if (numInput) numInput.value = '';
                 }
 
-                this.selectRank(1);
+                const rankToSelect = defaultRank || (this.directoryMeta[this.currentFilter] ? this.directoryMeta[this.currentFilter].rank : 1);
+                this.selectRank(rankToSelect);
                 this.clearImage();
 
                 if (typeof openModal === 'function') {
@@ -6133,14 +6271,21 @@
 
             submitReview() {
                 const nickname = document.getElementById('reviewFormNickname')?.value.trim();
+                const password = document.getElementById('reviewFormPassword')?.value.trim();
                 const round = parseInt(document.getElementById('reviewFormRound')?.value || '1248', 10);
                 const method = document.getElementById('reviewFormMethod')?.value || 'AI 스마트 조합기';
+                const prize = document.getElementById('reviewFormPrize')?.value.trim();
                 const title = document.getElementById('reviewFormTitle')?.value.trim();
                 const content = document.getElementById('reviewFormContent')?.value.trim();
 
                 if (!nickname) {
                     alert('작성자 닉네임을 입력해 주세요.');
                     document.getElementById('reviewFormNickname')?.focus();
+                    return;
+                }
+                if (!password || password.length < 4) {
+                    alert('후기 수정·삭제용 비밀번호를 4자리 이상 입력해 주세요.');
+                    document.getElementById('reviewFormPassword')?.focus();
                     return;
                 }
                 if (!title) {
@@ -6167,13 +6312,16 @@
                 const dateStr = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
 
                 const rank = this.selectedRank;
-                const prizeText = rank === 1 ? '1등 공식 인증' : (rank === 2 ? '2등 공식 인증' : (rank === 3 ? '3등 공식 인증' : (rank === 4 ? '4등 당첨 (5만원)' : '5등 당첨 (5천원)')));
+                const metaKey = `rank${rank}`;
+                const defaultPrizeText = (this.directoryMeta[metaKey] && this.directoryMeta[metaKey].defaultPrize) || `${rank}등 공식 인증`;
+                const prizeText = prize || defaultPrizeText;
 
                 // 이미지 (업로드된 이미지 또는 자동 생성된 공식 영수증 SVG)
                 const imageUrl = this.uploadedImage || this.generateTicketSvg(round, rank, numbers, dateStr, nickname);
 
                 const newReview = {
                     id: 'rev-' + Date.now(),
+                    password: password,
                     author: nickname,
                     authorType: 'verified',
                     round: round,
@@ -6190,17 +6338,38 @@
                     comments: []
                 };
 
+                // 리뷰 배열 맨 앞에 실시간 추가
                 this.reviews.unshift(newReview);
                 this.saveReviews();
+
+                // 등록된 등수의 디렉토리로 탭 전환하여 등록 내용 바로 노출
+                this.currentFilter = `rank${rank}`;
+                const tabs = ['rank1', 'rank2', 'rank3', 'rank4', 'rank5'];
+                tabs.forEach(t => {
+                    const btn = document.getElementById(`revTab-${t}`);
+                    if (!btn) return;
+                    if (t === this.currentFilter) {
+                        btn.className = 'px-4 py-2.5 rounded-2xl bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black shadow-lg shadow-amber-500/25 transition flex items-center gap-2 ring-2 ring-amber-300/60 transform hover:-translate-y-0.5';
+                    } else {
+                        btn.className = 'px-3.5 py-2.5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5';
+                    }
+                });
+
+                const meta = this.directoryMeta[this.currentFilter] || this.directoryMeta['rank1'];
+                const dirTitleEl = document.getElementById('directoryTitleText');
+                if (dirTitleEl) dirTitleEl.innerText = meta.title;
+                const dirCtaEl = document.getElementById('currentDirectoryCtaText');
+                if (dirCtaEl) dirCtaEl.innerText = meta.cta;
+
                 this.render();
 
                 if (typeof closeModal === 'function') {
                     closeModal('reviewModal');
                 }
 
-                // 알림 및 해당 카드로 스크롤
+                // 알림 및 해당 카드로 부드러운 스크롤 & 하이라이트
                 setTimeout(() => {
-                    alert(`🎉 축하합니다! ${nickname}님의 당첨 후기가 명예의 전당에 성공적으로 등재되었습니다.`);
+                    alert(`🎉 축하합니다! ${nickname}님의 ${rank}등 당첨 후기가 [${meta.title}]에 실시간 등록되었습니다.`);
                     const cardEl = document.getElementById(`review-card-${newReview.id}`);
                     if (cardEl) {
                         cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -6208,6 +6377,27 @@
                         setTimeout(() => cardEl.classList.remove('ring-4', 'ring-amber-400', 'animate-pulse'), 3500);
                     }
                 }, 200);
+            },
+
+            // 후기 삭제 (비밀번호 확인)
+            deleteReview(id) {
+                const item = this.reviews.find(r => r.id === id);
+                if (!item) return;
+
+                const inputPw = prompt(`[${item.title}] 후기를 삭제하시겠습니까?\n등록 시 입력한 비밀번호를 입력해 주세요:`);
+                if (inputPw === null) return;
+
+                if (item.password && item.password !== inputPw) {
+                    alert('비밀번호가 일치하지 않습니다.');
+                    return;
+                }
+
+                if (!confirm('정말 이 후기를 삭제하시겠습니까?')) return;
+
+                this.reviews = this.reviews.filter(r => r.id !== id);
+                this.saveReviews();
+                this.render();
+                alert('후기가 안전하게 삭제되었습니다.');
             },
 
             toggleLike(id) {
@@ -6307,28 +6497,106 @@
                 const container = document.getElementById('reviewGridContainer');
                 if (!container) return;
 
-                // 필터 적용
-                let list = this.reviews;
-                if (this.currentFilter === 'rank1_2') {
-                    list = this.reviews.filter(r => r.rank === 1 || r.rank === 2);
-                } else if (this.currentFilter === 'rank3') {
-                    list = this.reviews.filter(r => r.rank === 3);
-                } else if (this.currentFilter === 'rank4_5') {
-                    list = this.reviews.filter(r => r.rank === 4 || r.rank === 5);
+                // 각 등급별 건수 뱃지 카운트 실시간 업데이트
+                for (let r = 1; r <= 5; r++) {
+                    const count = this.reviews.filter(it => it.rank === r).length;
+                    const badgeEl = document.getElementById(`revBadge-rank${r}`);
+                    if (badgeEl) badgeEl.innerText = count;
                 }
 
-                // 총 누적 카운트 HUD 업데이트
+                // 현재 활성화된 독립 등급 디렉토리 필터링 (rank1 ~ rank5)
+                let targetRank = 1;
+                if (this.currentFilter === 'rank2') targetRank = 2;
+                else if (this.currentFilter === 'rank3') targetRank = 3;
+                else if (this.currentFilter === 'rank4') targetRank = 4;
+                else if (this.currentFilter === 'rank5') targetRank = 5;
+
+                const list = this.reviews.filter(r => r.rank === targetRank);
+                const currentMeta = this.directoryMeta[this.currentFilter] || this.directoryMeta['rank1'];
+
+                // 4대 실시간 요약 지표 HUD 대시보드 동적 연동
+                // 1) 총 누적 당첨 인증 건수
                 const totalEl = document.getElementById('reviewStatTotalCount');
                 if (totalEl) {
-                    totalEl.innerText = (1428 + (this.reviews.length - this.defaultReviews.length)) + '건';
+                    totalEl.innerText = this.reviews.length.toLocaleString() + '건';
+                }
+
+                // 2) 인증 최고 당첨 등급
+                const topPrizeEl = document.getElementById('reviewStatTopPrize');
+                const topRoundEl = document.getElementById('reviewStatTopRound');
+                if (topPrizeEl && topRoundEl) {
+                    const minRankItem = [...this.reviews].sort((a, b) => a.rank - b.rank)[0];
+                    if (minRankItem) {
+                        topPrizeEl.innerText = `${minRankItem.rank}등 (${minRankItem.prize || '인증 완료'})`;
+                        topRoundEl.innerText = `제 ${minRankItem.round}회 (${minRankItem.method || '회원 인증'})`;
+                    } else {
+                        topPrizeEl.innerText = '인증 등록 대기 중';
+                        topRoundEl.innerText = '첫 주인공을 기다리고 있습니다';
+                    }
+                }
+
+                // 3) 1~3등 주인공 대기 현황
+                const highRankStatusEl = document.getElementById('reviewStatHighRankStatus');
+                if (highRankStatusEl) {
+                    const rank1Count = this.reviews.filter(it => it.rank === 1).length;
+                    const rank2Count = this.reviews.filter(it => it.rank === 2).length;
+                    const rank3Count = this.reviews.filter(it => it.rank === 3).length;
+                    if (rank1Count > 0) {
+                        highRankStatusEl.innerText = `👑 1등 ${rank1Count}건 등재!`;
+                    } else if (rank2Count > 0) {
+                        highRankStatusEl.innerText = `🥈 2등 ${rank2Count}건 등재!`;
+                    } else if (rank3Count > 0) {
+                        highRankStatusEl.innerText = `🥉 3등 ${rank3Count}건 등재!`;
+                    } else {
+                        highRankStatusEl.innerText = '첫 인증 도전 중!';
+                    }
+                }
+
+                // 4) 후기 공감 & 축하 합계
+                const likesEl = document.getElementById('reviewStatLikesCount');
+                const commentsEl = document.getElementById('reviewStatCommentsCount');
+                if (likesEl) {
+                    const totalLikes = this.reviews.reduce((acc, cur) => acc + (cur.likes || 0), 0);
+                    likesEl.innerText = totalLikes.toLocaleString() + '회 축하';
+                }
+                if (commentsEl) {
+                    const totalComments = this.reviews.reduce((acc, cur) => acc + (cur.comments ? cur.comments.length : 0), 0);
+                    commentsEl.innerText = `축하 댓글 ${totalComments.toLocaleString()}건 교환 중`;
                 }
 
                 if (list.length === 0) {
+                    const emptyIcon = targetRank === 1
+                        ? '<i class="fa-solid fa-trophy text-amber-400 animate-pulse text-4xl"></i>'
+                        : (targetRank === 2
+                            ? '<i class="fa-solid fa-medal text-cyan-400 text-4xl"></i>'
+                            : (targetRank === 3
+                                ? '<i class="fa-solid fa-award text-emerald-400 text-4xl"></i>'
+                                : '<i class="fa-solid fa-ticket text-indigo-400 text-4xl"></i>'));
+
+                    const emptyBorder = targetRank === 1
+                        ? 'border-2 border-amber-400/40 bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950/60 shadow-[0_0_35px_rgba(251,191,36,0.15)]'
+                        : 'border border-slate-800 bg-slate-900/60';
+
                     container.innerHTML = `
-                        <div class="col-span-full py-16 text-center text-slate-400 bg-slate-900/60 rounded-3xl border border-slate-800">
-                            <i class="fa-solid fa-trophy text-4xl text-amber-400/30 mb-3"></i>
-                            <p class="text-sm font-bold text-slate-300">해당 조건의 후기가 아직 없습니다.</p>
-                            <p class="text-xs text-slate-500 mt-1">지금 바로 첫 번째 영수증 인증 후기를 등록해 보세요!</p>
+                        <div class="col-span-full py-16 px-4 text-center rounded-3xl ${emptyBorder} space-y-4 max-w-2xl mx-auto backdrop-blur-xl">
+                            <div class="w-20 h-20 rounded-3xl bg-slate-950/80 border border-slate-800 flex items-center justify-center mx-auto shadow-2xl">
+                                ${emptyIcon}
+                            </div>
+                            <div class="space-y-1.5">
+                                <h3 class="text-base sm:text-lg font-black text-white tracking-tight">
+                                    ${currentMeta.emptyTitle}
+                                </h3>
+                                <p class="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed max-w-md mx-auto">
+                                    ${currentMeta.emptyDesc}
+                                </p>
+                            </div>
+                            <div class="pt-2">
+                                <button onclick="reviewEngine.openWriteModal(${targetRank})"
+                                    class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 text-slate-950 font-black rounded-2xl text-xs sm:text-sm transition-all shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 transform hover:-translate-y-0.5 cursor-pointer">
+                                    <i class="fa-solid fa-pen-nib text-slate-950"></i>
+                                    <span>${currentMeta.btnText}</span>
+                                </button>
+                            </div>
                         </div>
                     `;
                     return;
@@ -6339,25 +6607,25 @@
                     const is2nd = item.rank === 2;
                     const is3rd = item.rank === 3;
 
-                    // 카드 외곽 스타일 & 발광
+                    // 카드 외곽 스타일 & 발광 효과
                     let cardBorderClass = 'border-slate-800 hover:border-slate-700 bg-slate-900/90';
                     let rankBadgeHtml = '';
 
                     if (is1st) {
                         cardBorderClass = 'border-2 border-amber-400/90 bg-gradient-to-b from-slate-900 via-slate-900 to-indigo-950/80 shadow-[0_0_30px_rgba(251,191,36,0.22)]';
-                        rankBadgeHtml = `<span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black text-[11px] px-2.5 py-1 rounded-full shadow-md flex items-center gap-1"><i class="fa-solid fa-crown text-xs"></i> 1등 공식 인증</span>`;
+                        rankBadgeHtml = `<span class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 text-slate-950 font-black text-[11px] px-2.5 py-1 rounded-full shadow-md flex items-center gap-1"><i class="fa-solid fa-crown text-xs"></i> 1등 명예의 전당</span>`;
                     } else if (is2nd) {
                         cardBorderClass = 'border-2 border-cyan-400/80 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 shadow-[0_0_25px_rgba(34,211,238,0.18)]';
-                        rankBadgeHtml = `<span class="bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-black text-[11px] px-2.5 py-1 rounded-full shadow-md flex items-center gap-1"><i class="fa-solid fa-medal text-xs"></i> 2등 공식 인증</span>`;
+                        rankBadgeHtml = `<span class="bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 font-black text-[11px] px-2.5 py-1 rounded-full shadow-md flex items-center gap-1"><i class="fa-solid fa-medal text-xs"></i> 2등 당첨 인증</span>`;
                     } else if (is3rd) {
                         cardBorderClass = 'border border-emerald-400/80 bg-slate-900/90 shadow-[0_0_20px_rgba(52,211,153,0.15)]';
-                        rankBadgeHtml = `<span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-[11px] px-2.5 py-1 rounded-full shadow-md flex items-center gap-1"><i class="fa-solid fa-award text-xs"></i> 3등 당첨</span>`;
+                        rankBadgeHtml = `<span class="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black text-[11px] px-2.5 py-1 rounded-full shadow-md flex items-center gap-1"><i class="fa-solid fa-award text-xs"></i> 3등 당첨 인증</span>`;
                     } else if (item.rank === 4) {
                         cardBorderClass = 'border border-indigo-400/40 bg-slate-900/90';
-                        rankBadgeHtml = `<span class="bg-indigo-600/80 text-white font-bold text-[11px] px-2.5 py-1 rounded-full border border-indigo-400/40 flex items-center gap-1">🎖️ 4등 당첨</span>`;
+                        rankBadgeHtml = `<span class="bg-indigo-600/80 text-white font-bold text-[11px] px-2.5 py-1 rounded-full border border-indigo-400/40 flex items-center gap-1">🎖️ 4등 소소한 기쁨</span>`;
                     } else {
-                        cardBorderClass = 'border border-slate-800 bg-slate-900/90';
-                        rankBadgeHtml = `<span class="bg-slate-800 text-slate-300 font-bold text-[11px] px-2.5 py-1 rounded-full border border-slate-700 flex items-center gap-1">🎁 5등 당첨</span>`;
+                        cardBorderClass = 'border border-purple-400/40 bg-slate-900/90';
+                        rankBadgeHtml = `<span class="bg-purple-600/80 text-white font-bold text-[11px] px-2.5 py-1 rounded-full border border-purple-400/40 flex items-center gap-1">🎁 5등 본전치기</span>`;
                     }
 
                     // 6개 당첨 번호 볼 아이콘 렌더링
@@ -6387,9 +6655,17 @@
                                             제 ${item.round}회
                                         </span>
                                     </div>
-                                    <span class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
-                                        <i class="fa-solid fa-circle-check"></i> 검증완료
-                                    </span>
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+                                            <i class="fa-solid fa-circle-check"></i> 실시간 인증
+                                        </span>
+                                        ${item.password ? `
+                                        <button onclick="reviewEngine.deleteReview('${item.id}')" title="후기 삭제"
+                                            class="text-slate-500 hover:text-rose-400 text-xs transition p-1">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                        ` : ''}
+                                    </div>
                                 </div>
 
                                 <!-- 당첨 금액 & 활용 방식 -->
