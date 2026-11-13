@@ -1251,7 +1251,7 @@
                 </h2>
                 <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl mx-auto">
                     복권 구매는 단순한 행운을 넘어, 사회적 약자를 보듬고 공익의 가치를 꽃피우는 따뜻한 기부입니다.<br class="hidden sm:inline">
-                    국내외 복권기금의 기적부터 세무 상식, 비너스 추첨기 과학 검증과 확률 분석까지 <strong>총 13편의 깊이 있는 연재 아카이브</strong>를 만나보세요.
+                    국내외 복권기금의 기적부터 세무 상식, 비너스 추첨기 과학 검증과 확률 분석까지 <strong>총 18편의 깊이 있는 연재 아카이브</strong>를 만나보세요.
                 </p>
             </div>
 
@@ -1259,11 +1259,11 @@
             <div class="flex items-center justify-center flex-wrap gap-2 pt-1" id="articleCategoryTabs">
                 <button onclick="storyArchiveEngine.filterCategory('all')" id="storyTab-all"
                     class="story-cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-black transition-all bg-indigo-600 text-white shadow-sm cursor-pointer">
-                    전체 스토리 (13편)
+                    전체 스토리 (18편)
                 </button>
                 <button onclick="storyArchiveEngine.filterCategory('charity')" id="storyTab-charity"
                     class="story-cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">
-                    💖 나눔 & 기부 문화 (6편)
+                    💖 나눔 & 기부 문화 (11편)
                 </button>
                 <button onclick="storyArchiveEngine.filterCategory('stats')" id="storyTab-stats"
                     class="story-cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">
@@ -1278,7 +1278,7 @@
             <!-- 상태 요약 바 -->
             <div class="flex items-center justify-between text-xs text-slate-500 px-1 pt-1 border-b border-slate-100 pb-2">
                 <span id="storyArchiveStatusText" class="font-bold text-slate-700">
-                    전체 13편 중 1~6화 노출 중
+                    전체 18편 중 1~6화 노출 중
                 </span>
                 <span class="text-slate-400 hidden sm:inline">
                     새로운 유익한 칼럼이 정기적으로 누적 연재됩니다
@@ -1301,7 +1301,7 @@
                 <button onclick="storyArchiveEngine.toggleShowAll()" id="storyToggleAllBtn"
                     class="px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-black text-xs sm:text-sm transition-all shadow-sm flex items-center space-x-2 active:scale-95 cursor-pointer">
                     <i class="fa-solid fa-layer-group text-amber-400"></i>
-                    <span id="storyToggleAllBtnText">12편 전체 한 번에 펼쳐보기 (Load All)</span>
+                    <span id="storyToggleAllBtnText">18편 전체 한 번에 펼쳐보기 (Load All)</span>
                 </button>
             </div>
         </div>
@@ -5774,6 +5774,71 @@
                 title: "비너스(Venus) 추첨기의 과학과 유체역학: 매주 반복되는 '로또 조작설'의 통계학적 팩트체크",
                 desc: "공기 와류(Air-mix) 물리적 원리, 4.0g 특수볼의 무결성, 에어갭(Air-gapped) 보안과 1억 장 판매 시 매주 10여 명의 1등이 필연적으로 발생하는 포아송 기댓값의 진실.",
                 url: "/articles/venus-machine-physics.html"
+            },
+            {
+                id: 14,
+                ep: "제14화",
+                catId: "charity",
+                catName: "금융 공학 · 기부 연계",
+                badgeClass: "bg-emerald-50 text-emerald-800 border-emerald-300",
+                accentHover: "hover:border-emerald-400 group-hover:text-emerald-700",
+                linkAccent: "text-emerald-600",
+                readTime: "5분 소요",
+                title: "소액 기부의 복리 효과: 1,000원의 나눔이 10년 뒤 지역 사회에 불러오는 자본의 선순환 구조",
+                desc: "천 원 단위의 일상적 나눔이 디딤씨앗 통장과 결합하여 수혜 아동의 자립 기반을 형성하고 사회적 비용을 절감하는 금융 복리 프로세스를 분석합니다.",
+                url: "/articles/micro-donation-compound-effect.html"
+            },
+            {
+                id: 15,
+                ep: "제15화",
+                catId: "charity",
+                catName: "기업 시민 · ESG 경영",
+                badgeClass: "bg-emerald-50 text-emerald-800 border-emerald-300",
+                accentHover: "hover:border-emerald-400 group-hover:text-emerald-700",
+                linkAccent: "text-emerald-600",
+                readTime: "5분 소요",
+                title: "복권 기금과 기업 사회공헌(CSR)의 결합: 대한민국 복지 사각지대를 메우는 민관 협력의 미학",
+                desc: "국가 복권 기금과 민간 매칭 그랜트 제도의 결합을 통한 시너지, 지속 가능한 ESG 생태계 조성과 투명성 거버넌스 확립 방안을 제시합니다.",
+                url: "/articles/lottery-fund-corporate-csr.html"
+            },
+            {
+                id: 16,
+                ep: "제16화",
+                catId: "charity",
+                catName: "문화 예술 · 치유",
+                badgeClass: "bg-emerald-50 text-emerald-800 border-emerald-300",
+                accentHover: "hover:border-emerald-400 group-hover:text-emerald-700",
+                linkAccent: "text-emerald-600",
+                readTime: "4분 소요",
+                title: "예술과 나눔의 교차점: 로또 기금으로 건립된 지역 문화예술회관과 소외계층의 문화 향유권",
+                desc: "지방 문화 소외 지대의 예술회관 건립과 청소년 오케스트라 교육 등 예술을 통한 정서적 치유와 공동체 회복 탄력성의 궤적을 추적합니다.",
+                url: "/articles/arts-culture-healing-lottery.html"
+            },
+            {
+                id: 17,
+                ep: "제17화",
+                catId: "charity",
+                catName: "글로벌 석학 · 철학",
+                badgeClass: "bg-emerald-50 text-emerald-800 border-emerald-300",
+                accentHover: "hover:border-emerald-400 group-hover:text-emerald-700",
+                linkAccent: "text-emerald-600",
+                readTime: "5분 소요",
+                title: "노블레스 오블리주와 행운의 분배: 아담 스미스의 '도덕감정론'으로 해석하는 현대 복권의 사회적 기능",
+                desc: "스미스의 공감과 공정한 관찰자 철학을 바탕으로 우연한 행운이 자발적 나눔으로 순환하여 계층 간 연대를 강화하는 도덕적 메커니즘을 규명합니다.",
+                url: "/articles/adam-smith-moral-sentiments-lottery.html"
+            },
+            {
+                id: 18,
+                ep: "제18화",
+                catId: "charity",
+                catName: "미래 비전 · 상생 경제",
+                badgeClass: "bg-emerald-50 text-emerald-800 border-emerald-300",
+                accentHover: "hover:border-emerald-400 group-hover:text-emerald-700",
+                linkAccent: "text-emerald-600",
+                readTime: "5분 소요",
+                title: "디지털 시대의 투명한 기부 플랫폼: 블록체인과 공공 데이터를 활용한 복권 기금 집행의 미래",
+                desc: "스마트 계약과 공공 데이터 API 연동을 통해 기부 집행의 투명성을 극대화하고 복지 사각지대를 실시간으로 해소하는 미래형 상생 경제 모델을 조망합니다.",
+                url: "/articles/blockchain-donation-platform-future.html"
             }
         ];
 
