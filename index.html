@@ -5025,7 +5025,7 @@
                     { key: '40대', icon: 'fa-shield-halved', desc: '풍부한 집중력 & 연산력', color: 'from-emerald-500/20 to-teal-500/20 border-emerald-400/40 text-emerald-300 hover:border-emerald-400' },
                     { key: '50대', icon: 'fa-gem', desc: '원숙한 직관 & 침착한 해법', color: 'from-indigo-500/20 to-violet-500/20 border-indigo-400/40 text-indigo-300 hover:border-indigo-400' },
                     { key: '60대', icon: 'fa-award', desc: '기억·주의·언어 두뇌 건강 훈련, 백전노장 지혜', color: 'from-purple-500/20 to-fuchsia-500/20 border-purple-400/40 text-purple-300 hover:border-purple-400' },
-                    { key: '70대 이상', icon: 'fa-crown', desc: '100세 활력 총명 두뇌왕', color: 'from-rose-500/20 to-pink-500/20 border-rose-400/40 text-rose-300 hover:border-rose-400' }
+                    { key: '70대 이상', icon: 'fa-crown', desc: '큰 글씨 · 추억 퀴즈, 100세 총명 두뇌왕', color: 'from-rose-500/20 to-pink-500/20 border-rose-400/40 text-rose-300 hover:border-rose-400' }
                 ];
 
                 const buttonsHtml = ageOptions.map(opt => `
@@ -5148,7 +5148,7 @@
                 const percent = Math.round(ratio * 100);
                 bar.style.width = `${percent}%`;
 
-                const gentle = this.getAgeProfile().mode === 'wisdom';
+                const gentle = this.isSeniorMode();
                 if (this.questionRemainingSec <= 5) {
                     bar.className = gentle
                         ? 'h-full transition-all duration-300 rounded-full bg-amber-400'
@@ -5203,11 +5203,17 @@
                 '40대':      { tier: '4050', questionDurationSec: 30, label: '집중 연산' },
                 '50대':      { tier: '4050', questionDurationSec: 30, label: '집중 연산' },
                 '60대':      { tier: '6070', mode: 'wisdom', questionDurationSec: 60, label: '두뇌 건강 훈련 · 백전노장 지혜' },
-                '70대 이상': { tier: '6070', questionDurationSec: 45, label: '치매 예방 인지 훈련' }
+                '70대 이상': { tier: '6070', mode: 'elder', questionDurationSec: 90, label: '두뇌 건강 훈련 · 100세 총명' }
             },
 
             getAgeProfile(age = this.selectedAge) {
                 return this.ageProfiles[age] || this.ageProfiles['40대'];
+            },
+
+            // 60대(wisdom)·70대 이상(elder): 시니어 전용 문제/화면 모드 여부
+            isSeniorMode(age = this.selectedAge) {
+                const m = this.getAgeProfile(age).mode;
+                return m === 'wisdom' || m === 'elder';
             },
 
             // 상단 HUD [변경] 버튼: 연령대 선택 화면으로 복귀
@@ -5506,18 +5512,21 @@
                     while (s.size < n) s.add(rand(min, max));
                     return Array.from(s);
                 };
+                // 70대 이상(elder): 선택지 3개, 쉬운 난이도, 추억 퀴즈 포함
+                const elder = this.getAgeProfile().mode === 'elder';
+                const choiceCount = elder ? 3 : 4;
                 const buildChoices = (answer, cands) => {
                     const set = new Set([answer]);
                     for (const v of shuffle(Array.from(new Set(cands)))) {
-                        if (set.size >= 4) break;
+                        if (set.size >= choiceCount) break;
                         if (Number.isInteger(v) && v >= 1 && v <= 45) set.add(v);
                     }
                     for (const d of shuffle([-1, 1, -2, 2, -3, 3, -5, 5, -10, 10])) {
-                        if (set.size >= 4) break;
+                        if (set.size >= choiceCount) break;
                         const v = answer + d;
                         if (v >= 1 && v <= 45) set.add(v);
                     }
-                    while (set.size < 4) set.add(rand(1, 45));
+                    while (set.size < choiceCount) set.add(rand(1, 45));
                     return shuffle(Array.from(set));
                 };
 
@@ -5527,9 +5536,12 @@
                     { icon: '🛒', label: '생활 계산' },
                     { icon: '📜', label: '언어·속담' },
                     { icon: '🕐', label: '시공간' },
-                    { icon: '🏆', label: '순서 정리' }
+                    { icon: '🏆', label: '순서 정리' },
+                    { icon: '🎑', label: '추억 퀴즈' }
                 ];
-                const idx = roundIndex % domains.length;
+                // 60대: 기억→주의→생활계산→속담→시공간→순서정리 / 70대 이상: 기억→주의→생활계산→속담→추억퀴즈→시계읽기
+                const order = elder ? [0, 1, 2, 3, 6, 4] : [0, 1, 2, 3, 4, 5];
+                const idx = order[roundIndex % order.length];
                 const dom = domains[idx];
 
                 let questionText = '', memorizeText = '', hintText = '';
@@ -5538,12 +5550,13 @@
 
                 if (idx === 0) {
                     // 기억력: 숫자 4개를 5초간 보여준 뒤 가리고 n번째 숫자를 묻는다
-                    const nums = pickDistinct(4, 1, 45);
+                    const cnt = elder ? 3 : 4;
+                    const nums = pickDistinct(cnt, 1, 45);
                     const ord = ['첫 번째', '두 번째', '세 번째', '네 번째'];
-                    const k = rand(1, 3);
+                    const k = rand(1, cnt - 1);
                     answer = nums[k];
-                    memorizeSec = 5;
-                    memorizeText = '숫자 4개를 차례로 보여 드립니다. 순서대로 잘 기억해 주세요! (5초 뒤에 가려집니다)';
+                    memorizeSec = elder ? 7 : 5;
+                    memorizeText = `숫자 ${cnt}개를 차례로 보여 드립니다. 순서대로 잘 기억해 주세요! (${memorizeSec}초 뒤에 가려집니다)`;
                     questionText = `방금 보신 숫자 중 ${ord[k]} 숫자는 무엇이었을까요?`;
                     visualElements = nums;
                     hintText = k > 0
@@ -5558,7 +5571,7 @@
                     const base = a * 10 + b, odd = b * 10 + a;
                     answer = odd;
                     questionText = '숫자판에서 혼자만 다른 숫자 하나를 찾아보세요. 그 숫자가 정답 공 번호입니다!';
-                    visualElements = shuffle([odd, ...Array(8).fill(base)]);
+                    visualElements = shuffle([odd, ...Array(elder ? 5 : 8).fill(base)]);
                     hintText = `${base}이(가) 여러 개 있습니다. 그 사이에 숫자 순서가 뒤바뀐 ${odd}이(가) 하나 숨어 있어요.`;
                     cands = [base, a, b, a * 10 + a, b * 10 + b];
                 } else if (idx === 2) {
@@ -5605,8 +5618,8 @@
                     cands = [it.a + 1, it.a - 1, it.a + 2, it.a * 2, it.a + 5, 10, 7, 9];
                 } else if (idx === 4) {
                     // 시공간: 아날로그 시계 읽기 / 달력 계산
-                    if (Math.random() < 0.5) {
-                        const h = rand(1, 12), m = 5 * rand(1, 9);
+                    if (elder || Math.random() < 0.5) {
+                        const h = rand(1, 12), m = elder ? 15 * rand(1, 3) : 5 * rand(1, 9);
                         const cx = 60, cy = 60;
                         const pt = (ang, len) => {
                             const r = (ang - 90) * Math.PI / 180;
@@ -5636,6 +5649,28 @@
                         hintText = `첫 번째 ${days[t]}요일은 ${first}일입니다. 7일씩 더하면 ${first}일 → ${first + 7}일 → ${first + 14}일입니다.`;
                         cands = [first, first + 7, answer + 7, answer - 7, answer + 1, answer - 1];
                     }
+                } else if (idx === 6) {
+                    // 추억 퀴즈(70대 이상): 우리 모두가 아는 기념일·전통 상식 (정답 1~45)
+                    const items = [
+                        { q: '광복절은 8월 며칠일까요?', a: 15, h: '광복절은 8월 15일입니다. 나라를 되찾은 기쁜 날이지요.' },
+                        { q: '한글날은 10월 며칠일까요?', a: 9, h: '한글날은 10월 9일입니다. 세종대왕님의 한글 사랑을 기리는 날이지요.' },
+                        { q: '어린이날은 5월 며칠일까요?', a: 5, h: '어린이날은 5월 5일입니다.' },
+                        { q: '성탄절(크리스마스)은 12월 며칠일까요?', a: 25, h: '성탄절은 12월 25일입니다.' },
+                        { q: '삼일절은 3월 며칠일까요?', a: 1, h: '삼일절은 3월 1일입니다. 1919년 만세 운동을 기리는 날이지요.' },
+                        { q: '개천절은 10월 며칠일까요?', a: 3, h: '개천절은 10월 3일입니다. 하늘이 열린 날이라는 뜻이지요.' },
+                        { q: '현충일은 6월 며칠일까요?', a: 6, h: '현충일은 6월 6일입니다.' },
+                        { q: '어버이날은 5월 며칠일까요?', a: 8, h: '어버이날은 5월 8일입니다.' },
+                        { q: '식목일은 4월 며칠일까요?', a: 5, h: '식목일은 4월 5일입니다. 나무를 심는 날이지요.' },
+                        { q: '제헌절은 7월 며칠일까요?', a: 17, h: '제헌절은 7월 17일입니다. 헌법을 만든 날이지요.' },
+                        { q: '윷놀이에서 한 번에 던지는 윷가락은 모두 몇 개일까요?', a: 4, h: '윷가락은 네 개입니다. 도·개·걸·윷·모는 이 네 개를 던져 나옵니다.' },
+                        { q: '사물놀이는 꽹과리, 징, 장구, 북을 칩니다. 악기는 모두 몇 가지일까요?', a: 4, h: '꽹과리, 징, 장구, 북 — 모두 네 가지입니다.' },
+                        { q: '한글의 기본 자음은 14개, 모음은 10개입니다. 모두 합하면 몇 글자일까요?', a: 24, h: '14 + 10 = 24입니다.' }
+                    ];
+                    const it = items[rand(0, items.length - 1)];
+                    answer = it.a;
+                    questionText = it.q;
+                    hintText = it.h;
+                    cands = [it.a + 1, it.a - 1, it.a + 2, it.a - 2, it.a + 10, 15, 5, 25, 10];
                 } else {
                     // 순서 정리(최종): 5개 숫자 정렬·비교
                     const nums = pickDistinct(5, 1, 45);
@@ -5684,7 +5719,7 @@
                 this.isProcessing = false;
                 this.attemptCount = 0;
                 this.hintUsed = false;
-                this.currentQuiz = (this.getAgeProfile().mode === 'wisdom')
+                this.currentQuiz = (this.isSeniorMode())
                     ? this.generateWisdomQuestion(this.currentRound)
                     : this.generateChallengingQuestion(this.currentRound);
                 this.renderQuizCard();
@@ -5701,7 +5736,7 @@
                 this.isProcessing = true;
                 const isCorrect = (num === this.currentQuiz.answer);
                 const feedbackEl = document.getElementById('brainQuizFeedback');
-                const wisdom = this.getAgeProfile().mode === 'wisdom';
+                const wisdom = this.isSeniorMode();
 
                 if (isCorrect) {
                     const ballNum = this.currentQuiz.answer;
@@ -5809,10 +5844,11 @@
                 }).join(' ');
 
                 // 60대 '백전노장 지혜' 모드: 큰 글씨·큰 버튼, 기억 문제는 숫자를 잠시 보여준 뒤 가림
-                const isWisdom = this.getAgeProfile().mode === 'wisdom';
-                const headCls = isWisdom ? 'text-xl sm:text-2xl' : 'text-base sm:text-xl';
-                const choicePad = isWisdom ? 'p-4 sm:p-5' : 'p-3.5 sm:p-4';
-                const choiceTxt = isWisdom ? 'text-base sm:text-lg' : 'text-sm sm:text-base';
+                const isWisdom = this.isSeniorMode();
+                const isElder = this.getAgeProfile().mode === 'elder';
+                const headCls = isElder ? 'text-2xl sm:text-3xl' : (isWisdom ? 'text-xl sm:text-2xl' : 'text-base sm:text-xl');
+                const choicePad = isElder ? 'p-5 sm:p-6' : (isWisdom ? 'p-4 sm:p-5' : 'p-3.5 sm:p-4');
+                const choiceTxt = isElder ? 'text-xl sm:text-2xl' : (isWisdom ? 'text-base sm:text-lg' : 'text-sm sm:text-base');
                 const memorizing = !!q.memorizeSec;
                 if (this.memorizeTimeout) { clearTimeout(this.memorizeTimeout); this.memorizeTimeout = null; }
 
@@ -5875,7 +5911,7 @@
                         </div>
 
                         <!-- 4지선다 로또볼 선택지 -->
-                        <div id="brainChoiceGrid" class="grid grid-cols-2 gap-2.5 sm:gap-3.5 pt-1 transition-opacity duration-300 ${memorizing ? 'opacity-0 pointer-events-none' : ''}">
+                        <div id="brainChoiceGrid" class="grid ${isElder ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-2'} gap-2.5 sm:gap-3.5 pt-1 transition-opacity duration-300 ${memorizing ? 'opacity-0 pointer-events-none' : ''}">
                             ${choiceButtons}
                         </div>
 
@@ -5976,7 +6012,7 @@
 
                 // 60대 '백전노장 지혜' 모드: 두뇌 영역별 훈련 성적표 (별 1~3개)
                 let wisdomReportHtml = '';
-                if (this.getAgeProfile(ageGroup).mode === 'wisdom' && this.roundLog && this.roundLog.length) {
+                if (this.isSeniorMode(ageGroup) && this.roundLog && this.roundLog.length) {
                     const totalStars = this.roundLog.reduce((s, r) => s + r.stars, 0);
                     const maxStars = this.roundLog.length * 3;
                     const rowsHtml = this.roundLog.map(r => `
