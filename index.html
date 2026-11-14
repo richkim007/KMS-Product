@@ -5022,8 +5022,8 @@
                 const ageOptions = [
                     { key: '20대', icon: 'fa-bolt', desc: '콤보 · 번개 정답, 번개 사냥꾼', color: 'from-amber-500/20 to-orange-500/20 border-amber-400/40 text-amber-300 hover:border-amber-400' },
                     { key: '30대', icon: 'fa-brain', desc: '범인 추리 · 암호 해독, 논리 해커', color: 'from-sky-500/20 to-blue-500/20 border-sky-400/40 text-sky-300 hover:border-sky-400' },
-                    { key: '40대', icon: 'fa-shield-halved', desc: '풍부한 집중력 & 연산력', color: 'from-emerald-500/20 to-teal-500/20 border-emerald-400/40 text-emerald-300 hover:border-emerald-400' },
-                    { key: '50대', icon: 'fa-gem', desc: '원숙한 직관 & 침착한 해법', color: 'from-indigo-500/20 to-violet-500/20 border-indigo-400/40 text-indigo-300 hover:border-indigo-400' },
+                    { key: '40대', icon: 'fa-shield-halved', desc: '어림 계산 · 예산 배분, 숫자 전략가', color: 'from-emerald-500/20 to-teal-500/20 border-emerald-400/40 text-emerald-300 hover:border-emerald-400' },
+                    { key: '50대', icon: 'fa-gem', desc: '기억 · 패턴 감별, 직관 감별사', color: 'from-indigo-500/20 to-violet-500/20 border-indigo-400/40 text-indigo-300 hover:border-indigo-400' },
                     { key: '60대', icon: 'fa-award', desc: '기억·주의·언어 두뇌 건강 훈련, 백전노장 지혜', color: 'from-purple-500/20 to-fuchsia-500/20 border-purple-400/40 text-purple-300 hover:border-purple-400' },
                     { key: '70대 이상', icon: 'fa-crown', desc: '큰 글씨 · 추억 퀴즈, 100세 총명 두뇌왕', color: 'from-rose-500/20 to-pink-500/20 border-rose-400/40 text-rose-300 hover:border-rose-400' }
                 ];
@@ -5203,8 +5203,8 @@
             ageProfiles: {
                 '20대':      { tier: '2030', mode: 'lightning', questionDurationSec: 25, label: '번개 사냥꾼 · 초고속 암산' },
                 '30대':      { tier: '2030', mode: 'logic', questionDurationSec: 40, label: '논리 해커 · 범인 추리·암호 해독' },
-                '40대':      { tier: '4050', questionDurationSec: 30, label: '집중 연산' },
-                '50대':      { tier: '4050', questionDurationSec: 30, label: '집중 연산' },
+                '40대':      { tier: '4050', mode: 'strategy', questionDurationSec: 40, label: '숫자 전략가 · 어림 계산·예산 배분' },
+                '50대':      { tier: '4050', mode: 'intuition', questionDurationSec: 40, label: '직관 감별사 · 기억·패턴 감별' },
                 '60대':      { tier: '6070', mode: 'wisdom', questionDurationSec: 60, label: '두뇌 건강 훈련 · 백전노장 지혜' },
                 '70대 이상': { tier: '6070', mode: 'elder', questionDurationSec: 90, label: '두뇌 건강 훈련 · 100세 총명' }
             },
@@ -5666,6 +5666,255 @@
                 };
             },
 
+            // 🎯 40대 '숫자 전략가' / 🔍 50대 '직관 감별사' 전용 문제 생성기 (정답은 항상 1~45)
+            // 40대: 어림 계산 → 예산 배분 → 최단 경로 → 경우의 수 → 변형 피보나치(기존) → 보스(기존)
+            // 50대: 기억 감별 → 다른 하나 찾기 → 어긋난 숫자 찾기 → 교차 수열 → 변형 피보나치(기존) → 보스(기존)
+            generateMidlifeQuestion(roundIndex) {
+                const strategy = this.getAgeProfile().mode === 'strategy';
+                const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+                const shuffle = (arr) => arr.slice().sort(() => Math.random() - 0.5);
+                const pickDistinct = (n, min, max) => {
+                    const s = new Set();
+                    while (s.size < n) s.add(rand(min, max));
+                    return Array.from(s);
+                };
+                const isPrime = (n) => { if (n < 2) return false; for (let i = 2; i * i <= n; i++) if (n % i === 0) return false; return true; };
+                const buildChoices = (answer, cands) => {
+                    const set = new Set([answer]);
+                    for (const v of shuffle(Array.from(new Set(cands)))) {
+                        if (set.size >= 4) break;
+                        if (Number.isInteger(v) && v >= 1 && v <= 45) set.add(v);
+                    }
+                    for (const d of shuffle([-1, 1, -2, 2, -3, 3, -5, 5, -10, 10])) {
+                        if (set.size >= 4) break;
+                        const v = answer + d;
+                        if (v >= 1 && v <= 45) set.add(v);
+                    }
+                    while (set.size < 4) set.add(rand(1, 45));
+                    return shuffle(Array.from(set));
+                };
+
+                // 기존 생성기 재사용: 5(변형 피보나치), 6(파이널 보스)
+                if (roundIndex === 4 || roundIndex === 5) {
+                    const q = this.generateChallengingQuestion(roundIndex);
+                    q.round = roundIndex + 1;
+                    q.categoryName = (strategy ? '🎯 ' : '🔍 ') + q.categoryName;
+                    return q;
+                }
+
+                let categoryName = '', questionText = '', hintText = '', memorizeText = '';
+                let answer = 1, visualElements = [], visualHtml = '', cands = [], memorizeSec = 0, choicesOverride = null;
+
+                if (strategy) {
+                    if (roundIndex === 0) {
+                        // 🎯 어림 계산: 정확히 계산하지 않고 가장 가까운 정수 고르기
+                        categoryName = '🎯 어림 계산';
+                        let done = false;
+                        for (let tries = 0; tries < 200 && !done; tries++) {
+                            const jit = () => (rand(-4, 4) / 10);
+                            if (Math.random() < 0.5) {
+                                const x = rand(8, 22), y = rand(8, 22);
+                                const a = +(x + jit()).toFixed(1), b = +(y + jit()).toFixed(1);
+                                const e = a + b;
+                                if (Math.abs(e - Math.round(e) - 0) > 0.5 - 0.15 || Math.abs((e % 1) - 0.5) < 0.15) continue;
+                                if (Math.round(e) < 1 || Math.round(e) > 45 || a === x && b === y) continue;
+                                answer = Math.round(e);
+                                questionText = '정확히 계산하지 말고 어림으로 푸세요. 두 수의 합에 가장 가까운 정수는?';
+                                visualElements = [`${a}`, '+', `${b}`, '≈', '?'];
+                                hintText = `${a}은 약 ${x}, ${b}은 약 ${y}입니다. 어림하면 ${x} + ${y} 근처입니다. (정확한 값: ${e.toFixed(1)})`;
+                                cands = [Math.floor(e), Math.ceil(e), x + y, x + y + 1, x + y - 1];
+                                done = true;
+                            } else {
+                                const p = rand(5, 9), q = rand(3, 6);
+                                const a = +(p + jit()).toFixed(1), b = +(q + jit()).toFixed(1);
+                                const e = a * b;
+                                if (Math.abs((e % 1) - 0.5) < 0.15 || Math.round(e) > 45 || Math.round(e) < 1 || (a === p && b === q)) continue;
+                                answer = Math.round(e);
+                                questionText = '어림 곱셈입니다. 두 수의 곱에 가장 가까운 정수는?';
+                                visualElements = [`${a}`, '×', `${b}`, '≈', '?'];
+                                hintText = `${a}은 약 ${p}, ${b}은 약 ${q}이므로 ${p} × ${q} = ${p * q} 근처입니다. (정확한 값: ${e.toFixed(2)})`;
+                                cands = [Math.floor(e), Math.ceil(e), p * q, p * q + 2, p * q - 2];
+                                done = true;
+                            }
+                        }
+                        if (!done) {
+                            answer = 40; questionText = '정확히 계산하지 말고 어림으로 푸세요. 두 수의 합에 가장 가까운 정수는?';
+                            visualElements = ['19.8', '+', '20.3', '≈', '?'];
+                            hintText = '19.8은 약 20, 20.3도 약 20입니다. 20 + 20 = 40 근처입니다.'; cands = [39, 41, 38, 42];
+                        }
+                    } else if (roundIndex === 1) {
+                        // 💰 예산 배분: 부분집합 전수 탐색으로 최대 효과 계산
+                        categoryName = '💰 예산 배분';
+                        let made = null;
+                        for (let tries = 0; tries < 300 && !made; tries++) {
+                            const items = ['A', 'B', 'C', 'D'].map(n => ({ n, cost: rand(2, 8), val: rand(4, 14) }));
+                            const B = rand(10, 16);
+                            if (items.reduce((s, x) => s + x.cost, 0) <= B) continue;
+                            let best = -1, bestSet = [], bestCount = 0;
+                            for (let mask = 0; mask < 16; mask++) {
+                                let cost = 0, val = 0; const set = [];
+                                for (let i = 0; i < 4; i++) if (mask & (1 << i)) { cost += items[i].cost; val += items[i].val; set.push(items[i].n); }
+                                if (cost > B) continue;
+                                if (val > best) { best = val; bestSet = set; bestCount = 1; } else if (val === best) bestCount++;
+                            }
+                            // 최적 조합이 하나뿐이고 효과 합이 45 이하이며, 욕심쟁이(효과 큰 순) 선택과 달라서 생각할 가치가 있을 때
+                            const byVal = items.slice().sort((x, y) => y.val - x.val);
+                            let gc = 0, gv = 0; byVal.forEach(x => { if (gc + x.cost <= B) { gc += x.cost; gv += x.val; } });
+                            if (bestCount === 1 && best <= 45 && best >= 8 && gv !== best) {
+                                made = { items, B, best, bestSet, gv };
+                            }
+                        }
+                        if (!made) {
+                            made = { items: [{ n: 'A', cost: 5, val: 9 }, { n: 'B', cost: 4, val: 7 }, { n: 'C', cost: 6, val: 11 }, { n: 'D', cost: 3, val: 5 }], B: 10, best: 18, bestSet: ['A', 'B'], gv: 16 };
+                            // A+B(9)=비용 9 효과 16, A+D=8/14, B+C=10/18 → 최대 18은 B+C. 안전 장치용 값 재계산
+                            let best = -1, bs = [];
+                            for (let mask = 0; mask < 16; mask++) {
+                                let cost = 0, val = 0; const set = [];
+                                for (let i = 0; i < 4; i++) if (mask & (1 << i)) { cost += made.items[i].cost; val += made.items[i].val; set.push(made.items[i].n); }
+                                if (cost <= made.B && val > best) { best = val; bs = set; }
+                            }
+                            made.best = best; made.bestSet = bs;
+                        }
+                        answer = made.best;
+                        questionText = `예산(비용 합계)은 ${made.B}입니다. 한 번씩만 고를 수 있을 때, 얻을 수 있는 효과의 최댓값은?`;
+                        visualElements = made.items.map(x => `${x.n} (비용 ${x.cost} · 효과 ${x.val})`);
+                        hintText = `효과가 큰 것부터 고르는 것이 항상 최선은 아닙니다. 가능한 조합을 비교해 보세요. 최선의 조합은 ${made.bestSet.join(' + ')}입니다.`;
+                        cands = [made.gv, made.best + 2, made.best - 2, made.best + 3, made.best - 3];
+                    } else if (roundIndex === 2) {
+                        // 🗺️ 최단 경로: 다익스트라 없이도 전 경로 열거(4개 경로)
+                        categoryName = '🗺️ 최단 경로';
+                        const w = { AB: rand(3, 12), AC: rand(3, 12), BC: rand(1, 6), BD: rand(3, 12), CD: rand(3, 12) };
+                        const paths = [
+                            { r: 'A→B→D', d: w.AB + w.BD },
+                            { r: 'A→C→D', d: w.AC + w.CD },
+                            { r: 'A→B→C→D', d: w.AB + w.BC + w.CD },
+                            { r: 'A→C→B→D', d: w.AC + w.BC + w.BD }
+                        ];
+                        const minD = Math.min(...paths.map(p => p.d));
+                        const bestPaths = paths.filter(p => p.d === minD);
+                        answer = minD;
+                        questionText = '도시 A에서 D까지 가는 가장 짧은 거리는? (길은 양방향으로 다닐 수 있습니다)';
+                        visualElements = [`A–B ${w.AB}`, `A–C ${w.AC}`, `B–C ${w.BC}`, `B–D ${w.BD}`, `C–D ${w.CD}`];
+                        hintText = `가능한 경로를 모두 더해 비교하세요: ${paths.map(p => `${p.r} = ${p.d}`).join(', ')}. 가장 짧은 경로는 ${bestPaths[0].r}입니다.`;
+                        cands = paths.map(p => p.d);
+                    } else {
+                        // 🎲 경우의 수
+                        categoryName = '🎲 경우의 수';
+                        const v = rand(0, 3);
+                        if (v === 0) {
+                            const m = rand(3, 7), n = rand(3, 6);
+                            answer = m * n;
+                            questionText = `셔츠 ${m}벌과 바지 ${n}벌이 있습니다. 셔츠 하나와 바지 하나를 골라 입는 방법은 모두 몇 가지일까요?`;
+                            hintText = `셔츠 ${m}가지 × 바지 ${n}가지 = ${answer}가지입니다.`;
+                            cands = [m + n, m * n - m, m * n + n];
+                        } else if (v === 1) {
+                            const n = rand(5, 9);
+                            answer = n * (n - 1) / 2;
+                            questionText = `${n}명 중에서 대표 2명을 뽑는 방법은 모두 몇 가지일까요? (순서는 상관없습니다)`;
+                            hintText = `${n} × ${n - 1} = ${n * (n - 1)}에서 같은 쌍이 두 번씩 세어졌으므로 2로 나눕니다. → ${answer}`;
+                            cands = [n * (n - 1), n * 2, n + (n - 1)];
+                        } else if (v === 2) {
+                            const n = rand(4, 6);
+                            answer = n * (n - 1);
+                            questionText = `${n}명 중에서 회장 1명, 부회장 1명을 뽑는 방법은 모두 몇 가지일까요?`;
+                            hintText = `회장 ${n}가지, 남은 사람 중 부회장 ${n - 1}가지 → ${n} × ${n - 1} = ${answer}`;
+                            cands = [n * (n - 1) / 2, n * 2, n * n];
+                        } else {
+                            answer = 24;
+                            questionText = '서로 다른 4명이 한 줄로 서는 방법은 모두 몇 가지일까요?';
+                            hintText = '4 × 3 × 2 × 1 = 24가지입니다.';
+                            cands = [12, 16, 20, 8];
+                        }
+                    }
+                } else {
+                    if (roundIndex === 0) {
+                        // 🧠 기억 감별: 5개 숫자를 보여 준 뒤, 보지 못한 숫자 찾기
+                        categoryName = '🧠 기억 감별';
+                        const nums = pickDistinct(5, 1, 45);
+                        let extra = rand(1, 45);
+                        while (nums.includes(extra)) extra = rand(1, 45);
+                        answer = extra;
+                        memorizeSec = 6;
+                        memorizeText = `숫자 5개를 보여 드립니다. 잘 기억해 주세요! (${memorizeSec}초 뒤에 가려집니다)`;
+                        questionText = '방금 보신 숫자가 아닌 것은 어느 것일까요?';
+                        visualElements = nums;
+                        hintText = `보셨던 숫자 중에는 ${nums[0]}, ${nums[1]}이(가) 있었습니다. 처음 본 숫자를 고르세요.`;
+                        choicesOverride = shuffle([extra, ...shuffle(nums).slice(0, 3)]);
+                    } else if (roundIndex === 1) {
+                        // 🔍 다른 하나 찾기: 네 수는 같은 규칙, 하나만 어긋남
+                        categoryName = '🔍 다른 하나 찾기';
+                        const kind = rand(0, 2);
+                        let same = [], odd = 0, ruleText = '';
+                        if (kind === 0) {
+                            const k = rand(3, 6);
+                            const mult = []; for (let n = k; n <= 45; n += k) mult.push(n);
+                            const non = []; for (let n = 1; n <= 45; n++) if (n % k !== 0) non.push(n);
+                            same = shuffle(mult).slice(0, 4); odd = non[rand(0, non.length - 1)];
+                            ruleText = `나머지 네 수는 모두 ${k}의 배수입니다.`;
+                        } else if (kind === 1) {
+                            const pr = []; for (let n = 2; n <= 45; n++) if (isPrime(n)) pr.push(n);
+                            const comp = []; for (let n = 4; n <= 45; n++) if (!isPrime(n)) comp.push(n);
+                            same = shuffle(pr).slice(0, 4); odd = comp[rand(0, comp.length - 1)];
+                            ruleText = '나머지 네 수는 모두 소수(1과 자기 자신만으로 나누어지는 수)입니다.';
+                        } else {
+                            const par = rand(0, 1);
+                            const pool = []; for (let n = 1; n <= 45; n++) if (n % 2 === par) pool.push(n);
+                            const other = []; for (let n = 1; n <= 45; n++) if (n % 2 !== par) other.push(n);
+                            same = shuffle(pool).slice(0, 4); odd = other[rand(0, other.length - 1)];
+                            ruleText = `나머지 네 수는 모두 ${par === 0 ? '짝수' : '홀수'}입니다.`;
+                        }
+                        answer = odd;
+                        questionText = '다섯 숫자 중 규칙이 다른 하나를 찾아보세요. 그 숫자가 정답 공 번호입니다!';
+                        visualElements = shuffle([odd, ...same]);
+                        hintText = ruleText;
+                        choicesOverride = shuffle([odd, ...shuffle(same).slice(0, 3)]);
+                    } else if (roundIndex === 2) {
+                        // 🧪 어긋난 숫자 찾기: 일정하게 늘어나는 수열에서 하나만 틀림
+                        categoryName = '🧪 어긋난 숫자 찾기';
+                        const s = rand(2, 8), d = rand(3, 5);
+                        const seq = [0, 1, 2, 3, 4, 5].map(i => s + d * i);
+                        const j = rand(1, 4);
+                        const delta = shuffle([-2, -1, 1, 2])[0];
+                        const bad = seq[j] + delta;
+                        const shown = seq.slice(); shown[j] = bad;
+                        answer = bad;
+                        questionText = '일정한 규칙으로 늘어나는 수열에서 규칙을 벗어난 숫자 하나가 섞여 있습니다. 그 숫자는?';
+                        visualElements = shown.flatMap((v, i) => i === 0 ? [v] : ['→', v]);
+                        hintText = `매번 +${d}씩 늘어나야 합니다. ${seq[j - 1]} 다음에는 ${seq[j]}이(가) 와야 하는데 ${bad}이(가) 있습니다.`;
+                        choicesOverride = shuffle([bad, ...shuffle(shown.filter((_, i) => i !== j)).slice(0, 3)]);
+                    } else {
+                        // 🔁 교차 수열: 홀수 번째는 늘고, 짝수 번째는 줄어드는 두 수열이 번갈아 나옴
+                        categoryName = '🔁 교차 수열';
+                        const s1 = rand(3, 9), d1 = rand(2, 4), s2 = rand(24, 36), d2 = rand(2, 4);
+                        const a = [0, 1, 2, 3].map(i => s1 + d1 * i);
+                        const b = [0, 1, 2].map(i => s2 - d2 * i);
+                        answer = a[3];
+                        questionText = '두 가지 규칙이 번갈아 나오는 수열입니다. 빈칸 [ ? ]에 들어갈 숫자는?';
+                        visualElements = [a[0], '→', b[0], '→', a[1], '→', b[1], '→', a[2], '→', b[2], '→', '?'];
+                        hintText = `홀수 번째 수끼리 보면 ${a[0]}, ${a[1]}, ${a[2]}… 매번 +${d1}입니다. 짝수 번째 수는 -${d2}씩 줄어듭니다.`;
+                        cands = [s2 - d2 * 3, a[2] + d2, a[2] + d1 + 1, a[2] + d1 - 1];
+                    }
+                }
+
+                if (answer < 1) answer = 1;
+                if (answer > 45) answer = 45;
+
+                return {
+                    round: roundIndex + 1,
+                    type: (strategy ? 'strategy_' : 'intuition_') + roundIndex,
+                    categoryName,
+                    questionText,
+                    memorizeText,
+                    memorizeSec,
+                    hintText,
+                    visualElements,
+                    visualHtml,
+                    answer,
+                    trapCandidates: [],
+                    choices: choicesOverride || buildChoices(answer, cands)
+                };
+            },
+
             // 🏔️ 60대 '백전노장 지혜' 전용 문제 생성기: 라운드마다 두뇌 영역이 다름 (정답은 항상 1~45)
             // 1 기억 → 2 주의 → 3 생활 계산 → 4 언어·속담 → 5 시공간 → 6 순서 정리(최종)
             generateWisdomQuestion(roundIndex) {
@@ -5888,7 +6137,9 @@
                     ? this.generateWisdomQuestion(this.currentRound)
                     : (qMode === 'logic'
                         ? this.generateLogicQuestion(this.currentRound)
-                        : this.generateChallengingQuestion(this.currentRound));
+                        : (qMode === 'strategy' || qMode === 'intuition')
+                            ? this.generateMidlifeQuestion(this.currentRound)
+                            : this.generateChallengingQuestion(this.currentRound));
                 this.renderQuizCard();
                 this.updateProgress(this.currentRound);
                 this.startQuestionTimer();
