@@ -5115,6 +5115,7 @@
                 this.currentRound = 0;
                 this.wonBalls = [];
                 this.roundLog = [];
+                this.forcedWaitSec = 0;
                 this.combo = 0;
                 this.bestCombo = 0;
                 this.lightningScore = 0;
@@ -6397,6 +6398,7 @@
 
                 // 기억 문제: 지정된 시간 뒤에 숫자를 가리고 문제·선택지를 공개
                 if (memorizing) {
+                    this.forcedWaitSec = (this.forcedWaitSec || 0) + q.memorizeSec;
                     this.memorizeTimeout = setTimeout(() => {
                         this.memorizeTimeout = null;
                         if (this.currentQuiz !== q) return;
@@ -6563,7 +6565,8 @@
                 const card = document.getElementById('brainQuizCard');
                 if (!card) return;
 
-                const totalSec = this.elapsedMs / 1000;
+                // 기억 문제에서 숫자가 보이는 동안은 기다릴 수밖에 없으므로, 등급·평균 비교에서는 그 강제 대기시간을 제외
+                const totalSec = Math.max(0, this.elapsedMs / 1000 - (this.forcedWaitSec || 0));
                 const formattedTime = this.formatTime(this.elapsedMs);
                 const ageGroup = this.selectedAge || '40대';
                 const bench = this.benchmarks[ageGroup] || this.benchmarks['40대'];
