@@ -5020,8 +5020,8 @@
                 if (!card) return;
 
                 const ageOptions = [
-                    { key: '20대', icon: 'fa-bolt', desc: '초고속 반사신경 & 순발력', color: 'from-amber-500/20 to-orange-500/20 border-amber-400/40 text-amber-300 hover:border-amber-400' },
-                    { key: '30대', icon: 'fa-brain', desc: '스마트 직관 & 논리 추론', color: 'from-sky-500/20 to-blue-500/20 border-sky-400/40 text-sky-300 hover:border-sky-400' },
+                    { key: '20대', icon: 'fa-bolt', desc: '콤보 · 번개 정답, 번개 사냥꾼', color: 'from-amber-500/20 to-orange-500/20 border-amber-400/40 text-amber-300 hover:border-amber-400' },
+                    { key: '30대', icon: 'fa-brain', desc: '범인 추리 · 암호 해독, 논리 해커', color: 'from-sky-500/20 to-blue-500/20 border-sky-400/40 text-sky-300 hover:border-sky-400' },
                     { key: '40대', icon: 'fa-shield-halved', desc: '풍부한 집중력 & 연산력', color: 'from-emerald-500/20 to-teal-500/20 border-emerald-400/40 text-emerald-300 hover:border-emerald-400' },
                     { key: '50대', icon: 'fa-gem', desc: '원숙한 직관 & 침착한 해법', color: 'from-indigo-500/20 to-violet-500/20 border-indigo-400/40 text-indigo-300 hover:border-indigo-400' },
                     { key: '60대', icon: 'fa-award', desc: '기억·주의·언어 두뇌 건강 훈련, 백전노장 지혜', color: 'from-purple-500/20 to-fuchsia-500/20 border-purple-400/40 text-purple-300 hover:border-purple-400' },
@@ -5095,6 +5095,9 @@
                 this.currentRound = 0;
                 this.wonBalls = [];
                 this.roundLog = [];
+                this.combo = 0;
+                this.bestCombo = 0;
+                this.lightningScore = 0;
                 this.isProcessing = false;
 
                 const ageBadge = document.getElementById('brainAgeBadge');
@@ -5198,8 +5201,8 @@
 
             // 연령대별 인지 프로필 (2030 / 4050 / 6070)
             ageProfiles: {
-                '20대':      { tier: '2030', questionDurationSec: 25, label: '순발력 암산' },
-                '30대':      { tier: '2030', questionDurationSec: 25, label: '순발력 암산' },
+                '20대':      { tier: '2030', mode: 'lightning', questionDurationSec: 25, label: '번개 사냥꾼 · 초고속 암산' },
+                '30대':      { tier: '2030', mode: 'logic', questionDurationSec: 40, label: '논리 해커 · 범인 추리·암호 해독' },
                 '40대':      { tier: '4050', questionDurationSec: 30, label: '집중 연산' },
                 '50대':      { tier: '4050', questionDurationSec: 30, label: '집중 연산' },
                 '60대':      { tier: '6070', mode: 'wisdom', questionDurationSec: 60, label: '두뇌 건강 훈련 · 백전노장 지혜' },
@@ -5502,6 +5505,167 @@
                 };
             },
 
+            // 🧩 30대 '논리 해커' 전용 문제 생성기 (정답은 항상 1~45, 모든 논리 문제는 전수 탐색으로 정답 유일성 검증)
+            // 1 규칙(기존 워밍업) → 2 범인 추리 → 3 암호 해독 → 4 집합 논리 → 5 2계 수열(기존) → 6 보스(기존 대수 역산)
+            generateLogicQuestion(roundIndex) {
+                const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+                const shuffle = (arr) => arr.slice().sort(() => Math.random() - 0.5);
+                const pickDistinct = (n, min, max) => {
+                    const s = new Set();
+                    while (s.size < n) s.add(rand(min, max));
+                    return Array.from(s);
+                };
+                const buildChoices = (answer, cands) => {
+                    const set = new Set([answer]);
+                    for (const v of shuffle(Array.from(new Set(cands)))) {
+                        if (set.size >= 4) break;
+                        if (Number.isInteger(v) && v >= 1 && v <= 45) set.add(v);
+                    }
+                    for (const d of shuffle([-1, 1, -2, 2, -3, 3, -5, 5, -10, 10])) {
+                        if (set.size >= 4) break;
+                        const v = answer + d;
+                        if (v >= 1 && v <= 45) set.add(v);
+                    }
+                    while (set.size < 4) set.add(rand(1, 45));
+                    return shuffle(Array.from(set));
+                };
+
+                // 기존 생성기를 재사용하는 라운드: 1(등차·괄호), 5(2계 수열·피보나치), 6(보스)
+                const reuse = { 0: 0, 4: 4, 5: 5 };
+                if (reuse[roundIndex] !== undefined) {
+                    const q = this.generateChallengingQuestion(reuse[roundIndex]);
+                    q.round = roundIndex + 1;
+                    q.categoryName = '🧩 ' + q.categoryName;
+                    return q;
+                }
+
+                let categoryName = '', questionText = '', hintText = '';
+                let answer = 1, visualElements = [], visualHtml = '', cands = [];
+
+                if (roundIndex === 1) {
+                    // 🕵️ 범인 추리: 세 진술 중 정확히 하나만 참 → 범인이 유일하게 결정되는 진술 조합 탐색
+                    categoryName = '🕵️ 범인 추리';
+                    const nums = pickDistinct(3, 1, 45);
+                    let stmts = null, culprit = 0;
+                    for (let tries = 0; tries < 500 && !stmts; tries++) {
+                        const cand = [0, 1, 2].map(() => ({ not: Math.random() < 0.5, target: rand(0, 2) }));
+                        const valid = [];
+                        for (let c = 0; c < 3; c++) {
+                            const truths = cand.filter(s => (s.not ? c !== s.target : c === s.target)).length;
+                            if (truths === 1) valid.push(c);
+                        }
+                        if (valid.length === 1) { stmts = cand; culprit = valid[0]; }
+                    }
+                    if (!stmts) {
+                        // 안전 장치: A "범인은 A", B "범인은 A가 아니다", C "범인은 C" → 정확히 1개 참이 되는 후보 검증 필요 없는 고정 사례
+                        stmts = [{ not: false, target: 1 }, { not: true, target: 1 }, { not: false, target: 0 }];
+                        culprit = [0, 1, 2].filter(c => stmts.filter(s => (s.not ? c !== s.target : c === s.target)).length === 1)[0];
+                        if (culprit === undefined) culprit = 0;
+                    }
+                    answer = nums[culprit];
+                    questionText = '용의자 3명 중 범인은 한 명입니다. 세 사람의 진술 중 정확히 하나만 진실일 때, 범인의 번호는?';
+                    visualHtml = `<div class="space-y-1.5 text-left max-w-sm mx-auto">${stmts.map((s, i) =>
+                        `<div class="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white text-sm sm:text-base font-bold"><span class="text-amber-300">${nums[i]}번 용의자</span> : "범인은 ${nums[s.target]}번${s.not ? '이 아니다' : '이다'}"</div>`
+                    ).join('')}</div>`;
+                    hintText = `각 번호를 범인이라고 가정하고 진실인 진술이 몇 개인지 세어 보세요. 진실이 정확히 1개가 되는 경우는 ${answer}번이 범인일 때 하나뿐입니다.`;
+                    cands = nums;
+                } else if (roundIndex === 2) {
+                    // 🔐 암호 해독: 단서를 하나씩 더해 후보가 정확히 1개가 될 때까지 구성 (전수 탐색)
+                    categoryName = '🔐 암호 해독';
+                    const isPrime = (n) => { if (n < 2) return false; for (let i = 2; i * i <= n; i++) if (n % i === 0) return false; return true; };
+                    let built = null;
+                    for (let tries = 0; tries < 300 && !built; tries++) {
+                        const t = rand(10, 45);
+                        const pool = [
+                            { text: t % 2 === 0 ? '짝수입니다' : '홀수입니다', f: n => (n % 2 === 0) === (t % 2 === 0) },
+                            { text: `${t - rand(1, 10)}보다 큰 수입니다`, f: null, kind: 'gt' },
+                            { text: `${t + rand(1, 10)}보다 작은 수입니다`, f: null, kind: 'lt' },
+                            { text: `십의 자리 숫자는 ${Math.floor(t / 10)}입니다`, f: n => Math.floor(n / 10) === Math.floor(t / 10) },
+                            { text: `각 자리 숫자의 합은 ${Math.floor(t / 10) + (t % 10)}입니다`, f: n => Math.floor(n / 10) + (n % 10) === Math.floor(t / 10) + (t % 10) }
+                        ];
+                        // 범위 단서 함수 구성
+                        pool.forEach(c => {
+                            if (c.kind === 'gt') { const k = parseInt(c.text, 10); c.f = n => n > k; }
+                            if (c.kind === 'lt') { const k = parseInt(c.text, 10); c.f = n => n < k; }
+                        });
+                        [3, 4, 5, 6, 7].forEach(m => { if (t % m === 0) pool.push({ text: `${m}의 배수입니다`, f: n => n % m === 0 }); });
+                        if (isPrime(t)) pool.push({ text: '소수입니다', f: n => isPrime(n) });
+                        const order = shuffle(pool);
+                        let remain = Array.from({ length: 45 }, (_, i) => i + 1);
+                        const used = [];
+                        let beforeLast = null;
+                        for (const c of order) {
+                            if (used.length >= 5) break;
+                            const next = remain.filter(c.f);
+                            if (next.length === remain.length) continue; // 새 정보가 없는 단서는 제외
+                            beforeLast = remain;
+                            remain = next;
+                            used.push(c);
+                            if (remain.length === 1) break;
+                        }
+                        if (remain.length === 1 && remain[0] === t && used.length >= 3 && used.length <= 5) {
+                            built = { t, used, beforeLast };
+                        }
+                    }
+                    if (!built) {
+                        // 안전 장치: 검증된 고정 암호 (짝수 / 3의 배수 / 십의 자리 2 → 24만 남음)
+                        built = { t: 24, used: [{ text: '짝수입니다' }, { text: '3의 배수입니다' }, { text: '십의 자리 숫자는 2입니다' }], beforeLast: [6, 12, 18, 24, 30, 36, 42] };
+                    }
+                    answer = built.t;
+                    questionText = '비밀번호 해독! 1~45 사이의 숫자 하나입니다. 단서를 모두 만족하는 번호를 찾아내세요.';
+                    visualElements = built.used.map(c => c.text);
+                    const shown = (built.beforeLast || []).slice(0, 8);
+                    hintText = `마지막 단서를 보기 직전까지 남는 후보는 ${shown.join(', ')}${(built.beforeLast || []).length > 8 ? ' …' : ''} 입니다. 마지막 단서로 하나를 고르세요.`;
+                    cands = (built.beforeLast || []).concat([answer + 1, answer - 1, answer + 10]);
+                } else {
+                    // 🧮 집합 논리: 배수 조건의 교집합·차집합 (전수 탐색)
+                    categoryName = '🧮 집합 논리';
+                    let made = null;
+                    for (let tries = 0; tries < 200 && !made; tries++) {
+                        const k = rand(3, 7), m = rand(2, 5);
+                        if (k === m) continue;
+                        const kind = rand(0, 1);
+                        let pool, text;
+                        if (kind === 0) {
+                            pool = Array.from({ length: 45 }, (_, i) => i + 1).filter(n => n % k === 0 && n % m !== 0);
+                            text = `1부터 45까지의 수 중 ${k}의 배수이면서 ${m}의 배수는 아닌 수 가운데 가장 큰 수는?`;
+                            if (pool.length < 3) continue;
+                            made = { pool: pool.slice().sort((a, b) => b - a), idx: 0, text };
+                        } else {
+                            pool = Array.from({ length: 45 }, (_, i) => i + 1).filter(n => n % k === 0 && n % m === 0);
+                            text = `1부터 45까지의 수 중 ${k}의 배수이면서 ${m}의 배수이기도 한 수 가운데 두 번째로 큰 수는?`;
+                            if (pool.length < 3) continue;
+                            made = { pool: pool.slice().sort((a, b) => b - a), idx: 1, text };
+                        }
+                        made.k = k; made.m = m;
+                    }
+                    if (!made) {
+                        made = { pool: [42, 35, 28, 21, 14, 7], idx: 0, text: '1부터 45까지의 수 중 7의 배수 가운데 가장 큰 수는?', k: 7, m: 0 };
+                    }
+                    answer = made.pool[made.idx];
+                    questionText = made.text;
+                    hintText = `조건에 맞는 수를 큰 쪽부터 적어 보면 ${made.pool.slice(0, 6).join(', ')}${made.pool.length > 6 ? ' …' : ''} 입니다.`;
+                    visualElements = [`${made.k}의 배수`, '＆', made.m ? `${made.m}의 배수` : '조건', '▶', '?'];
+                    cands = made.pool.slice(0, 5).concat([answer + 1, answer - 1]);
+                }
+
+                if (answer < 1) answer = 1;
+                if (answer > 45) answer = 45;
+
+                return {
+                    round: roundIndex + 1,
+                    type: 'logic_' + roundIndex,
+                    categoryName,
+                    questionText,
+                    hintText,
+                    visualElements,
+                    visualHtml,
+                    answer,
+                    trapCandidates: [],
+                    choices: buildChoices(answer, cands)
+                };
+            },
+
             // 🏔️ 60대 '백전노장 지혜' 전용 문제 생성기: 라운드마다 두뇌 영역이 다름 (정답은 항상 1~45)
             // 1 기억 → 2 주의 → 3 생활 계산 → 4 언어·속담 → 5 시공간 → 6 순서 정리(최종)
             generateWisdomQuestion(roundIndex) {
@@ -5719,9 +5883,12 @@
                 this.isProcessing = false;
                 this.attemptCount = 0;
                 this.hintUsed = false;
-                this.currentQuiz = (this.isSeniorMode())
+                const qMode = this.getAgeProfile().mode;
+                this.currentQuiz = this.isSeniorMode()
                     ? this.generateWisdomQuestion(this.currentRound)
-                    : this.generateChallengingQuestion(this.currentRound);
+                    : (qMode === 'logic'
+                        ? this.generateLogicQuestion(this.currentRound)
+                        : this.generateChallengingQuestion(this.currentRound));
                 this.renderQuizCard();
                 this.updateProgress(this.currentRound);
                 this.startQuestionTimer();
@@ -5753,9 +5920,24 @@
                         });
                     }
 
+                    // 20대 '번개 사냥꾼': 힌트·오답 없이 연속 정답이면 콤보, 10초 이내면 번개 보너스
+                    let lightningMsg = '';
+                    if (this.getAgeProfile().mode === 'lightning') {
+                        const firstTry = (this.attemptCount || 0) === 0 && !this.hintUsed;
+                        const spent = this.questionDurationSec - this.questionRemainingSec;
+                        const fast = firstTry && spent <= 10;
+                        this.combo = firstTry ? (this.combo || 0) + 1 : 0;
+                        this.bestCombo = Math.max(this.bestCombo || 0, this.combo);
+                        const gain = 100 + (this.combo > 1 ? (this.combo - 1) * 50 : 0) + (fast ? 100 : 0);
+                        this.lightningScore = (this.lightningScore || 0) + gain;
+                        lightningMsg = `⚡ ${fast ? '번개 정답!' : '정답!'}${this.combo > 1 ? ` 🔥 COMBO x${this.combo}` : ''} +${gain}점 · 로또 [ ${ballNum}번 ] 공 획득!`;
+                    }
+
                     if (feedbackEl) {
                         feedbackEl.className = 'mt-3 p-3 rounded-2xl bg-emerald-500/20 border border-emerald-400 text-emerald-200 text-xs sm:text-sm font-black flex items-center justify-center space-x-2 animate-bounce';
-                        feedbackEl.innerHTML = wisdom
+                        feedbackEl.innerHTML = lightningMsg
+                            ? `<i class="fa-solid fa-bolt text-amber-300 text-base"></i><span>${lightningMsg}</span>`
+                            : wisdom
                             ? `<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i><span>정말 잘 하셨어요! 👏 로또 [ ${ballNum}번 ] 공을 얻으셨습니다!</span>`
                             : `<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i><span>완벽한 정답입니다! 🎯 로또 [ ${ballNum}번 ] 공 획득! (+두뇌 집중력 상승)</span>`;
                     }
@@ -5766,13 +5948,15 @@
                     }, wisdom ? 1100 : 750);
                 } else {
                     this.attemptCount = (this.attemptCount || 0) + 1;
+                    const comboBroken = this.getAgeProfile().mode === 'lightning' && (this.combo || 0) > 0;
+                    if (this.getAgeProfile().mode === 'lightning') this.combo = 0;
                     if (feedbackEl) {
                         feedbackEl.className = wisdom
                             ? 'mt-3 p-3 rounded-2xl bg-sky-500/20 border border-sky-400 text-sky-100 text-sm sm:text-base font-bold flex items-center justify-center space-x-2'
                             : 'mt-3 p-3 rounded-2xl bg-rose-500/20 border border-rose-400 text-rose-200 text-xs sm:text-sm font-bold flex items-center justify-center space-x-2';
                         feedbackEl.innerHTML = wisdom
                             ? `<i class="fa-solid fa-face-smile text-sky-300 text-base"></i><span>괜찮아요! 😊 아래 힌트를 보시고 천천히 다시 골라 보세요.</span>`
-                            : `<i class="fa-solid fa-circle-exclamation text-rose-400 text-base"></i><span>오답입니다! 💡 아래 힌트를 확인하고 다시 도전하세요.</span>`;
+                            : `<i class="fa-solid fa-circle-exclamation text-rose-400 text-base"></i><span>오답입니다!${comboBroken ? ' 콤보가 끊겼어요 💥' : ''} 💡 아래 힌트를 확인하고 다시 도전하세요.</span>`;
                     }
                     this.isProcessing = false;
                     this.revealHint();
@@ -5880,6 +6064,9 @@
                                     <span class="text-xs sm:text-sm font-black text-amber-300">
                                         ROUND ${q.round} / ${this.totalRounds}
                                     </span>
+                                    ${(this.getAgeProfile().mode === 'lightning' && (this.combo || 0) > 1)
+                                        ? `<span class="px-2 py-0.5 rounded-full bg-orange-500/20 border border-orange-400/60 text-orange-300 text-[11px] sm:text-xs font-black animate-pulse">🔥 COMBO x${this.combo}</span>`
+                                        : ''}
                                 </div>
                                 <div id="brainQuestionTimerBadge"></div>
                             </div>
@@ -6028,6 +6215,25 @@
                             </div>
                             <div class="space-y-1.5">${rowsHtml}</div>
                             <p class="text-[11px] text-slate-400 text-center leading-relaxed">※ 재미로 즐기는 두뇌 놀이입니다. 의학적 진단이나 치료를 대신하지 않습니다.</p>
+                        </div>`;
+                }
+
+                // 20대 '번개 사냥꾼' 모드: 번개 점수와 최고 콤보
+                if (this.getAgeProfile(ageGroup).mode === 'lightning') {
+                    wisdomReportHtml = `
+                        <div class="max-w-md mx-auto space-y-2 bg-gradient-to-br from-amber-500/10 to-orange-500/10 border border-amber-400/30 rounded-3xl p-4">
+                            <div class="text-center text-sm sm:text-base font-black text-amber-200">⚡ 번개 사냥꾼 기록</div>
+                            <div class="grid grid-cols-2 gap-3 text-center">
+                                <div class="rounded-2xl bg-slate-900/70 border border-slate-800 py-3">
+                                    <div class="text-[11px] text-slate-400 font-bold">번개 점수</div>
+                                    <div class="text-xl font-black text-amber-300 font-mono">${(this.lightningScore || 0).toLocaleString()}</div>
+                                </div>
+                                <div class="rounded-2xl bg-slate-900/70 border border-slate-800 py-3">
+                                    <div class="text-[11px] text-slate-400 font-bold">최고 콤보</div>
+                                    <div class="text-xl font-black text-orange-300 font-mono">🔥 x${this.bestCombo || 0}</div>
+                                </div>
+                            </div>
+                            <p class="text-[11px] text-slate-400 text-center">힌트·오답 없이 연속 정답이면 콤보, 10초 이내 정답이면 번개 보너스!</p>
                         </div>`;
                 }
 
