@@ -3147,6 +3147,8 @@
                 setTimeout(() => { if (icon) icon.classList.remove('fa-spin'); }, 600);
             }
             renderGlobalBoard(true);
+            updateGlobalAvgDisplay();
+            updateSolvedCountDisplay();
             if (isManual) {
                 const guideEl = $('rankSortGuideText');
                 if (guideEl) {
@@ -3209,12 +3211,6 @@
             });
         }
 
-        function refreshLeaderboard(showMsg = false) {
-            renderGlobalBoard();
-            updateGlobalAvgDisplay();
-            updateSolvedCountDisplay();
-            if (showMsg) alert('전세계 스피드런 및 연령별 랭킹 데이터가 갱신되었습니다!');
-        }
 
         // ================= 일일 22:00 카운트다운 타이머 =================
         function startDailyCountdown() {
