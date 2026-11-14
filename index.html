@@ -5007,6 +5007,9 @@
                     ageBadge.innerHTML = '<i class="fa-solid fa-user-clock text-slate-400"></i><span>연령대 선택 대기</span>';
                 }
 
+                const changeBtn = document.getElementById('brainChangeAgeBtn');
+                if (changeBtn) changeBtn.classList.add('hidden');
+
                 this.renderBallSlots();
                 this.renderAgeSelectScreen();
             },
@@ -5077,6 +5080,11 @@
 
             // 연령대 확정 후 타임어택 시작
             selectAge(age) {
+                const profile = this.getAgeProfile(age);
+                this.questionDurationSec = profile.questionDurationSec;
+                this.questionRemainingSec = profile.questionDurationSec;
+                const changeBtn = document.getElementById('brainChangeAgeBtn');
+                if (changeBtn) changeBtn.classList.remove('hidden');
                 this.selectedAge = age;
                 this.currentRound = 0;
                 this.wonBalls = [];
@@ -5170,16 +5178,44 @@
                 return `${mm}:${ss}.${mmm}`;
             },
 
+            // 연령대별 인지 프로필 (2030 / 4050 / 6070)
+            ageProfiles: {
+                '20대':      { tier: '2030', questionDurationSec: 25, label: '순발력 암산' },
+                '30대':      { tier: '2030', questionDurationSec: 25, label: '순발력 암산' },
+                '40대':      { tier: '4050', questionDurationSec: 30, label: '집중 연산' },
+                '50대':      { tier: '4050', questionDurationSec: 30, label: '집중 연산' },
+                '60대':      { tier: '6070', questionDurationSec: 45, label: '치매 예방 인지 훈련' },
+                '70대 이상': { tier: '6070', questionDurationSec: 45, label: '치매 예방 인지 훈련' }
+            },
+
+            getAgeProfile(age = this.selectedAge) {
+                return this.ageProfiles[age] || this.ageProfiles['40대'];
+            },
+
+            // 상단 HUD [변경] 버튼: 연령대 선택 화면으로 복귀
+            resetToAgeSelect() {
+                this.init();
+            },
+
             // 🧠 고난도 procedural 문제 생성기 (정답 1~45 절대 보장)
-            // 복합 암산, 2계/증분 등차수열, 연립 기호 방정식, 소수·배수 추론, 피보나치·삼각수, 역연산
+            // 1구 워밍업 → 6구 보스(대수적 역산) 우상향 난이도 곡선, 연령 티어별 규모 차등
             generateChallengingQuestion(roundIndex) {
+                const rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+                const gcd = (x, y) => (y === 0 ? x : gcd(y, x % y));
+                const isPrime = (n) => {
+                    if (n < 2) return false;
+                    for (let i = 2; i * i <= n; i++) if (n % i === 0) return false;
+                    return true;
+                };
+                const tier = this.getAgeProfile().tier; // '2030' | '4050' | '6070'
+
                 const types = [
-                    'second_order',      // 2계 계차수열 / 가변 증분 패턴
-                    'complex_arith',     // 복합 괄호 및 다단계 사칙연산
-                    'algebra_system',    // 연립 도형/기호 방정식
-                    'prime_multiple',    // 소수·최대공약수/배수 및 연립 추론
-                    'fibonacci_triangular', // 피보나치 및 삼각수 패턴
-                    'digit_riddle'       // 대수적 역산 방정식
+                    'warmup_pattern',      // 1구: 워밍업 (등차수열 / 2단계 괄호)
+                    'complex_arith',       // 2구: 다단계 괄호 연산
+                    'algebra_system',      // 3구: 연립 기호 방정식
+                    'prime_multiple',      // 4구: 소수·공배수·진약수 (동적 생성)
+                    'fibonacci_variant',   // 5구: 변형 피보나치 / 2계 계차수열
+                    'boss_reverse_algebra' // 6구: 파이널 보스 대수적 역산
                 ];
                 const type = types[roundIndex % types.length];
 
@@ -5188,155 +5224,243 @@
                 let answer = 1;
                 let visualElements = [];
                 let categoryName = '';
+                let trapCandidates = []; // 흔한 계산 실수 기반 오답 후보
 
-                if (type === 'second_order') {
-                    categoryName = '2계 계차수열 추론';
-                    // 차이가 점진적으로 증가하는 고난도 수열
-                    // d1, d1+k, d1+2k, d1+3k...
-                    const diffBase = Math.floor(Math.random() * 3) + 2; // 2, 3, 4
-                    const diffStep = Math.floor(Math.random() * 2) + 2; // 2, 3
-                    const start = Math.floor(Math.random() * 6) + 3; // 3 ~ 8
-                    
-                    const d1 = diffBase;
-                    const d2 = diffBase + diffStep;
-                    const d3 = diffBase + (diffStep * 2);
-                    const d4 = diffBase + (diffStep * 3);
-                    
-                    const s1 = start;
-                    const s2 = s1 + d1;
-                    const s3 = s2 + d2;
-                    const s4 = s3 + d3;
-                    const rawAns = s4 + d4;
-
-                    if (rawAns <= 45 && rawAns >= 1) {
-                        answer = rawAns;
-                        questionText = `수열의 증가폭(+${d1}, +${d2}, +${d3}...)을 분석하여 빈칸 [ ? ]에 올 숫자를 찾으세요.`;
-                        hintText = `각 항 사이의 차이가 ${diffStep}씩 더 커지고 있습니다. (${s4} + ${d4} = ?)`;
-                        visualElements = [s1, '→', s2, '→', s3, '→', s4, '→', '?'];
+                if (type === 'warmup_pattern') {
+                    if (tier === '2030') {
+                        categoryName = '2단계 괄호 워밍업';
+                        const a = rand(3, 9), b = rand(2, 6), c = rand(2, 4);
+                        const prod = (a + b) * c;
+                        const d = rand(2, Math.min(15, prod - 3));
+                        answer = prod - d;
+                        questionText = `( ${a} + ${b} ) × ${c} - ${d} = [ ? ]`;
+                        hintText = `괄호 먼저: ${a} + ${b} = ${a + b}, 그 값에 × ${c}, 마지막으로 - ${d} 순서로 계산하세요.`;
+                        visualElements = [`(${a} + ${b})`, '×', `${c}`, '-', `${d}`, '=', '?'];
+                        trapCandidates = [a + b * c - d, prod + d, prod, (a + b) + c - d];
                     } else {
-                        // 1~45 범위 보정
-                        const k = Math.floor(Math.random() * 4) + 3;
-                        answer = 24 + k;
-                        questionText = `교대 수열 추론: 앞선 수열 규칙에 따라 [ ? ]의 로또 번호를 구하세요.`;
-                        hintText = `앞자리 숫자들의 일정한 차이 규칙을 살펴보세요.`;
-                        visualElements = [6, '→', 11, '→', 18, '→', 27, '→', '?'];
-                        answer = 38;
+                        categoryName = '등차수열 워밍업';
+                        const step = tier === '6070' ? rand(2, 3) : rand(3, 5);
+                        const start = rand(2, 10);
+                        const seq = [0, 1, 2, 3].map(i => start + step * i);
+                        answer = start + step * 4;
+                        questionText = `일정한 규칙으로 늘어나는 수열입니다. 빈칸 [ ? ]에 들어갈 숫자는?`;
+                        hintText = `이웃한 두 수의 차이를 구해 보세요. 매번 +${step}씩 커집니다.`;
+                        visualElements = [seq[0], '→', seq[1], '→', seq[2], '→', seq[3], '→', '?'];
+                        trapCandidates = [answer - step, answer + step, answer - 1, answer + 1];
                     }
 
                 } else if (type === 'complex_arith') {
                     categoryName = '다단계 복합 사칙연산';
-                    // (A × B) - (C × D) or (A × B) + C - D
-                    const a = Math.floor(Math.random() * 6) + 7; // 7 ~ 12
-                    const b = Math.floor(Math.random() * 3) + 3; // 3 ~ 5
-                    const mult = a * b; // 21 ~ 60
-                    
-                    // 정답이 1~45가 되도록 보정 상수 설정
-                    const subTarget = mult - (Math.floor(Math.random() * 30) + 10); // 10 ~ 40
-                    const c = Math.floor(subTarget / 2);
-                    const d = subTarget - c;
-                    answer = mult - (c + d);
-
-                    if (answer < 1 || answer > 45) {
-                        answer = 37;
-                        questionText = `다단계 복합 연산: ( 14 × 3 ) - ( 25 - 17 ) = [ ? ]`;
-                        hintText = `먼저 곱셈 (14 × 3 = 42)과 괄호 (25 - 17 = 8)을 뺀 뒤 계산하세요.`;
-                        visualElements = ['(14 × 3)', '-', '(25 - 17)', '=', '?'];
-                        answer = 34; // 42 - 8 = 34
-                    } else {
-                        questionText = `괄호 우선 복합 연산: ( ${a} × ${b} ) - ( ${c} + ${d} ) = [ ? ]`;
-                        hintText = `먼저 (${a} × ${b} = ${mult})을 구하고, 괄호 합(${c} + ${d} = ${c + d})을 빼보세요.`;
-                        visualElements = [`(${a} × ${b})`, '-', `(${c} + ${d})`, '=', '?'];
-                    }
+                    const aR = tier === '2030' ? [7, 12] : tier === '4050' ? [6, 9] : [4, 8];
+                    const bR = tier === '6070' ? [2, 4] : [3, 5];
+                    const a = rand(aR[0], aR[1]);
+                    const b = rand(bR[0], bR[1]);
+                    const mult = a * b;
+                    const lo = Math.max(5, mult - 30);
+                    const hi = Math.min(45, mult - 3);
+                    answer = rand(lo, Math.max(lo, hi));
+                    const sumCD = mult - answer;
+                    const c = rand(1, sumCD - 1);
+                    const d = sumCD - c;
+                    questionText = `괄호 우선 복합 연산: ( ${a} × ${b} ) - ( ${c} + ${d} ) = [ ? ]`;
+                    hintText = `먼저 ${a} × ${b} = ${mult}, 괄호 합 ${c} + ${d} = ${sumCD}을 구한 뒤 빼 보세요.`;
+                    visualElements = [`(${a} × ${b})`, '-', `(${c} + ${d})`, '=', '?'];
+                    trapCandidates = [mult, mult - c + d, mult - c, answer + 10, answer - 10];
 
                 } else if (type === 'algebra_system') {
-                    categoryName = '연립 기호 방정식 추론';
-                    // ● + ▲ = Sum, ▲ - ● = Diff => 2▲ = Sum + Diff
-                    const delta = (Math.floor(Math.random() * 5) + 2) * 2; // 짝수 차이 (4, 6, 8, 10, 12)
-                    const ansTarget = Math.floor(Math.random() * 20) + 18; // 18 ~ 37 (▲)
-                    const circle = ansTarget - delta; // ●
-                    const sum = ansTarget + circle;
-
-                    answer = ansTarget;
-                    questionText = `기호 방정식: [ ● + ▲ = ${sum} ] 이고 [ ▲ - ● = ${delta} ] 일 때, [ ▲ ]의 값은?`;
-                    hintText = `두 식을 더하면 (2 × ▲ = ${sum + delta})가 됩니다. 2로 나누면 정답!`;
-                    visualElements = [`● + ▲ = ${sum}`, '＆', `▲ - ● = ${delta}`, '▶', '▲ = ?'];
+                    if (tier === '2030') {
+                        categoryName = '연립 기호 방정식 (계수 변형)';
+                        const t = rand(8, 22);
+                        const D = rand(2, Math.min(8, t - 2));
+                        const c = t - D;
+                        const S = 2 * t + c;
+                        answer = t;
+                        questionText = `[ 2▲ + ● = ${S} ] 이고 [ ▲ - ● = ${D} ] 일 때, [ ▲ ]의 값은?`;
+                        hintText = `두 식을 더하면 ● 가 사라집니다. 3 × ▲ = ${S + D} 이므로 3으로 나누세요.`;
+                        visualElements = [`2▲ + ● = ${S}`, '＆', `▲ - ● = ${D}`, '▶', '▲ = ?'];
+                        trapCandidates = [c, t + 1, t - 1, S - t];
+                    } else {
+                        categoryName = '연립 기호 방정식 추론';
+                        const t = tier === '4050' ? rand(18, 37) : rand(10, 25);
+                        const D = rand(2, tier === '4050' ? 10 : 8);
+                        const c = t - D;
+                        const S = t + c;
+                        answer = t;
+                        questionText = `[ ● + ▲ = ${S} ] 이고 [ ▲ - ● = ${D} ] 일 때, [ ▲ ]의 값은?`;
+                        hintText = `두 식을 더하면 2 × ▲ = ${S + D} 입니다. 2로 나누면 ▲ 값이 나옵니다.`;
+                        visualElements = [`● + ▲ = ${S}`, '＆', `▲ - ● = ${D}`, '▶', '▲ = ?'];
+                        trapCandidates = [c, Math.round(S / 2) + 1, t + 2, t - 2];
+                    }
 
                 } else if (type === 'prime_multiple') {
-                    categoryName = '소수 및 배수 논리 추론';
-                    // 로또 번호(1~45)의 소수: 2,3,5,7,11,13,17,19,23,29,31,37,41,43
-                    const primeSeeds = [
-                        { text: '1~45 중 가장 큰 소수(43)에서 두 번째 소수(3)를 뺀 값은?', ans: 40, hint: '43 - 3 = 40 입니다.' },
-                        { text: '6과 8의 최소공배수(24)에 11을 더한 로또 번호는?', ans: 35, hint: '최소공배수 24에 11을 더하면 35입니다.' },
-                        { text: '40 이하의 소수 중 가장 큰 소수(37)에서 8을 뺀 수는?', ans: 29, hint: '37 - 8 = 29 입니다.' },
-                        { text: '7의 배수 중 40보다 작은 가장 큰 수에 5를 더한 값은?', ans: 40, hint: '7 × 5 = 35이며, 여기에 5를 더하면 40입니다.' },
-                        { text: '45의 가장 큰 약수(45 제외)인 15의 2배에 9를 더하면?', ans: 39, hint: '(15 × 2) + 9 = 39 입니다.' },
-                        { text: '연속한 세 소수 (5, 7, 11)의 총합에 6을 더한 수는?', ans: 29, hint: '(5 + 7 + 11) + 6 = 23 + 6 = 29 입니다.' }
-                    ];
-                    const seed = primeSeeds[Math.floor(Math.random() * primeSeeds.length)];
-                    answer = seed.ans;
-                    questionText = seed.text;
-                    hintText = seed.hint;
-                    visualElements = ['소수·배수', '추론', '연산', '=', '?'];
-
-                } else if (type === 'fibonacci_triangular') {
-                    categoryName = '삼각수 및 피보나치 패턴';
-                    // 삼각수: 1, 3, 6, 10, 15, 21, 28, 36, 45
-                    // 피보나치: 1, 2, 3, 5, 8, 13, 21, 34
-                    const isTri = (Math.random() > 0.5);
-                    if (isTri) {
-                        answer = 36;
-                        questionText = `삼각수 패턴: 1, 3, 6, 10, 15, 21, 28 뒤에 오는 8번째 삼각수 [ ? ]는?`;
-                        hintText = `각 단계마다 +2, +3, +4, +5, +6, +7, +8 씩 더해집니다. (28 + 8 = ?)`;
-                        visualElements = [15, '→', 21, '→', 28, '→', '+8', '=', '?'];
+                    categoryName = '소수·배수 논리 추론';
+                    const variant = rand(0, 2);
+                    if (variant === 0) {
+                        // 구간 내 소수의 최대 + 최소
+                        const wR = tier === '2030' ? [12, 20] : tier === '4050' ? [9, 14] : [6, 10];
+                        let found = null;
+                        for (let tries = 0; tries < 80 && !found; tries++) {
+                            const lo = rand(4, 22);
+                            const hi = lo + rand(wR[0], wR[1]);
+                            const primes = [];
+                            for (let n = lo + 1; n < hi; n++) if (isPrime(n)) primes.push(n);
+                            if (primes.length < 2) continue;
+                            const s = primes[0] + primes[primes.length - 1];
+                            if (s >= 1 && s <= 45) found = { lo, hi, primes, s };
+                        }
+                        if (!found) found = { lo: 10, hi: 24, primes: [11, 13, 17, 19, 23], s: 34 };
+                        answer = found.s;
+                        questionText = `${found.lo}보다 크고 ${found.hi}보다 작은 소수 중 가장 큰 수와 가장 작은 수의 합은?`;
+                        hintText = `구간 안의 소수를 모두 적어 보세요: ${found.primes.join(', ')}. 그중 양 끝 수를 더합니다.`;
+                        visualElements = [`${found.lo} ~ ${found.hi}`, '소수', '최대 + 최소', '=', '?'];
+                        const total = found.primes.reduce((x, y) => x + y, 0);
+                        trapCandidates = [found.primes[found.primes.length - 1], found.primes[0] + found.primes[found.primes.length - 2], total, found.s + 10, found.s - 10];
+                    } else if (variant === 1) {
+                        // 최소공배수
+                        const r = tier === '2030' ? [4, 12] : tier === '4050' ? [3, 9] : [2, 6];
+                        let a = 6, b = 8, l = 24;
+                        for (let tries = 0; tries < 80; tries++) {
+                            const x = rand(r[0], r[1]), y = rand(r[0], r[1]);
+                            if (x === y) continue;
+                            const lcm = x * y / gcd(x, y);
+                            if (lcm >= 6 && lcm <= 45) { a = x; b = y; l = lcm; break; }
+                        }
+                        const g = gcd(a, b);
+                        answer = l;
+                        questionText = `${a}의 배수이면서 ${b}의 배수인 수 중 가장 작은 수는?`;
+                        hintText = `${a}의 배수와 ${b}의 배수를 차례로 적어 처음 겹치는 수를 찾으세요. (또는 ${a} × ${b} ÷ 최대공약수 ${g})`;
+                        visualElements = [`${a}의 배수`, '＆', `${b}의 배수`, '▶', '최소공배수 = ?'];
+                        trapCandidates = [a * b, l - g, l + g, l + 10, l - 10];
                     } else {
-                        answer = 34;
-                        questionText = `피보나치 수열: 앞의 두 수를 더하는 규칙 [ 5, 8, 13, 21, ? ]의 정답은?`;
-                        hintText = `13 + 21 을 계산해 보세요.`;
-                        visualElements = [5, '→', 8, '→', 13, '→', 21, '→', '?'];
+                        // 최대 진약수
+                        const nR = tier === '2030' ? [24, 45] : tier === '4050' ? [18, 40] : [12, 30];
+                        let n = 36;
+                        for (let tries = 0; tries < 80; tries++) {
+                            const x = rand(nR[0], nR[1]);
+                            if (!isPrime(x)) { n = x; break; }
+                        }
+                        let spf = 2;
+                        while (n % spf !== 0) spf++;
+                        const gpd = n / spf;
+                        if (tier === '2030') {
+                            answer = gpd + spf;
+                            questionText = `${n}의 약수 중 ${n}을 제외한 가장 큰 수와, ${n}의 가장 작은 소인수의 합은?`;
+                            hintText = `${n}을 가장 작은 소수 ${spf}로 나누면 최대 진약수 ${gpd}가 됩니다. 여기에 ${spf}를 더하세요.`;
+                            trapCandidates = [gpd, spf, n - spf, answer + 10];
+                        } else {
+                            answer = gpd;
+                            questionText = `${n}의 약수 중 ${n}을 제외한 가장 큰 수는?`;
+                            hintText = `${n}을 가장 작은 소수 ${spf}로 나눈 몫이 최대 진약수입니다.`;
+                            trapCandidates = [spf, n - spf, gpd + spf, gpd - 1, gpd + 1];
+                        }
+                        visualElements = [`${n}`, '약수', '진약수', '▶', '?'];
+                    }
+
+                } else if (type === 'fibonacci_variant') {
+                    if (tier === '2030' && Math.random() < 0.5) {
+                        categoryName = '2계 계차수열';
+                        const start = rand(2, 6), d = rand(1, 3), k = rand(1, 2);
+                        const s = [start];
+                        for (let i = 0; i < 5; i++) s.push(s[i] + d + i * k);
+                        answer = s[5];
+                        questionText = `증가폭 자체가 일정하게 커지는 수열입니다. 빈칸 [ ? ]에 들어갈 숫자는?`;
+                        hintText = `차이를 구해 보세요: +${d}, +${d + k}, +${d + 2 * k}... 증가폭이 매번 ${k}씩 커집니다.`;
+                        visualElements = [s[0], '→', s[1], '→', s[2], '→', s[3], '→', s[4], '→', '?'];
+                        trapCandidates = [answer - k, answer + k, answer + 2 * k, s[4] + (d + 3 * k) + 2];
+                    } else {
+                        const c = tier === '6070' ? 0 : (tier === '4050' ? rand(1, 3) : rand(2, 3));
+                        const a = tier === '2030' ? rand(2, 5) : rand(1, 4);
+                        const b = tier === '2030' ? rand(2, 5) : rand(1, 4);
+                        const f3 = a + b + c;
+                        const f4 = b + f3 + c;
+                        const f5 = f3 + f4 + c;
+                        answer = f5;
+                        if (tier === '6070') {
+                            categoryName = '가변 시작값 피보나치';
+                            questionText = `앞의 두 수를 더해 다음 수가 되는 수열입니다. 빈칸 [ ? ]에 들어갈 숫자는?`;
+                            hintText = `${a} + ${b} = ${f3}, ${b} + ${f3} = ${f4} 처럼 앞 두 수의 합이 다음 수입니다.`;
+                            visualElements = [a, '→', b, '→', f3, '→', f4, '→', '?'];
+                            trapCandidates = [f4 + 1, f3 + f4 - 1, f4 + b, f5 + 2];
+                        } else if (tier === '4050') {
+                            categoryName = '상수 보정 변형 피보나치';
+                            questionText = `앞의 두 수를 더한 뒤 일정한 수를 보태는 수열입니다. 빈칸 [ ? ]에 들어갈 숫자는?`;
+                            hintText = `${a} + ${b} = ${a + b}인데 실제 값은 ${f3}입니다. 매번 +${c}가 더해지는 규칙입니다.`;
+                            visualElements = [a, '→', b, '→', f3, '→', f4, '→', '?'];
+                            trapCandidates = [f3 + f4, f3 + f4 + 2 * c, f3 + f4 + c + 1, f3 + f4 - c];
+                        } else {
+                            categoryName = '변형 피보나치 규칙 발견';
+                            questionText = `규칙을 스스로 찾아 5번째 수 [ ? ]를 구하세요. (숨은 보정값이 있습니다)`;
+                            hintText = `${a} + ${b} = ${a + b}인데 3번째 수는 ${f3}입니다. 매번 +${c}씩 보정됩니다. 4번째는 ${f4}, 5번째는 ${f3} + ${f4} + ${c} 입니다.`;
+                            visualElements = [a, '→', b, '→', f3, '→', '□', '→', '?'];
+                            trapCandidates = [f3 + f4, f3 + f4 + 2 * c, f4 + c, f5 + 2];
+                        }
                     }
 
                 } else {
-                    categoryName = '대수적 역산 방정식';
-                    // a * N - b = c => N = (c+b)/a, answer = target
-                    const n = Math.floor(Math.random() * 8) + 4; // 4 ~ 11
-                    const a = 3;
-                    const b = Math.floor(Math.random() * 10) + 12; // 12 ~ 21
-                    const c = (a * n) - b;
-                    const multAns = Math.floor(Math.random() * 2) + 2; // 2 or 3
-                    const rawAns = n * multAns + 10;
-
-                    if (rawAns >= 1 && rawAns <= 45) {
-                        answer = rawAns;
-                        questionText = `어떤 수 N에 3을 곱하고 ${b}을 뺐더니 ${c}이 되었습니다. 이때 (N × ${multAns}) + 10 = [ ? ]`;
-                        hintText = `3N = ${c + b} → N = ${n} 입니다. 이를 식에 대입하세요.`;
-                        visualElements = [`3N - ${b} = ${c}`, '▶', `(N × ${multAns}) + 10`, '=', '?'];
-                    } else {
-                        answer = 32;
-                        questionText = `방정식 역산: 3N - 14 = 34 일 때, 2N = [ ? ]의 로또 번호는?`;
-                        hintText = `3N = 48 → N = 16 이므로, 2N = 32 입니다.`;
-                        visualElements = ['3N - 14 = 34', '▶', '2N', '=', '?'];
+                    // boss_reverse_algebra: 파이널 보스 다단계 대수적 역산
+                    categoryName = '파이널 보스: 대수적 역산';
+                    const nR = tier === '2030' ? [5, 12] : [3, 10];
+                    let n = 6, m = 2, e = 6;
+                    for (let tries = 0; tries < 100; tries++) {
+                        const nn = rand(nR[0], nR[1]), mm = rand(2, 3), ee = rand(4, 12);
+                        if (nn * mm + ee <= 45) { n = nn; m = mm; e = ee; break; }
                     }
+                    answer = n * m + e;
+                    let eq = '', step = '', cVal = 0;
+                    if (tier === '6070') {
+                        const b = rand(3, 12);
+                        cVal = 2 * n + b;
+                        eq = `2N + ${b} = ${cVal}`;
+                        step = `2N = ${cVal - b} → N = ${n}`;
+                    } else if (tier === '4050') {
+                        const b = rand(2, Math.min(12, 3 * n - 1));
+                        cVal = 3 * n - b;
+                        eq = `3N - ${b} = ${cVal}`;
+                        step = `3N = ${cVal + b} → N = ${n}`;
+                    } else {
+                        const p = rand(2, 6), b = rand(3, 12);
+                        cVal = (n + p) * 3 - b;
+                        eq = `( N + ${p} ) × 3 - ${b} = ${cVal}`;
+                        step = `( N + ${p} ) × 3 = ${cVal + b} → N + ${p} = ${(cVal + b) / 3} → N = ${n}`;
+                    }
+                    questionText = `어떤 수 N에 대해 ${eq} 입니다. 이때 ( N × ${m} ) + ${e} 의 값은?`;
+                    hintText = `${step}. 이제 N = ${n}을 ( N × ${m} ) + ${e} 에 대입하세요.`;
+                    visualElements = [eq, '▶', `(N × ${m}) + ${e}`, '=', '?'];
+                    trapCandidates = [n, cVal, n * m, answer + 10, answer - 10, n + e];
                 }
 
                 // 1부터 45 사이 정답 절대 보장
                 if (answer < 1) answer = 1;
                 if (answer > 45) answer = 45;
 
-                // 4지선다 선택지 생성 (정답 1개 + 정교한 오답 3개, 모두 1~45 범위 내 유니크)
+                // 4지선다: 4~6구는 함정 오답(연산 순서 착오·중간값·끝자리 동일 ±10) 우선 배치
                 const choices = new Set([answer]);
-                const deltas = [-2, 2, -1, 1, -5, 5, -3, 3, -10, 10, -4, 4, -7, 7];
+                const validTraps = Array.from(new Set(trapCandidates))
+                    .filter(v => Number.isInteger(v) && v >= 1 && v <= 45 && v !== answer);
+                // 끝자리 동일 함정(answer ± 10)은 후보에 항상 포함
+                [answer + 10, answer - 10].forEach(v => {
+                    if (v >= 1 && v <= 45 && !validTraps.includes(v)) validTraps.push(v);
+                });
+                validTraps.sort(() => Math.random() - 0.5);
+                const deltas = [-2, 2, -1, 1, -5, 5, -3, 3, -4, 4, -7, 7];
                 deltas.sort(() => Math.random() - 0.5);
 
-                for (const d of deltas) {
-                    const cand = answer + d;
-                    if (cand >= 1 && cand <= 45 && !choices.has(cand)) {
-                        choices.add(cand);
+                const addFrom = (list) => {
+                    for (const cand of list) {
+                        if (choices.size >= 4) break;
+                        if (cand >= 1 && cand <= 45) choices.add(cand);
                     }
-                    if (choices.size >= 4) break;
+                };
+                if (roundIndex >= 3) {
+                    addFrom(validTraps);
+                    addFrom(deltas.map(d => answer + d));
+                } else {
+                    addFrom(validTraps.slice(0, 1));
+                    addFrom(deltas.map(d => answer + d));
+                    addFrom(validTraps);
                 }
                 while (choices.size < 4) {
-                    const rnd = Math.floor(Math.random() * 45) + 1;
-                    choices.add(rnd);
+                    choices.add(Math.floor(Math.random() * 45) + 1);
                 }
 
                 const choicesArray = Array.from(choices).sort(() => Math.random() - 0.5);
@@ -5349,6 +5473,7 @@
                     hintText,
                     visualElements,
                     answer,
+                    trapCandidates: validTraps,
                     choices: choicesArray
                 };
             },
@@ -5393,9 +5518,22 @@
                 } else {
                     if (feedbackEl) {
                         feedbackEl.className = 'mt-3 p-3 rounded-2xl bg-rose-500/20 border border-rose-400 text-rose-200 text-xs sm:text-sm font-bold flex items-center justify-center space-x-2';
-                        feedbackEl.innerHTML = `<i class="fa-solid fa-circle-exclamation text-rose-400 text-base"></i><span>오답입니다! 💡 힌트: ${this.currentQuiz.hintText}</span>`;
+                        feedbackEl.innerHTML = `<i class="fa-solid fa-circle-exclamation text-rose-400 text-base"></i><span>오답입니다! 💡 아래 힌트를 확인하고 다시 도전하세요.</span>`;
                     }
                     this.isProcessing = false;
+                    this.revealHint();
+                }
+            },
+
+            // 힌트 노출 (버튼 클릭 또는 오답 시)
+            revealHint() {
+                const box = document.getElementById('brainHintBox');
+                const btn = document.getElementById('brainHintBtn');
+                if (box) box.classList.remove('hidden');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-50', 'cursor-default');
+                    btn.innerHTML = '💡 힌트 확인 중';
                 }
             },
 
@@ -5443,7 +5581,7 @@
                 const visualChips = q.visualElements.map(el => {
                     if (el === '?') {
                         return `<span class="inline-flex items-center justify-center min-w-[50px] sm:min-w-[62px] h-11 sm:h-13 px-3.5 rounded-2xl bg-amber-400/25 border-2 border-amber-400 text-amber-300 font-black text-xl sm:text-2xl shadow-lg shadow-amber-400/20 animate-pulse">?</span>`;
-                    } else if (typeof el === 'string' && (el === '+' || el === '-' || el === '→' || el === '=' || el === '＆' || el === '▶')) {
+                    } else if (typeof el === 'string' && (el === '+' || el === '×' || el === '-' || el === '→' || el === '=' || el === '＆' || el === '▶')) {
                         return `<span class="inline-flex items-center justify-center text-slate-400 font-black text-sm sm:text-base px-1">${el}</span>`;
                     } else {
                         return `<span class="inline-flex items-center justify-center min-w-[50px] sm:min-w-[62px] h-11 sm:h-13 px-3 rounded-2xl bg-slate-900 border border-slate-700 text-white font-black text-sm sm:text-lg shadow-xs">${el}</span>`;
@@ -5498,7 +5636,11 @@
                                 ${visualChips}
                             </div>
 
-                            <p class="text-xs text-slate-400 font-medium">
+                            <button type="button" id="brainHintBtn" onclick="brainGame.revealHint()"
+                                class="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-amber-400/40 text-amber-300 text-xs font-bold transition cursor-pointer">
+                                💡 힌트 보기
+                            </button>
+                            <p id="brainHintBox" class="hidden text-xs text-slate-300 font-medium bg-slate-900/80 border border-slate-700 rounded-xl px-3 py-2">
                                 💡 힌트: ${q.hintText}
                             </p>
                         </div>
