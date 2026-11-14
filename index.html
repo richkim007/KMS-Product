@@ -5066,11 +5066,17 @@
                             ${buttonsHtml}
                         </div>
 
+                        <div class="text-center">
+                            <button type="button" onclick="brainGame.showVaultScreen()"
+                                class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-indigo-500/40 text-indigo-200 text-xs font-bold transition cursor-pointer">
+                                📦 내 두뇌 행운 번호 보관함 보기
+                            </button>
+                        </div>
+
                         <!-- 안내 배지 -->
                         <div class="flex flex-wrap items-center justify-center gap-4 pt-3 border-t border-slate-800 text-slate-400 text-xs font-semibold">
                             <span class="flex items-center space-x-1.5"><i class="fa-solid fa-clock text-amber-400"></i><span>문제당 집중시간: 30초 내외</span></span>
                             <span class="flex items-center space-x-1.5"><i class="fa-solid fa-circle-check text-emerald-400"></i><span>모든 정답: 로또 규격 1 ~ 45</span></span>
-                            <span class="flex items-center space-x-1.5"><i class="fa-solid fa-trophy text-sky-400"></i><span>완료 후 6개 번호 조합기 연동</span></span>
                         </div>
                     </div>
                 `;
@@ -5706,6 +5712,9 @@
                     }
                 }
 
+                this.lastRankText = `${userTier.rank}등 구간 · ${userTier.title}`;
+                this.currentResultSaved = false;
+
                 // 퀴즈 결과로 도출된 1~45 범위의 6개 숫자 배열 추출 및 상태 저장
                 this.extractedNumbers = (this.wonBalls || [])
                     .map(n => Number(n))
@@ -5820,8 +5829,17 @@
                                 <span>연령대 변경 / 다시 도전</span>
                             </button>
                         </div>
+                        <!-- 🧠 독립 두뇌 행운 번호 보관함 -->
+                        <div class="max-w-md mx-auto space-y-3 pt-2 border-t border-slate-800">
+                            <button type="button" id="brainVaultSaveBtn" onclick="brainGame.saveToVault()"
+                                class="w-full px-5 py-3 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white font-black text-xs sm:text-sm rounded-2xl transition shadow-lg shadow-indigo-900/40 active:scale-95 cursor-pointer">
+                                🧠 내 두뇌 행운 번호 독립 보관함에 저장하기
+                            </button>
+                            <div id="brainVaultWrap" class="text-left"></div>
+                        </div>
                     </div>
                 `;
+                this.refreshVault();
             },
 
             // 획득한 6개 번호를 메인 번호판에 고정수(상위 3개)로 적용하고 조합기 섹션으로 부드럽게 이동
@@ -5878,6 +5896,235 @@
                 if (typeof showToastNotification === 'function') {
                     showToastNotification('🧠 두뇌 헬스케어 행운의 6개 숫자가 고정수로 반영되었습니다!');
                 }
+            },
+
+            // ==========================================================
+            // 📦 독립 '나만의 두뇌 행운 번호 보관함' (AI 조합기 고정수 3개 제한과 무관하게 6개 전체 저장)
+            // ==========================================================
+            vaultKey: 'brainLuckyVault_v1',
+            vaultMax: 100,
+            vaultSelection: {},
+            vaultUnlimited: false,
+            currentResultSaved: false,
+            lastRankText: '',
+            _memVault: [],
+
+            escHtml(s) {
+                return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+            },
+
+            loadVault() {
+                try {
+                    const raw = localStorage.getItem(this.vaultKey);
+                    const arr = raw ? JSON.parse(raw) : [];
+                    if (!Array.isArray(arr)) return [];
+                    return arr.filter(e => e && typeof e.id === 'string' && Array.isArray(e.numbers))
+                        .map(e => ({ ...e, numbers: e.numbers.map(Number).filter(n => Number.isInteger(n) && n >= 1 && n <= 45) }));
+                } catch (err) {
+                    return this._memVault.slice(); // localStorage 불가 시 세션 메모리 폴백
+                }
+            },
+
+            persistVault(list) {
+                this._memVault = list.slice();
+                try {
+                    localStorage.setItem(this.vaultKey, JSON.stringify(list));
+                    return true;
+                } catch (err) {
+                    console.warn('두뇌 보관함 localStorage 저장 실패(세션 메모리에만 유지):', err);
+                    return false;
+                }
+            },
+
+            toast(msg) {
+                if (typeof showToastNotification === 'function') showToastNotification(msg);
+                else alert(msg);
+            },
+
+            // 성적표의 6개 번호 전체를 보관함에 저장
+            saveToVault() {
+                if (this.currentResultSaved) {
+                    this.toast('이미 이번 기록은 보관함에 저장되었습니다.');
+                    return;
+                }
+                const nums = (this.wonBalls || []).map(Number).filter(n => Number.isInteger(n) && n >= 1 && n <= 45);
+                if (nums.length === 0) return;
+
+                const entry = {
+                    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                    savedAt: new Date().toISOString(),
+                    age: this.selectedAge || '',
+                    timeMs: Math.round(this.elapsedMs),
+                    timeText: this.formatTime(this.elapsedMs),
+                    rankText: this.lastRankText || '',
+                    numbers: nums.slice(0, 6)
+                };
+                const list = this.loadVault();
+                list.unshift(entry);
+                const ok = this.persistVault(list.slice(0, this.vaultMax));
+                this.currentResultSaved = true;
+
+                const btn = document.getElementById('brainVaultSaveBtn');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.classList.add('opacity-60', 'cursor-default');
+                    btn.innerHTML = '✅ 보관함에 저장 완료 (' + entry.numbers.join(', ') + ')';
+                }
+                this.refreshVault();
+                this.toast(ok ? '🧠 6개 행운 번호가 두뇌 보관함에 저장되었습니다!' : '⚠️ 브라우저 저장소를 쓸 수 없어 이번 접속 동안만 보관됩니다.');
+            },
+
+            getVaultSel(entry) {
+                if (!this.vaultSelection[entry.id]) this.vaultSelection[entry.id] = new Set(entry.numbers);
+                return this.vaultSelection[entry.id];
+            },
+
+            toggleVaultBall(id, num) {
+                const entry = this.loadVault().find(e => e.id === id);
+                if (!entry) return;
+                const sel = this.getVaultSel(entry);
+                if (sel.has(num)) sel.delete(num); else sel.add(num);
+                this.refreshVault();
+            },
+
+            toggleVaultUnlimited(checked) {
+                this.vaultUnlimited = !!checked;
+                this.refreshVault();
+            },
+
+            async copyVaultEntry(id) {
+                const entry = this.loadVault().find(e => e.id === id);
+                if (!entry) return;
+                const text = entry.numbers.join(', ');
+                let done = false;
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(text);
+                        done = true;
+                    }
+                } catch (err) { /* 폴백 사용 */ }
+                if (!done) {
+                    const ta = document.createElement('textarea');
+                    ta.value = text;
+                    ta.style.position = 'fixed';
+                    ta.style.opacity = '0';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { done = document.execCommand('copy'); } catch (err) { done = false; }
+                    document.body.removeChild(ta);
+                }
+                this.toast(done ? `📋 번호 [${text}] 복사 완료!` : '복사에 실패했습니다. 번호를 직접 선택해 복사해 주세요.');
+            },
+
+            deleteVaultEntry(id) {
+                if (!confirm('이 번호 세트를 보관함에서 삭제할까요?')) return;
+                const list = this.loadVault().filter(e => e.id !== id);
+                delete this.vaultSelection[id];
+                this.persistVault(list);
+                this.refreshVault();
+            },
+
+            clearVault() {
+                if (!confirm('보관함의 모든 기록을 삭제할까요? 되돌릴 수 없습니다.')) return;
+                this.vaultSelection = {};
+                this.persistVault([]);
+                this.refreshVault();
+            },
+
+            // 선택한 번호를 조합기 고정수로 전달 (기본 최대 3개, 토글 ON 시 선택한 전부 전달)
+            sendVaultToGenerator(id) {
+                const entry = this.loadVault().find(e => e.id === id);
+                if (!entry) return;
+                const sel = this.getVaultSel(entry);
+                const picked = entry.numbers.filter(n => sel.has(n));
+                if (picked.length === 0) {
+                    this.toast('조합기로 보낼 번호를 먼저 선택해 주세요.');
+                    return;
+                }
+                const limit = this.vaultUnlimited ? 6 : 3;
+                const numbers = picked.slice(0, limit);
+                const trimmed = picked.length > numbers.length;
+
+                if (typeof fixedNumbers === 'undefined') return;
+                fixedNumbers.clear();
+                numbers.forEach(n => {
+                    fixedNumbers.add(n);
+                    if (typeof excludeNumbers !== 'undefined') excludeNumbers.delete(n);
+                });
+                if (typeof setSelectMode === 'function') setSelectMode('fixed');
+                if (typeof updateNumberUI === 'function') updateNumberUI();
+
+                const syncAlert = document.getElementById('brainSyncAlert');
+                const syncAlertText = document.getElementById('brainSyncAlertText');
+                if (syncAlert && syncAlertText) {
+                    syncAlertText.textContent = `두뇌 보관함 번호 [${numbers.join(', ')}]가 고정수로 반영되었습니다.` + (trimmed ? ' (고정수 3개 제한으로 앞 3개만 전달)' : '');
+                    syncAlert.classList.remove('hidden');
+                }
+                const genSection = document.getElementById('generator');
+                if (genSection) genSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                this.toast(`🧠 [${numbers.join(', ')}] 조합기 고정수 반영` + (trimmed ? ' (3개 제한)' : '') + (numbers.length >= 4 ? ' · 4개 이상이면 5개 조합이 서로 비슷해질 수 있어요' : ''));
+            },
+
+            renderVaultInner() {
+                const list = this.loadVault();
+                const header = `
+                    <div class="flex flex-wrap items-center justify-between gap-2 px-1">
+                        <span class="text-xs font-extrabold text-indigo-200">📦 나만의 두뇌 행운 번호 보관함 <span class="text-amber-300">(${list.length}세트)</span></span>
+                        <label class="flex items-center gap-1.5 text-[11px] text-slate-300 font-semibold cursor-pointer">
+                            <input type="checkbox" ${this.vaultUnlimited ? 'checked' : ''} onchange="brainGame.toggleVaultUnlimited(this.checked)" class="accent-amber-400">
+                            조합기 고정수 3개 제한 풀기
+                        </label>
+                    </div>`;
+                if (list.length === 0) {
+                    return header + `<div class="mt-2 p-4 rounded-2xl bg-slate-900/70 border border-dashed border-slate-700 text-center text-xs text-slate-400">아직 저장된 번호가 없습니다. 퀴즈를 완료하고 저장해 보세요.</div>`;
+                }
+                const items = list.map(e => {
+                    const sel = this.getVaultSel(e);
+                    const balls = e.numbers.map(n => `
+                        <button type="button" onclick="brainGame.toggleVaultBall('${this.escHtml(e.id)}', ${n})" title="클릭하여 조합기 전달 대상 선택/해제"
+                            class="ball ${this.getBallColorClass(n)} w-9 h-9 rounded-full flex items-center justify-center text-sm font-black shadow-md cursor-pointer transition ${sel.has(n) ? 'ring-2 ring-amber-300' : 'opacity-40'}">${n}</button>`).join('');
+                    const d = new Date(e.savedAt);
+                    const dateText = isNaN(d.getTime()) ? '' : d.toLocaleString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' });
+                    const id = this.escHtml(e.id);
+                    return `
+                        <div class="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-2">
+                            <div class="flex flex-wrap items-center justify-between gap-1 text-[11px] text-slate-400">
+                                <span class="font-bold text-slate-200">내가 달성한 두뇌 행운 번호 세트${e.age ? ' · ' + this.escHtml(e.age) : ''}</span>
+                                <span>${this.escHtml(dateText)}</span>
+                            </div>
+                            <div class="flex flex-wrap items-center gap-1.5">${balls}</div>
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-[11px] text-amber-300 font-mono font-bold">⏱ ${this.escHtml(e.timeText || '')}${e.rankText ? ' · ' + this.escHtml(e.rankText) : ''}</span>
+                                <div class="flex items-center gap-1.5">
+                                    <button type="button" onclick="brainGame.copyVaultEntry('${id}')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-bold text-sky-300 cursor-pointer">📋 복사하기</button>
+                                    <button type="button" onclick="brainGame.sendVaultToGenerator('${id}')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-[11px] font-bold text-amber-300 cursor-pointer">🎯 조합기로</button>
+                                    <button type="button" onclick="brainGame.deleteVaultEntry('${id}')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-rose-900/60 text-[11px] font-bold text-rose-300 cursor-pointer">🗑️ 삭제하기</button>
+                                </div>
+                            </div>
+                        </div>`;
+                }).join('');
+                return header + `<div class="mt-2 space-y-2 max-h-96 overflow-y-auto pr-1">${items}</div>
+                    <div class="text-right pt-1"><button type="button" onclick="brainGame.clearVault()" class="text-[11px] text-slate-500 hover:text-rose-300 underline cursor-pointer">전체 기록 삭제</button></div>`;
+            },
+
+            refreshVault() {
+                const wrap = document.getElementById('brainVaultWrap');
+                if (wrap) wrap.innerHTML = this.renderVaultInner();
+            },
+
+            // 연령 선택 화면에서 보관함(역대 기록)만 열람
+            showVaultScreen() {
+                this.stopTimers();
+                const card = document.getElementById('brainQuizCard');
+                if (!card) return;
+                card.innerHTML = `
+                    <div class="space-y-4 py-2">
+                        <div id="brainVaultWrap" class="text-left"></div>
+                        <div class="text-center">
+                            <button type="button" onclick="brainGame.init()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs rounded-2xl cursor-pointer">← 연령대 선택으로 돌아가기</button>
+                        </div>
+                    </div>`;
+                this.refreshVault();
             }
         };
 
