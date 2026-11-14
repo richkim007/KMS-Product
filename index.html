@@ -89,6 +89,19 @@
             transform: scale(1.08);
         }
 
+        /* 두뇌 게임 공 추첨 연출 (bgx- 전용 네임스페이스) */
+        @keyframes bgxBallDrop {
+            0%   { transform: translateY(-70px) rotate(-200deg) scale(0.3); opacity: 0; }
+            60%  { transform: translateY(6px) rotate(14deg) scale(1.15); opacity: 1; }
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+        }
+        .bgx-ball-drop {
+            animation: bgxBallDrop 0.75s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .bgx-ball-drop { animation: none; }
+        }
+
         /* 1 ~ 10 : 황금색 / 노란색 (동행복권 규격) - 밝은 노랑 바탕에 선명한 딥 블랙 글씨 */
         .ball-yellow {
             background: radial-gradient(circle at 35% 35%, #ffd943 0%, #f6b500 65%, #d48f00 100%);
@@ -5025,7 +5038,7 @@
                     { key: '40대', icon: 'fa-shield-halved', desc: '어림 계산 · 예산 배분, 숫자 전략가', color: 'from-emerald-500/20 to-teal-500/20 border-emerald-400/40 text-emerald-300 hover:border-emerald-400' },
                     { key: '50대', icon: 'fa-gem', desc: '기억 · 패턴 감별, 직관 감별사', color: 'from-indigo-500/20 to-violet-500/20 border-indigo-400/40 text-indigo-300 hover:border-indigo-400' },
                     { key: '60대', icon: 'fa-award', desc: '기억·주의·언어 두뇌 건강 훈련, 백전노장 지혜', color: 'from-purple-500/20 to-fuchsia-500/20 border-purple-400/40 text-purple-300 hover:border-purple-400' },
-                    { key: '70대 이상', icon: 'fa-crown', desc: '큰 글씨 · 추억 퀴즈, 100세 총명 두뇌왕', color: 'from-rose-500/20 to-pink-500/20 border-rose-400/40 text-rose-300 hover:border-rose-400' }
+                    { key: '70대 이상', icon: 'fa-crown', desc: '큰 글씨 · 추억 퀴즈, 치매예방 두뇌훈련', color: 'from-rose-500/20 to-pink-500/20 border-rose-400/40 text-rose-300 hover:border-rose-400' }
                 ];
 
                 const buttonsHtml = ageOptions.map(opt => `
@@ -5060,6 +5073,13 @@
                                 복합 암산·수열 추론 <strong>고난도 6문제</strong>를 풀고, 동일 연령대 참가자들과의 <strong>1등~6등 랭킹 구간</strong> 및 실시간 백분위 성적표를 확인하세요.
                             </p>
                         </div>
+
+                        ${this.getStreakCount() > 0 ? `
+                        <div class="text-center">
+                            <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-orange-500/15 border border-orange-400/40 text-orange-300 text-xs font-black">
+                                🔥 <span>${this.getStreakCount()}일 연속 두뇌 훈련 중 — 오늘도 도장 찍으러 가볼까요?</span>
+                            </span>
+                        </div>` : ''}
 
                         <!-- 6개 연령대 선택 그리드 -->
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pt-1">
@@ -5206,7 +5226,7 @@
                 '40대':      { tier: '4050', mode: 'strategy', questionDurationSec: 40, label: '숫자 전략가 · 어림 계산·예산 배분' },
                 '50대':      { tier: '4050', mode: 'intuition', questionDurationSec: 40, label: '직관 감별사 · 기억·패턴 감별' },
                 '60대':      { tier: '6070', mode: 'wisdom', questionDurationSec: 60, label: '두뇌 건강 훈련 · 백전노장 지혜' },
-                '70대 이상': { tier: '6070', mode: 'elder', questionDurationSec: 90, label: '두뇌 건강 훈련 · 100세 총명' }
+                '70대 이상': { tier: '6070', mode: 'elder', questionDurationSec: 90, label: '치매예방 두뇌훈련' }
             },
 
             getAgeProfile(age = this.selectedAge) {
@@ -6191,6 +6211,9 @@
                             : wisdom
                             ? `<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i><span>정말 잘 하셨어요! 👏 로또 [ ${ballNum}번 ] 공을 얻으셨습니다!</span>`
                             : `<i class="fa-solid fa-circle-check text-emerald-400 text-base"></i><span>완벽한 정답입니다! 🎯 로또 [ ${ballNum}번 ] 공 획득! (+두뇌 집중력 상승)</span>`;
+                        // 공 추첨 연출: 획득한 공이 굴러 떨어지듯 등장
+                        feedbackEl.insertAdjacentHTML('afterbegin',
+                            `<span class="ball ${this.getBallColorClass(ballNum)} bgx-ball-drop w-10 h-10 rounded-full flex items-center justify-center text-sm font-black shadow-lg">${ballNum}</span>`);
                     }
 
                     setTimeout(() => {
@@ -6405,6 +6428,133 @@
                 }
             },
 
+            // ==========================================================
+            // 📅 연속 출석(두뇌 훈련 도장) — 이 브라우저(localStorage)에만 저장, 개인정보 없음
+            // ==========================================================
+            streakKey: 'brainStreak_v1',
+
+            dateStr(d = new Date()) {
+                return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            },
+
+            loadStreak() {
+                try {
+                    const o = JSON.parse(localStorage.getItem(this.streakKey) || 'null');
+                    if (o && typeof o.count === 'number' && Array.isArray(o.days)) return o;
+                } catch (e) { /* 저장소 사용 불가 시 기본값 */ }
+                return { last: '', count: 0, best: 0, days: [] };
+            },
+
+            // 현재 유효한 연속 일수 (오늘 또는 어제까지 이어져 있으면 유지)
+            getStreakCount() {
+                const s = this.loadStreak();
+                if (!s.last) return 0;
+                const y = new Date(); y.setDate(y.getDate() - 1);
+                return (s.last === this.dateStr() || s.last === this.dateStr(y)) ? s.count : 0;
+            },
+
+            // 게임 완료 시 오늘 도장 찍기 (하루 한 번만 증가)
+            recordStreakToday() {
+                const s = this.loadStreak();
+                const today = this.dateStr();
+                if (s.last === today) return { ...s, isNew: false };
+                const y = new Date(); y.setDate(y.getDate() - 1);
+                s.count = (s.last === this.dateStr(y)) ? s.count + 1 : 1;
+                s.last = today;
+                s.best = Math.max(s.best || 0, s.count);
+                s.days = (s.days || []).concat(today).slice(-30);
+                try { localStorage.setItem(this.streakKey, JSON.stringify(s)); } catch (e) { /* 무시 */ }
+                return { ...s, isNew: true };
+            },
+
+            // 최근 7일 출석 도장 줄
+            renderStampRow(days) {
+                const names = ['일', '월', '화', '수', '목', '금', '토'];
+                let html = '';
+                for (let i = 6; i >= 0; i--) {
+                    const d = new Date(); d.setDate(d.getDate() - i);
+                    const on = (days || []).includes(this.dateStr(d));
+                    html += `<div class="flex flex-col items-center gap-0.5">
+                        <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-sm font-black ${on ? 'bg-amber-400 text-slate-950' : 'bg-slate-800 text-slate-600'}">${on ? '✔' : ''}</span>
+                        <span class="text-[10px] ${i === 0 ? 'text-amber-300 font-black' : 'text-slate-500'}">${names[d.getDay()]}</span>
+                    </div>`;
+                }
+                return `<div class="flex items-center justify-center gap-1.5 sm:gap-2">${html}</div>`;
+            },
+
+            // ==========================================================
+            // 📤 결과 공유 카드 (이미지 생성 → 공유/다운로드, 개인정보 미포함)
+            // ==========================================================
+            async shareResultCard() {
+                const r = this.lastResult;
+                if (!r) return;
+                const W = 900, H = 560;
+                const cv = document.createElement('canvas');
+                cv.width = W; cv.height = H;
+                const g = cv.getContext('2d');
+                const font = (px, weight = 800) => `${weight} ${px}px "Malgun Gothic", "Apple SD Gothic Neo", sans-serif`;
+
+                const bg = g.createLinearGradient(0, 0, W, H);
+                bg.addColorStop(0, '#1e1b4b'); bg.addColorStop(1, '#0f172a');
+                g.fillStyle = bg; g.fillRect(0, 0, W, H);
+                g.strokeStyle = '#fbbf24'; g.lineWidth = 6; g.strokeRect(14, 14, W - 28, H - 28);
+
+                g.textAlign = 'center'; g.textBaseline = 'middle';
+                g.fillStyle = '#fbbf24'; g.font = font(34); g.fillText('🧠 KMS 로또 랩 · 두뇌 헬스케어', W / 2, 70);
+                g.fillStyle = '#e2e8f0'; g.font = font(28, 700); g.fillText(`${r.age} · ${r.label}`, W / 2, 125);
+
+                // 로또 공 6개 (동행복권 규격 색상)
+                const colorOf = (n) => n <= 10 ? ['#ffd943', '#111827'] : n <= 20 ? ['#3aa0f0', '#ffffff'] : n <= 30 ? ['#ee4a4a', '#ffffff'] : n <= 40 ? ['#cbd5e1', '#111827'] : ['#7cc242', '#111827'];
+                const balls = r.balls.slice(0, 6);
+                const gap = 120, startX = W / 2 - (balls.length - 1) * gap / 2;
+                balls.forEach((n, i) => {
+                    const [fill, text] = colorOf(n);
+                    const x = startX + i * gap, y = 245;
+                    g.beginPath(); g.arc(x, y, 48, 0, Math.PI * 2);
+                    g.fillStyle = fill; g.fill();
+                    g.lineWidth = 3; g.strokeStyle = 'rgba(255,255,255,0.55)'; g.stroke();
+                    g.fillStyle = text; g.font = font(40, 900); g.fillText(String(n), x, y + 2);
+                });
+
+                g.fillStyle = '#ffffff'; g.font = font(44, 900); g.fillText(`최종 기록 ${r.time}`, W / 2, 360);
+                g.fillStyle = '#fde68a'; g.font = font(30, 800); g.fillText(`${r.rank}등 구간 · ${r.tier}`, W / 2, 420);
+                if (r.streak > 0) {
+                    g.fillStyle = '#fb923c'; g.font = font(28, 800); g.fillText(`🔥 ${r.streak}일 연속 두뇌 훈련 중`, W / 2, 475);
+                }
+                g.fillStyle = '#94a3b8'; g.font = font(20, 600);
+                g.fillText('재미로 즐기는 두뇌 놀이 · 로또 당첨을 보장하지 않습니다', W / 2, 525);
+
+                const blob = await new Promise(res => cv.toBlob(res, 'image/png'));
+                const url = (typeof location !== 'undefined') ? location.href.split('#')[0] : '';
+                const text = `🧠 두뇌 헬스케어 ${r.age} 결과: ${r.time} · ${r.rank}등 구간 (${r.tier})\n나의 행운 번호 ${r.balls.join(', ')}\n${url}`;
+
+                // 1) 모바일 등: 이미지 파일 공유
+                if (blob && navigator.canShare && navigator.share) {
+                    try {
+                        const file = new File([blob], 'brain-lotto-card.png', { type: 'image/png' });
+                        if (navigator.canShare({ files: [file] })) {
+                            await navigator.share({ files: [file], title: '내 두뇌 헬스케어 결과', text });
+                            return;
+                        }
+                    } catch (e) {
+                        if (e && e.name === 'AbortError') return; // 사용자가 공유 창을 닫음
+                    }
+                }
+                // 2) 대체: 이미지 저장 + 문구 복사
+                if (blob) {
+                    const a = document.createElement('a');
+                    a.href = URL.createObjectURL(blob);
+                    a.download = 'brain-lotto-card.png';
+                    document.body.appendChild(a); a.click(); a.remove();
+                    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+                }
+                let copied = false;
+                try { await navigator.clipboard.writeText(text); copied = true; } catch (e) { /* 클립보드 불가 */ }
+                if (typeof showToastNotification === 'function') {
+                    showToastNotification(copied ? '📤 결과 카드 이미지를 저장했고, 공유 문구를 복사했어요!' : '📤 결과 카드 이미지를 저장했어요!');
+                }
+            },
+
             // 6문제 모두 풀었을 때 올클리어 & 리더보드/구간 분석 뷰
             showResult() {
                 this.stopTimers();
@@ -6437,16 +6587,35 @@
                     .slice(0, 6);
 
                 // 획득한 6개 번호 로또볼 HTML
-                const ballsHtml = this.wonBalls.map(num => {
+                // 공 추첨 연출: 한 개씩 차례로 굴러 떨어지듯 등장
+                const ballsHtml = this.wonBalls.map((num, i) => {
                     const colorClass = this.getBallColorClass(num);
                     return `
-                        <div class="flex flex-col items-center space-y-1">
+                        <div class="flex flex-col items-center space-y-1 bgx-ball-drop" style="animation-delay:${i * 350}ms">
                             <div class="ball ${colorClass} w-11 h-11 sm:w-13 sm:h-13 rounded-full flex items-center justify-center text-base sm:text-lg font-black shadow-lg">
                                 ${num}
                             </div>
                         </div>
                     `;
                 }).join('');
+
+                // 연속 출석 도장 + 공유 카드용 결과 저장
+                const streak = this.recordStreakToday();
+                this.lastResult = {
+                    age: ageGroup,
+                    label: this.getAgeProfile(ageGroup).label,
+                    time: formattedTime,
+                    rank: userTier.rank,
+                    tier: userTier.title,
+                    balls: this.wonBalls.slice(),
+                    streak: streak.count
+                };
+                const streakHtml = `
+                    <div class="max-w-md mx-auto space-y-2 bg-gradient-to-br from-orange-500/10 to-amber-500/10 border border-orange-400/30 rounded-3xl p-4">
+                        <div class="text-center text-sm sm:text-base font-black text-orange-200">🔥 ${streak.count}일 연속 두뇌 훈련 중${streak.best > streak.count ? ` <span class="text-xs text-slate-400 font-bold">(최고 ${streak.best}일)</span>` : ''}</div>
+                        ${this.renderStampRow(streak.days)}
+                        <p class="text-[11px] text-slate-400 text-center">${streak.isNew ? '오늘의 도장을 찍었어요! 내일도 도전해 보세요.' : '오늘 도장은 이미 찍혀 있어요.'}</p>
+                    </div>`;
 
                 // 60대 '백전노장 지혜' 모드: 두뇌 영역별 훈련 성적표 (별 1~3개)
                 let wisdomReportHtml = '';
@@ -6558,6 +6727,8 @@
                             </div>
                         </div>
 
+                        ${streakHtml}
+
                         ${wisdomReportHtml}
 
                         <!-- 1등~6등 연령별 리더보드 구간 뷰 -->
@@ -6579,6 +6750,10 @@
                             <button type="button" onclick="brainGame.applyToGenerator()"
                                 class="px-5 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-black text-xs sm:text-sm rounded-2xl transition shadow-lg shadow-orange-500/25 flex items-center space-x-2 active:scale-95 cursor-pointer">
                                 <span>🧠 내 두뇌 퀴즈 숫자를 AI 조합기에 즉시 반영하기</span>
+                            </button>
+                            <button type="button" onclick="brainGame.shareResultCard()"
+                                class="px-5 py-3 bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 text-white font-black text-xs sm:text-sm rounded-2xl transition shadow-lg shadow-rose-500/25 flex items-center space-x-2 active:scale-95 cursor-pointer">
+                                <span>📤 내 결과 카드 공유하기</span>
                             </button>
                             <button onclick="brainGame.init()"
                                 class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-bold text-xs sm:text-sm rounded-2xl transition shadow-xs flex items-center space-x-2 active:scale-95 cursor-pointer">
