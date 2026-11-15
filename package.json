@@ -4,7 +4,9 @@
   "description": "KMS Loddo Web",
   "scripts": {
     "start": "node ./node_modules/live-server/live-server.js --port=5500 --open=/",
-    "build": "echo 'Build OK'"
+    "build": "echo 'Build OK'",
+    "indexnow": "node tools/indexnow.js",
+    "indexnow:new": "node tools/indexnow.js --last-commit"
   },
   "devDependencies": {
     "live-server": "^1.2.2"
