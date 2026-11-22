@@ -1596,7 +1596,7 @@
                     <div class="flex items-center gap-2.5 text-xs text-slate-300" id="currentDirectoryNotice">
                         <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
                         <span class="font-bold text-white text-sm" id="directoryTitleText">👑 1등 명예의 전당 디렉토리</span>
-                        <span class="text-slate-400 hidden md:inline">| 역대 1등 당첨 회원들의 전용 인증 피드</span>
+                        <span class="text-slate-400 hidden md:inline" id="directorySubNoticeText">| 역대 1등 당첨 회원들의 전용 인증 피드</span>
                     </div>
                     <button onclick="reviewEngine.openWriteModalForCurrent()"
                         class="w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 active:scale-95 text-slate-950 font-black rounded-xl text-xs sm:text-sm transition-all duration-150 shadow-lg shadow-amber-500/25 hover:shadow-amber-500/40 flex items-center justify-center gap-2 group cursor-pointer">
@@ -2280,7 +2280,7 @@
                 </div>
                 <div>
                     <h3 class="text-lg font-black text-white flex items-center gap-2">
-                        <span>당첨 후기 &amp; 영수증 인증 등록</span>
+                        <span id="reviewModalHeading">당첨 후기 &amp; 영수증 인증 등록</span>
                         <span class="text-[10px] bg-amber-500/20 text-amber-300 border border-amber-400/30 px-2 py-0.5 rounded-full font-bold">명예의 전당</span>
                     </h3>
                     <p class="text-xs text-slate-400 mt-0.5">KMS 로또 랩과 함께한 당첨의 순간과 감동을 나누어 주세요!</p>
@@ -2469,7 +2469,7 @@
                 <button type="button" onclick="reviewEngine.submitReview()"
                     class="py-2.5 px-6 bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 hover:from-amber-300 hover:to-yellow-300 active:scale-95 text-slate-950 font-black rounded-xl text-xs transition shadow-lg shadow-amber-500/25 flex items-center gap-1.5">
                     <i class="fa-solid fa-paper-plane text-slate-950"></i>
-                    <span>명예의 전당 등록하기</span>
+                    <span id="reviewSubmitBtnText">명예의 전당 등록하기</span>
                 </button>
             </div>
         </div>
@@ -7634,6 +7634,7 @@
             selectedRank: 1,
             uploadedImage: null,
             uploadedFileName: '',
+            editingId: null, // 수정 모드일 때 대상 후기 ID (null이면 신규 등록)
 
             // 디렉토리 메타데이터 매핑
             directoryMeta: {
@@ -7641,7 +7642,7 @@
                     rank: 1,
                     title: '👑 1등 명예의 전당 디렉토리',
                     notice: '👑 1등 명예의 전당 디렉토리',
-                    subNotice: '역대 1등 당첨 회원들의 전용 실시간 영수증 인증 피드',
+                    subNotice: '역대 1등 당첨 회원들의 전용 인증 피드',
                     defaultPrize: '1등 22억 4,120만원',
                     cta: '✍️ 1등 명예의 전당에 실시간 후기 & 영수증 등록하기',
                     emptyTitle: '아직 1등 당첨 인증 내역이 없습니다.',
@@ -7652,7 +7653,7 @@
                     rank: 2,
                     title: '🥈 2등 당첨 인증 디렉토리',
                     notice: '🥈 2등 당첨 인증 디렉토리 (보너스 번호 일치)',
-                    subNotice: '2등 당첨 회원들의 생생한 인증과 당첨금 수령 후기',
+                    subNotice: '역대 2등 당첨 회원들의 전용 인증 피드',
                     defaultPrize: '2등 5,820만원',
                     cta: '✍️ 2등 당첨 인증 디렉토리에 후기 등록하기',
                     emptyTitle: '등록된 2등 당첨 인증 내역이 없습니다.',
@@ -7663,7 +7664,7 @@
                     rank: 3,
                     title: '🥉 3등 당첨 인증 디렉토리',
                     notice: '🥉 3등 당첨 인증 디렉토리 (5개 번호 적중)',
-                    subNotice: '실속파 회원들의 3등 적중 비결과 조합 노하우',
+                    subNotice: '역대 3등 당첨 회원들의 전용 인증 피드',
                     defaultPrize: '3등 148만원',
                     cta: '✍️ 3등 당첨 인증 디렉토리에 후기 등록하기',
                     emptyTitle: '등록된 3등 당첨 인증 내역이 없습니다.',
@@ -7674,7 +7675,7 @@
                     rank: 4,
                     title: '🎖️ 4등 당첨 소소한 기쁨 디렉토리',
                     notice: '🎖️ 4등 당첨 소소한 기쁨 디렉토리 (5만원 고정)',
-                    subNotice: '소소한 일상의 기쁨! 소고기 파티와 주말 외식 인증',
+                    subNotice: '역대 4등 당첨 회원들의 소소한 기쁨 인증 피드',
                     defaultPrize: '4등 50,000원',
                     cta: '✍️ 4등 당첨 소소한 기쁨 후기 등록하기',
                     emptyTitle: '등록된 4등 당첨 후기가 없습니다.',
@@ -7685,7 +7686,7 @@
                     rank: 5,
                     title: '🎁 5등 당첨 본전치기 디렉토리',
                     notice: '🎁 5등 당첨 본전치기 디렉토리 (5천원 복권 교환)',
-                    subNotice: '무료 재도전의 기회! 꾸준한 도전자들의 본전 인증',
+                    subNotice: '역대 5등 당첨 회원들의 본전치기 인증 피드',
                     defaultPrize: '5등 5,000원',
                     cta: '✍️ 5등 당첨 본전치기 후기 등록하기',
                     emptyTitle: '등록된 5등 당첨 후기가 없습니다.',
@@ -7888,6 +7889,8 @@
                 const meta = this.directoryMeta[filter] || this.directoryMeta['rank1'];
                 const dirTitleEl = document.getElementById('directoryTitleText');
                 if (dirTitleEl) dirTitleEl.innerText = meta.title;
+                const dirSubEl = document.getElementById('directorySubNoticeText');
+                if (dirSubEl) dirSubEl.innerText = '| ' + meta.subNotice;
                 const dirCtaEl = document.getElementById('currentDirectoryCtaText');
                 if (dirCtaEl) dirCtaEl.innerText = meta.cta;
 
@@ -7928,6 +7931,10 @@
             },
 
             openWriteModal(defaultRank = null) {
+                this.editingId = null;
+                this.setModalMode(false);
+                const pwReset = document.getElementById('reviewFormPassword');
+                if (pwReset) pwReset.placeholder = '4자리 이상 숫자/문자';
                 const user = (typeof getCurrentUser === 'function') ? getCurrentUser() : null;
                 const nicknameInput = document.getElementById('reviewFormNickname');
                 if (nicknameInput) {
@@ -7969,7 +7976,7 @@
                     document.getElementById('reviewFormNickname')?.focus();
                     return;
                 }
-                if (!password || password.length < 4) {
+                if (!this.editingId && (!password || password.length < 4)) {
                     alert('후기 수정·삭제용 비밀번호를 4자리 이상 입력해 주세요.');
                     document.getElementById('reviewFormPassword')?.focus();
                     return;
@@ -7992,6 +7999,11 @@
                     if (!isNaN(val) && val >= 1 && val <= 45) {
                         numbers.push(val);
                     }
+                }
+
+                if (this.editingId) {
+                    this.applyEdit({ nickname, password, round, method, prize, title, content, numbers });
+                    return;
                 }
 
                 const today = new Date();
@@ -8044,6 +8056,8 @@
                 const meta = this.directoryMeta[this.currentFilter] || this.directoryMeta['rank1'];
                 const dirTitleEl = document.getElementById('directoryTitleText');
                 if (dirTitleEl) dirTitleEl.innerText = meta.title;
+                const dirSubEl = document.getElementById('directorySubNoticeText');
+                if (dirSubEl) dirSubEl.innerText = '| ' + meta.subNotice;
                 const dirCtaEl = document.getElementById('currentDirectoryCtaText');
                 if (dirCtaEl) dirCtaEl.innerText = meta.cta;
 
@@ -8063,6 +8077,126 @@
                         setTimeout(() => cardEl.classList.remove('ring-4', 'ring-amber-400', 'animate-pulse'), 3500);
                     }
                 }, 200);
+            },
+
+            // 모달 모드 전환 (신규 등록 / 수정)
+            setModalMode(isEdit) {
+                const heading = document.getElementById('reviewModalHeading');
+                const btnText = document.getElementById('reviewSubmitBtnText');
+                if (heading) heading.innerText = isEdit ? '당첨 후기 수정' : '당첨 후기 & 영수증 인증 등록';
+                if (btnText) btnText.innerText = isEdit ? '수정 내용 저장하기' : '명예의 전당 등록하기';
+            },
+
+            // 후기 수정 (등록자 본인 확인: 비밀번호 필수)
+            editReview(id) {
+                const item = this.reviews.find(r => r.id === id);
+                if (!item) return;
+
+                const deny = () => alert('비밀번호가 일치하지 않습니다. 등록자 본인만 수정할 수 있습니다.');
+
+                // 비밀번호가 설정되지 않은 데이터는 본인 확인이 불가능하므로 수정 차단
+                if (!item.password) { deny(); return; }
+
+                const inputPw = prompt(`[${item.title}] 후기를 수정합니다.\n등록 시 설정한 비밀번호를 입력해 주세요:`);
+                if (inputPw === null) return;
+                if (inputPw !== item.password) { deny(); return; }
+
+                this.openEditModal(item);
+            },
+
+            openEditModal(item) {
+                this.openWriteModal(item.rank); // 초기화 후 아래에서 기존 값 채움
+                this.editingId = item.id;
+                this.setModalMode(true);
+
+                const setVal = (elId, v) => { const el = document.getElementById(elId); if (el) el.value = v; };
+                setVal('reviewFormNickname', item.author || '');
+                setVal('reviewFormPassword', '');
+                const pwEl = document.getElementById('reviewFormPassword');
+                if (pwEl) pwEl.placeholder = '변경 시에만 입력 (비우면 기존 유지)';
+
+                // 회차 선택지에 없는 회차면 옵션 추가
+                const roundSel = document.getElementById('reviewFormRound');
+                if (roundSel) {
+                    if (![...roundSel.options].some(o => o.value === String(item.round))) {
+                        const opt = document.createElement('option');
+                        opt.value = String(item.round);
+                        opt.textContent = `제 ${item.round}회`;
+                        roundSel.appendChild(opt);
+                    }
+                    roundSel.value = String(item.round);
+                }
+                setVal('reviewFormMethod', item.method || 'AI 스마트 조합기');
+                this.selectRank(item.rank);
+                setVal('reviewFormPrize', item.prize || '');
+                setVal('reviewFormTitle', item.title || '');
+                setVal('reviewFormContent', item.content || '');
+                for (let i = 1; i <= 6; i++) {
+                    setVal(`reviewNum${i}`, (item.numbers && item.numbers[i - 1] != null) ? item.numbers[i - 1] : '');
+                }
+
+                // 직접 업로드한 영수증만 미리보기로 불러옴 (자동 생성 티켓은 저장 시 재생성)
+                const isGenerated = !item.imageUrl || String(item.imageUrl).startsWith('data:image/svg+xml;utf8,');
+                if (!isGenerated) {
+                    this.uploadedImage = item.imageUrl;
+                    this.uploadedFileName = '기존 등록 영수증 이미지';
+                    const placeholder = document.getElementById('reviewUploadPlaceholder');
+                    const previewContainer = document.getElementById('reviewPreviewContainer');
+                    const previewImg = document.getElementById('reviewImagePreview');
+                    const fileNameEl = document.getElementById('reviewFileName');
+                    if (placeholder) placeholder.classList.add('hidden');
+                    if (previewContainer) previewContainer.classList.remove('hidden');
+                    if (previewImg) previewImg.src = item.imageUrl;
+                    if (fileNameEl) fileNameEl.innerText = '✓ 기존 등록 영수증 이미지';
+                }
+            },
+
+            applyEdit(f) {
+                const item = this.reviews.find(r => r.id === this.editingId);
+                if (!item) {
+                    alert('수정할 후기를 찾을 수 없습니다.');
+                    return;
+                }
+                if (f.password && f.password.length < 4) {
+                    alert('비밀번호를 변경하려면 4자리 이상 입력해 주세요.');
+                    document.getElementById('reviewFormPassword')?.focus();
+                    return;
+                }
+
+                const rank = this.selectedRank;
+                const defaultPrizeText = (this.directoryMeta[`rank${rank}`] && this.directoryMeta[`rank${rank}`].defaultPrize) || `${rank}등 공식 인증`;
+                const numbers = f.numbers.length > 0 ? f.numbers : (item.numbers || [3, 12, 19, 28, 33, 42]);
+
+                item.author = f.nickname;
+                if (f.password) item.password = f.password;
+                item.round = f.round;
+                item.rank = rank;
+                item.prize = f.prize || defaultPrizeText;
+                item.method = f.method;
+                item.numbers = numbers;
+                item.title = f.title;
+                item.content = f.content;
+                item.imageUrl = this.uploadedImage || this.generateTicketSvg(f.round, rank, numbers, item.date, f.nickname);
+
+                this.saveReviews();
+
+                // 수정된 등급 디렉토리로 전환하여 즉시 반영 (집계 카드 포함 render에서 갱신)
+                this.setFilter(`rank${rank}`);
+
+                const editedId = item.id;
+                this.editingId = null;
+                this.setModalMode(false);
+                if (typeof closeModal === 'function') closeModal('reviewModal');
+
+                setTimeout(() => {
+                    alert('후기가 수정되었습니다.');
+                    const cardEl = document.getElementById(`review-card-${editedId}`);
+                    if (cardEl) {
+                        cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        cardEl.classList.add('ring-4', 'ring-amber-400');
+                        setTimeout(() => cardEl.classList.remove('ring-4', 'ring-amber-400'), 2500);
+                    }
+                }, 100);
             },
 
             // 후기 삭제 (비밀번호 확인)
@@ -8345,6 +8479,10 @@
                                         <span class="text-[10px] text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
                                             <i class="fa-solid fa-circle-check"></i> 실시간 인증
                                         </span>
+                                        <button onclick="reviewEngine.editReview('${item.id}')" title="후기 수정"
+                                            class="text-slate-500 hover:text-amber-300 text-xs transition p-1">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </button>
                                         ${item.password ? `
                                         <button onclick="reviewEngine.deleteReview('${item.id}')" title="후기 삭제"
                                             class="text-slate-500 hover:text-rose-400 text-xs transition p-1">
