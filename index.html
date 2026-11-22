@@ -4681,31 +4681,42 @@
 
         // --- (E) 매일 변동되는 정통 꿈해몽 & 행운수 매핑 데이터베이스 ---
         const dreamDatabase = [
-            { id: "pig", name: "돼지꿈", icon: "🐷", keywords: ["돼지", "멧돼지", "흑돼지"], category: "재물", grade: "특급 대길몽", baseNumbers: [12, 17, 34], meaning: "누런 황금돼지나 흑돼지가 품에 안기거나 집으로 들어오는 꿈은 뜻밖의 횡재수와 큰 목돈, 사업의 급성장과 부귀영화를 알리는 민간 최고의 길몽입니다." },
-            { id: "poop", name: "똥/대변꿈", icon: "💩", keywords: ["똥", "대변", "인분", "변기"], category: "재물", grade: "특급 횡재몽", baseNumbers: [5, 16, 31], meaning: "온몸에 대변이 묻거나 변기에 똥이 가득 넘쳐흐르는 꿈은 억눌린 재물운이 크게 터져 막대한 금전적 풍요와 뜻밖의 유산을 가져다주는 대표적 길조입니다." },
-            { id: "ancestor", name: "조상님꿈", icon: "👴", keywords: ["조상", "조상님", "할아버지", "할머니", "부모님"], category: "인물", grade: "가문 대길몽", baseNumbers: [1, 21, 33, 40], meaning: "돌아가신 조상님이나 부모님이 밝은 미소로 돈이나 보물을 건네는 꿈은 큰 은덕과 가문의 번영, 막혔던 인생의 활로가 활짝 열림을 상징합니다." },
-            { id: "dragon", name: "용꿈", icon: "🐉", keywords: ["용", "청룡", "황룡", "여의주"], category: "동물", grade: "최고 존귀몽", baseNumbers: [7, 13, 27, 41], meaning: "거대한 용이 여의주를 물고 구름을 뚫고 하늘로 승천하는 꿈은 사회적 신분 상승, 국가고시 합격, 최고의 명예와 천운이 함께하는 최고봉의 대길몽입니다." },
-            { id: "fire", name: "불/화재꿈", icon: "🔥", keywords: ["불", "화재", "불타는", "연기"], category: "자연", grade: "번영 대길몽", baseNumbers: [6, 11, 28, 44], meaning: "온 건물이나 산야가 활활 타오르는 화재 꿈은 사업과 가세가 걷잡을 수 없이 크게 번창하고 번뜩이는 창작력으로 큰 재물을 얻음을 뜻합니다." },
-            { id: "water", name: "맑은물/바다", icon: "🌊", keywords: ["물", "바다", "강", "파도", "홍수", "폭포"], category: "자연", grade: "재물 순환몽", baseNumbers: [2, 18, 26, 37], meaning: "맑고 깨끗한 물이 집안 가득 넘쳐흐르거나 거대한 파도를 품는 꿈은 마르지 않는 재물의 샘과 가업의 융성, 순조로운 소원 성취를 의미합니다." },
-            { id: "snake", name: "뱀/구렁이", icon: "🐍", keywords: ["뱀", "구렁이", "백사"], category: "동물", grade: "지혜 횡재몽", baseNumbers: [4, 10, 25, 36], meaning: "황금색 뱀이나 거대한 구렁이가 몸을 감싸거나 품에 안기는 꿈은 비상한 통찰력, 숨겨진 재물의 발견, 장차 큰 인물이 될 자손의 잉태를 뜻합니다." },
-            { id: "tiger", name: "호랑이꿈", icon: "🐅", keywords: ["호랑이", "백호", "표범"], category: "동물", grade: "권력 승리몽", baseNumbers: [3, 15, 30, 42], meaning: "위엄 있는 호랑이가 포효하거나 집을 지키는 꿈은 막강한 권력과 리더십, 경쟁에서의 완벽한 승리와 난관 돌파를 상징합니다." },
-            { id: "fish", name: "물고기/잉어", icon: "🐟", keywords: ["물고기", "잉어", "금붕어", "어항", "낚시"], category: "동물", grade: "출세 길몽", baseNumbers: [8, 14, 23, 38], meaning: "맑은 물에서 커다란 황금 잉어나 물고기를 두 손으로 낚아 올리는 꿈은 노력해 온 일의 화려한 결실과 횡재수, 관직 출세를 예견합니다." },
-            { id: "gold", name: "황금/돈뭉치", icon: "💰", keywords: ["돈", "황금", "금", "보석", "지폐", "돈뭉치"], category: "재물", grade: "직접 재물몽", baseNumbers: [9, 20, 32, 45], meaning: "두 손 가득 지폐 뭉치를 줍거나 찬란한 황금과 보석을 품는 꿈은 현실의 재정적 위기가 일시에 해소되고 예상치 못한 보상이 찾아오는 징조입니다." },
-            { id: "airplane", name: "비행기꿈", icon: "✈️", keywords: ["비행기", "우주선", "비행"], category: "자연", grade: "도약 비상몽", baseNumbers: [8, 19, 29, 39], meaning: "비행기를 타고 구름 위를 날아오르는 꿈은 지위와 직급의 비약적 상승, 해외 진출 등 원대한 인생의 목표가 마침내 성취됨을 암시합니다." },
-            { id: "president", name: "대통령/귀인", icon: "👑", keywords: ["대통령", "유명인", "연예인", "왕", "임금"], category: "인물", grade: "귀인 상봉몽", baseNumbers: [1, 10, 24, 43], meaning: "국가 원수나 존경받는 유명 인사와 악수하고 따뜻한 덕담을 나누는 꿈은 사회적 귀인의 전폭적 지원을 받아 입신양명할 길조입니다." },
-            { id: "corpse", name: "시체/죽음꿈", icon: "⚰️", keywords: ["시체", "죽음", "송장", "장례식", "관"], category: "재물", grade: "대반전 길몽", baseNumbers: [5, 12, 33, 41], meaning: "시체를 목격하거나 자신이 죽는 꿈은 묵은 악운과 액운이 완전히 소멸하고 새 생명력과 함께 막대한 행운이 찾아오는 최고의 반전 길몽입니다." },
-            { id: "blood", name: "피/출혈꿈", icon: "🩸", keywords: ["피", "출혈", "선혈"], category: "재물", grade: "성취 횡재몽", baseNumbers: [7, 16, 28, 35], meaning: "온몸에 붉은 피가 묻거나 솟구치는 피를 보는 꿈은 열정적인 성취와 함께 막혔던 금전의 물꼬가 트여 큰 부를 축적함을 의미합니다." },
-            { id: "toad", name: "두꺼비/개구리", icon: "🐸", keywords: ["두꺼비", "개구리", "금두꺼비"], category: "재물", grade: "가복 증진몽", baseNumbers: [11, 22, 34, 44], meaning: "황금 두꺼비가 집안으로 뛰어드는 꿈은 복권 당첨이나 뜻밖의 부동산 횡재 등 가문에 경사와 복이 굴러들어오는 상서로운 징조입니다." },
-            { id: "turtle", name: "거북이꿈", icon: "🐢", keywords: ["거북이", "자라"], category: "동물", grade: "장수 부귀몽", baseNumbers: [3, 14, 25, 39], meaning: "거북이가 알을 낳거나 품에 안기는 꿈은 대대손손 이어질 안정된 부의 축적과 무병장수, 가정의 평안을 뜻합니다." },
-            { id: "house", name: "새집/이사꿈", icon: "🏠", keywords: ["집", "아파트", "이사", "건물", "대궐"], category: "자연", grade: "가업 융성몽", baseNumbers: [2, 13, 27, 42], meaning: "햇살 가득한 새 집으로 이사하는 꿈은 환경의 획기적 발전과 직장의 승진, 생활의 풍요로움을 가져옵니다." },
-            { id: "car", name: "고급자동차", icon: "🚗", keywords: ["자동차", "차", "슈퍼카"], category: "자연", grade: "주도 성취몽", baseNumbers: [6, 17, 30, 45], meaning: "멋진 자동차를 타고 도로를 시원하게 질주하는 꿈은 자신이 주도권을 쥐고 사업이나 프로젝트를 막힘없이 성공시킴을 뜻합니다." },
-            { id: "sun", name: "태양/보름달", icon: "☀️", keywords: ["태양", "해", "달", "보름달", "별", "북두칠성"], category: "자연", grade: "천기 대길몽", baseNumbers: [1, 9, 21, 38], meaning: "둥근 해나 보름달을 품에 안는 꿈은 일생일대의 대운이 열리며, 가문이 번창하고 세상에 이름을 떨칠 대길몽입니다." },
-            { id: "baby", name: "아기/출산꿈", icon: "👶", keywords: ["아기", "갓난아기", "출산", "임신"], category: "인물", grade: "창조 결실몽", baseNumbers: [4, 18, 31, 40], meaning: "건강하고 방긋 웃는 아기를 품에 안아주는 꿈은 오랜 기간 준비해 온 새로운 프로젝트나 일거리가 큰 결실을 맺음을 뜻합니다." },
-            { id: "bird", name: "학/봉황/새", icon: "🕊️", keywords: ["새", "학", "봉황", "비둘기", "독수리"], category: "동물", grade: "명예 영달몽", baseNumbers: [8, 15, 26, 37], meaning: "학이나 봉황이 마당에 내려앉는 꿈은 귀인을 만나거나 학문과 예술, 직업에서 최고 권위의 인정을 받게 됨을 예견합니다." },
-            { id: "flower", name: "꽃/과일꿈", icon: "🌸", keywords: ["꽃", "과일", "사과", "복숭아", "열매"], category: "자연", grade: "사랑 수확몽", baseNumbers: [5, 19, 28, 43], meaning: "탐스러운 과일을 수확하거나 꽃밭을 거니는 꿈은 노력의 풍성한 결실과 좋은 인연, 금전적 보답을 뜻합니다." },
-            { id: "horse", name: "말/백마꿈", icon: "🐎", keywords: ["말", "백마", "흑마"], category: "동물", grade: "질주 성공몽", baseNumbers: [7, 14, 29, 36], meaning: "힘찬 백마를 타고 초원을 달리는 꿈은 장애물이 사라지고 초고속 승진과 확장을 이뤄낼 역동적 길조입니다." },
-            { id: "ox", name: "소/황소꿈", icon: "🐂", keywords: ["소", "황소", "음메"], category: "동물", grade: "근면 대복몽", baseNumbers: [2, 11, 23, 34], meaning: "우람한 황소가 밭을 갈거나 집안으로 들어오는 꿈은 성실한 축적 끝에 부동산 등 큰 자산을 모으게 됨을 뜻합니다." },
-            { id: "rainbow", name: "무지개/눈꿈", icon: "🌈", keywords: ["무지개", "눈", "함박눈"], category: "자연", grade: "상서로운 축복", baseNumbers: [6, 20, 32, 41], meaning: "하늘에 선명한 쌍무지개가 뜨거나 세상을 덮는 눈을 보는 꿈은 집안에 경사가 겹치고 축복이 찾아올 징조입니다." }
+            // ★ 최상위 고정: 조상님/부모님꿈 (로또 당첨자 최다 보고 길몽)
+            { id: "ancestor", name: "조상님/부모님꿈", icon: "👴", keywords: ["조상", "조상님", "부모님", "돌아가신", "돌아가셨", "할아버지", "할머니", "어머니", "아버지", "엄마", "아빠", "고인"], category: "인물", grade: "가문 대길몽", score: 99, baseNumbers: [1, 8, 21, 33, 40, 45], meaning: "돌아가신 조상님이나 부모님이 밝은 얼굴로 나타나 돈이나 보물을 건네거나 따뜻하게 손을 잡아주는 꿈은 민간에서 복권·횡재수의 으뜸 길몽으로 꼽습니다. 조상의 음덕이 후손에게 내려 막혔던 일이 풀리고 가문에 큰 경사가 깃든다는 뜻입니다. 특히 꿈속에서 무언가를 받았다면 실제 재물운으로 이어질 가능성이 크다고 풀이합니다." },
+            { id: "pig", name: "돼지꿈", icon: "🐷", keywords: ["돼지", "멧돼지", "흑돼지"], category: "재물", grade: "특급 대길몽", score: 97, baseNumbers: [5, 12, 17, 26, 34, 43], meaning: "돼지가 품에 안기거나 집으로 들어오는 꿈은 예로부터 재물이 불어나는 대표적인 길몽입니다. 뜻밖의 횡재수와 큰 목돈, 사업의 급성장을 알리는 징조로 봅니다." },
+            { id: "poop", name: "똥/황금변꿈", icon: "💩", keywords: ["똥", "대변", "인분", "변기", "황금변", "화장실"], category: "재물", grade: "특급 횡재몽", score: 98, baseNumbers: [5, 16, 22, 31, 38, 44], meaning: "온몸에 똥이 묻거나 변기에 대변이 가득 넘쳐흐르는 꿈은 똥을 재물의 상징으로 보는 민간 해몽에서 최고의 횡재몽입니다. 억눌려 있던 재물운이 한꺼번에 터져 목돈이 들어오거나 뜻밖의 유산·보상을 받게 된다고 풀이합니다. 냄새가 심하거나 양이 많을수록 재물의 크기도 크다고 합니다." },
+            { id: "dragon", name: "용꿈", icon: "🐉", keywords: ["용", "청룡", "황룡", "여의주"], category: "동물", grade: "최고 존귀몽", score: 98, baseNumbers: [7, 13, 20, 27, 35, 41], meaning: "용이 여의주를 물고 나타나거나 집 안으로 들어오는 꿈은 신분 상승과 명예, 천운이 함께 열리는 최고봉의 대길몽입니다. 국가고시 합격이나 승진 같은 큰 성취를 예견합니다." },
+            { id: "fire", name: "불/화재꿈", icon: "🔥", keywords: ["불", "연기", "불꽃", "불길"], category: "자연", grade: "번영 대길몽", score: 95, baseNumbers: [6, 11, 19, 28, 37, 44], meaning: "불꽃이 환하게 타오르는 꿈은 사업과 가세가 번창하고 의욕과 창의력이 솟아남을 뜻합니다. 불길이 맑고 밝을수록 재물운도 커진다고 봅니다." },
+            { id: "water", name: "맑은물/바다", icon: "🌊", keywords: ["물", "바다", "강", "파도", "폭포", "시냇물"], category: "자연", grade: "재물 순환몽", score: 94, baseNumbers: [2, 18, 26, 30, 37, 43], meaning: "맑고 깨끗한 물이 집안 가득 차오르거나 넓은 바다를 품는 꿈은 마르지 않는 재물의 샘을 상징합니다. 가업의 융성과 순조로운 소원 성취를 뜻합니다." },
+            { id: "snake", name: "뱀꿈", icon: "🐍", keywords: ["뱀", "백사", "황금뱀"], category: "동물", grade: "지혜 횡재몽", score: 94, baseNumbers: [4, 10, 19, 25, 36, 40], meaning: "뱀이 몸을 감싸거나 품에 안기는 꿈은 비상한 통찰력과 숨겨진 재물의 발견을 뜻합니다. 장차 큰 인물이 될 자손의 잉태를 알리는 태몽으로도 풀이합니다." },
+            { id: "tiger", name: "호랑이꿈", icon: "🐅", keywords: ["호랑이", "백호", "표범"], category: "동물", grade: "권력 승리몽", score: 95, baseNumbers: [3, 15, 22, 30, 38, 42], meaning: "위엄 있는 호랑이가 포효하거나 집을 지키는 꿈은 막강한 권력과 리더십을 상징합니다. 경쟁에서의 완벽한 승리와 난관 돌파를 예견합니다." },
+            { id: "fish", name: "물고기/잉어", icon: "🐟", keywords: ["물고기", "잉어", "금붕어", "어항", "낚시"], category: "동물", grade: "출세 길몽", score: 94, baseNumbers: [8, 14, 23, 29, 38, 44], meaning: "맑은 물에서 커다란 황금 잉어나 물고기를 낚아 올리는 꿈은 노력한 일의 화려한 결실과 횡재수를 뜻합니다. 관직 출세와 명예도 예견합니다." },
+            { id: "gold", name: "황금/돈뭉치", icon: "💰", keywords: ["돈", "황금", "금", "보석", "지폐", "돈뭉치"], category: "재물", grade: "직접 재물몽", score: 96, baseNumbers: [9, 15, 20, 27, 32, 45], meaning: "두 손 가득 지폐 뭉치를 줍거나 찬란한 황금과 보석을 품는 꿈은 재정적 위기가 해소되고 예상치 못한 보상이 찾아오는 징조입니다. 큰돈이 실제로 들어올 길조로 봅니다." },
+            { id: "airplane", name: "비행기꿈", icon: "✈️", keywords: ["비행기", "우주선", "비행"], category: "자연", grade: "도약 비상몽", score: 93, baseNumbers: [8, 12, 19, 29, 35, 39], meaning: "비행기를 타고 구름 위를 날아오르는 꿈은 지위와 직급의 비약적 상승을 뜻합니다. 해외 진출 등 원대한 목표의 성취를 암시합니다." },
+            { id: "president", name: "대통령/왕/귀인꿈", icon: "👑", keywords: ["대통령", "유명인", "연예인", "왕", "임금", "임금님", "귀인", "국왕"], category: "인물", grade: "귀인 상봉몽", score: 96, baseNumbers: [1, 10, 17, 24, 32, 43], meaning: "대통령이나 왕, 존경받는 귀인과 악수하고 덕담을 나누는 꿈은 사회적 귀인의 전폭적인 도움을 받게 될 길조입니다. 입신양명과 큰 재물을 함께 얻는다고 풀이합니다." },
+            { id: "corpse", name: "시체/죽음꿈", icon: "⚰️", keywords: ["시체", "죽음", "송장", "장례식", "관"], category: "재물", grade: "대반전 길몽", score: 95, baseNumbers: [5, 12, 19, 26, 33, 41], meaning: "시체를 목격하거나 자신이 죽는 꿈은 묵은 악운과 액운이 소멸하고 새 생명력이 깃드는 대반전의 길몽입니다. 재물과 명예가 새로 일어난다고 봅니다." },
+            { id: "blood", name: "피/출혈꿈", icon: "🩸", keywords: ["피", "출혈", "선혈", "피를 흘", "피를 보"], category: "재물", grade: "성취 횡재몽", score: 95, baseNumbers: [2, 7, 16, 28, 35, 40], meaning: "몸에서 피를 흘리거나 솟구치는 붉은 피를 보는 꿈은 피를 재물의 상징으로 보아 큰돈이 들어올 징조로 풀이합니다. 막혔던 금전의 물꼬가 트이고 열정적인 성취가 따릅니다." },
+            { id: "toad", name: "두꺼비/개구리", icon: "🐸", keywords: ["두꺼비", "개구리", "금두꺼비"], category: "재물", grade: "가복 증진몽", score: 94, baseNumbers: [6, 11, 17, 22, 34, 44], meaning: "황금 두꺼비가 집안으로 뛰어드는 꿈은 가문에 복이 굴러들어오는 상서로운 징조입니다. 부동산 횡재나 복권 당첨 같은 경사를 예견합니다." },
+            { id: "turtle", name: "거북이꿈", icon: "🐢", keywords: ["거북이", "자라"], category: "동물", grade: "장수 부귀몽", score: 93, baseNumbers: [3, 9, 14, 25, 31, 39], meaning: "거북이가 알을 낳거나 품에 안기는 꿈은 대대손손 이어질 안정된 부의 축적을 뜻합니다. 무병장수와 가정의 평안도 함께 예견합니다." },
+            { id: "house", name: "새집/이사꿈", icon: "🏠", keywords: ["집", "아파트", "이사", "건물", "대궐"], category: "자연", grade: "가업 융성몽", score: 93, baseNumbers: [2, 13, 20, 27, 36, 42], meaning: "햇살 가득한 새 집으로 이사하는 꿈은 환경의 획기적 발전과 직장의 승진을 뜻합니다. 생활의 풍요로움이 찾아옵니다." },
+            { id: "car", name: "고급자동차", icon: "🚗", keywords: ["자동차", "차", "슈퍼카"], category: "자연", grade: "주도 성취몽", score: 92, baseNumbers: [6, 10, 17, 23, 30, 45], meaning: "멋진 자동차를 타고 도로를 시원하게 질주하는 꿈은 자신이 주도권을 쥐고 일을 막힘없이 성공시킴을 뜻합니다. 사업이나 프로젝트의 순항을 예견합니다." },
+            { id: "sun", name: "태양/보름달", icon: "☀️", keywords: ["태양", "해", "달", "보름달", "별", "북두칠성"], category: "자연", grade: "천기 대길몽", score: 97, baseNumbers: [1, 9, 14, 21, 29, 38], meaning: "둥근 해나 보름달을 품에 안는 꿈은 일생일대의 대운이 열리는 징조입니다. 가문이 번창하고 세상에 이름을 떨칠 대길몽으로 봅니다." },
+            { id: "baby", name: "갓난아기/출산꿈", icon: "👶", keywords: ["아기", "갓난아기", "출산", "임신"], category: "인물", grade: "창조 결실몽", score: 95, baseNumbers: [4, 11, 18, 25, 31, 40], meaning: "건강하고 방긋 웃는 갓난아기를 품에 안는 꿈은 오래 준비한 일이 큰 결실을 맺음을 뜻합니다. 새로운 재물과 기회가 태어나는 길몽으로 봅니다." },
+            { id: "bird", name: "학/봉황/새", icon: "🕊️", keywords: ["새", "학", "봉황", "비둘기", "독수리"], category: "동물", grade: "명예 영달몽", score: 93, baseNumbers: [3, 8, 15, 21, 26, 37], meaning: "학이나 봉황이 마당에 내려앉는 꿈은 귀인을 만나거나 학문·직업에서 최고 권위의 인정을 받게 됨을 예견합니다." },
+            { id: "flower", name: "꽃/과일꿈", icon: "🌸", keywords: ["꽃", "과일", "사과", "복숭아", "열매"], category: "자연", grade: "사랑 수확몽", score: 92, baseNumbers: [5, 12, 19, 28, 34, 43], meaning: "탐스러운 과일을 수확하거나 꽃밭을 거니는 꿈은 노력의 풍성한 결실과 좋은 인연을 뜻합니다. 금전적 보답도 따른다고 봅니다." },
+            { id: "horse", name: "말/백마꿈", icon: "🐎", keywords: ["말", "백마", "흑마"], category: "동물", grade: "질주 성공몽", score: 93, baseNumbers: [7, 14, 22, 29, 36, 41], meaning: "힘찬 백마를 타고 초원을 달리는 꿈은 장애물이 사라지고 초고속 승진과 확장을 이뤄낼 역동적 길조입니다." },
+            { id: "ox", name: "소/황소꿈", icon: "🐂", keywords: ["소", "황소", "음메"], category: "동물", grade: "근면 대복몽", score: 94, baseNumbers: [2, 11, 16, 23, 34, 40], meaning: "우람한 황소가 밭을 갈거나 집안으로 들어오는 꿈은 성실한 축적 끝에 부동산 등 큰 자산을 모으게 됨을 뜻합니다." },
+            { id: "rainbow", name: "무지개/눈꿈", icon: "🌈", keywords: ["무지개", "눈", "함박눈"], category: "자연", grade: "상서로운 축복", score: 93, baseNumbers: [6, 13, 20, 27, 32, 41], meaning: "하늘에 선명한 쌍무지개가 뜨거나 세상을 덮는 눈을 보는 꿈은 집안에 경사가 겹치고 축복이 찾아올 징조입니다." },
+
+            // ★ 신규 추가: 로또 당첨 빈출 길몽 (구체적 키워드는 일반 항목보다 우선 매칭됨)
+            { id: "goldpig", name: "황금돼지꿈", icon: "🐖", keywords: ["황금돼지", "금돼지", "새끼돼지", "돼지새끼"], category: "동물", grade: "특급 재물몽", score: 98, baseNumbers: [9, 12, 19, 28, 34, 41], meaning: "온몸이 황금빛으로 빛나는 돼지나 새끼 돼지가 품에 안기는 꿈은 재물과 복이 한꺼번에 굴러들어오는 최고의 재물몽입니다. 복권 당첨 같은 큰 횡재수를 예견하며, 돼지가 많을수록 재물도 크게 불어난다고 풀이합니다." },
+            { id: "dragonsky", name: "승천하는 용꿈", icon: "🌤️", keywords: ["승천", "승천하는 용", "용승천", "하늘로 오르"], category: "동물", grade: "천운 대길몽", score: 98, baseNumbers: [3, 7, 13, 24, 36, 41], meaning: "용이 구름을 뚫고 하늘로 승천하는 장엄한 꿈은 인생 최고의 도약기가 열린다는 천운의 징조입니다. 신분 상승과 시험 합격, 막대한 재물이 함께 따르는 꿈으로 봅니다." },
+            { id: "bigsnake", name: "구렁이/큰 뱀꿈", icon: "🐍", keywords: ["구렁이", "큰뱀", "큰 뱀", "이무기"], category: "동물", grade: "재물 대길몽", score: 96, baseNumbers: [4, 9, 16, 25, 31, 36], meaning: "집안에 커다란 구렁이가 들어오거나 몸을 휘감는 꿈은 집안의 수호 영물이 재물을 불러들이는 징조입니다. 오래 묵은 재물운이 터지고 큰 횡재수가 따른다고 풀이합니다." },
+            { id: "bigfire", name: "집이 타는 큰 불꿈", icon: "🏠🔥", keywords: ["활활", "큰불", "큰 불", "집이 불", "집이 타", "불타는", "화재", "불난"], category: "자연", grade: "번영 대길몽", score: 97, baseNumbers: [6, 14, 23, 29, 38, 45], meaning: "집이 활활 타오르는 큰 불을 보는 꿈은 흉몽 같지만 민간에서는 가세가 불길처럼 일어나는 대길몽으로 봅니다. 불길이 클수록 사업 번창과 큰 재물이 따르며 막혔던 일이 단번에 풀립니다." },
+            { id: "flood", name: "맑은 물/큰 홍수꿈", icon: "🌊", keywords: ["홍수", "큰물", "범람", "해일", "쓰나미", "물난리"], category: "자연", grade: "재물 범람몽", score: 96, baseNumbers: [4, 15, 18, 27, 33, 42], meaning: "맑은 물이 집 안으로 넘쳐 들어오거나 큰 홍수가 나는 꿈은 재물이 물처럼 밀려드는 징조로 봅니다. 물이 맑을수록 재물운이 깨끗하고 크며, 사업과 투자에서 큰 이득을 얻는다고 풀이합니다." },
+            { id: "mountain", name: "산 정상에 오르는 꿈", icon: "⛰️", keywords: ["산꼭대기", "산 정상", "정상", "등산", "산봉우리", "높은 산", "산"], category: "자연", grade: "성취 대길몽", score: 95, baseNumbers: [3, 10, 17, 25, 32, 39], meaning: "높은 산의 정상에 올라 세상을 내려다보는 꿈은 오랜 노력 끝에 큰 목표를 이루고 최고의 자리에 오르게 됨을 뜻합니다. 명예와 재물이 함께 따르며 막힘없는 성공을 예견합니다." },
+            { id: "treasure", name: "금은보화/현금다발꿈", icon: "💎", keywords: ["금은보화", "현금다발", "돈다발", "보물", "금괴", "현금", "보화"], category: "재물", grade: "직접 재물몽", score: 98, baseNumbers: [9, 19, 28, 32, 39, 45], meaning: "금은보화가 가득 담긴 상자를 열거나 현금다발을 손에 쥐는 꿈은 실제 재물이 들어오는 가장 직접적인 길몽입니다. 큰 목돈과 복권 당첨 같은 횡재수를 예견하며, 보물을 손에 넣을수록 길하다고 풀이합니다." },
+            { id: "twins", name: "쌍둥이꿈", icon: "👶👶", keywords: ["쌍둥이", "쌍둥", "쌍태아"], category: "인물", grade: "겹경사 대길몽", score: 96, baseNumbers: [2, 11, 22, 33, 37, 44], meaning: "쌍둥이를 낳거나 안는 꿈은 경사와 재물이 겹쳐서 찾아오는 겹복의 징조입니다. 한 번에 두 가지 좋은 일이 이루어지고 재물운이 두 배로 커진다고 풀이합니다." }
         ];
 
         // 오늘 날짜 시드 생성 함수 (매일 자정에 자동 변경)
@@ -4724,26 +4735,10 @@
 
         // 특정 꿈의 매일 변동되는 기운 점수 및 행운 번호 계산
         function getDailyCalculatedDream(item) {
-            const { seed } = getDailySeedInfo();
-            let hash = 0;
-            for (let i = 0; i < item.id.length; i++) {
-                hash = (hash * 31 + item.id.charCodeAt(i)) % 10007;
-            }
-
-            // 오늘의 기운 점수 (92% ~ 99%)
-            const energyScore = 92 + ((seed + hash) % 8);
-
-            // 매일 변동되는 추가 행운 번호 (1~45 중 겹치지 않게 2개 추가)
-            const nums = [...item.baseNumbers];
-            const dailyBonus1 = ((seed * 7 + hash * 13) % 45) + 1;
-            if (!nums.includes(dailyBonus1)) nums.push(dailyBonus1);
-
-            const dailyBonus2 = ((seed * 17 + hash * 19) % 45) + 1;
-            if (!nums.includes(dailyBonus2) && nums.length < 5) nums.push(dailyBonus2);
-
-            nums.sort((a, b) => a - b);
+            // 항목별 고유 길몽 지수(%)와 고유 상징 행운 번호 6개를 그대로 사용
+            const nums = [...item.baseNumbers].sort((a, b) => a - b);
             return {
-                energyScore,
+                energyScore: item.score,
                 numbers: nums
             };
         }
@@ -4768,10 +4763,13 @@
 
             // 날짜 시드로 매일 다르게 정렬
             const rankedList = filtered.sort((a, b) => {
+                // 조상님/부모님꿈은 항상 최상단(1위) 고정
+                if (a.id === 'ancestor') return -1;
+                if (b.id === 'ancestor') return 1;
                 const hashA = (a.id.charCodeAt(0) * 17 + seed) % 101;
                 const hashB = (b.id.charCodeAt(0) * 17 + seed) % 101;
                 return hashB - hashA;
-            }).slice(0, 8); // TOP 8개 노출
+            }).slice(0, currentDreamCategory === 'all' ? 10 : 20); // 전체 TOP 10 / 카테고리별 전체 노출
 
             container.innerHTML = rankedList.map((item, idx) => {
                 const { energyScore } = getDailyCalculatedDream(item);
@@ -4781,7 +4779,7 @@
                         <span class="text-[10px] font-black px-1.5 py-0.2 rounded-full ${idx < 3 ? 'bg-amber-400 text-slate-900' : 'bg-white/20 text-indigo-200'}">${idx + 1}위</span>
                         <span>${item.icon}</span>
                         <span>${item.name}</span>
-                        <span class="text-[10px] text-amber-300 font-bold hidden sm:inline">(${energyScore}%)</span>
+                        <span class="text-[10px] text-amber-300 font-bold">(${energyScore}%)</span>
                     </button>
                 `;
             }).join('');
@@ -4822,9 +4820,18 @@
             }
 
             // 키워드 매칭
-            let matched = dreamDatabase.find(d => {
-                if (val.includes(d.name) || d.name.includes(val)) return true;
-                return d.keywords.some(k => val.includes(k) || k.includes(val));
+            // 가장 긴(구체적) 키워드 일치 항목 우선, 동률이면 배열 순서(조상님꿈 최우선)
+            let matched = null;
+            let bestLen = 0;
+            dreamDatabase.forEach(d => {
+                let len = 0;
+                if (val.includes(d.name)) len = Math.max(len, d.name.length);
+                if (d.name.includes(val)) len = Math.max(len, val.length);
+                d.keywords.forEach(k => {
+                    if (val.includes(k)) len = Math.max(len, k.length);
+                    else if (k.includes(val)) len = Math.max(len, val.length);
+                });
+                if (len > bestLen) { bestLen = len; matched = d; }
             });
 
             if (matched) {
