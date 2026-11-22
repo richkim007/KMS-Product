@@ -1512,7 +1512,7 @@
                         <i class="fa-solid fa-receipt text-amber-400"></i>
                         <span>총 누적 당첨 인증</span>
                     </div>
-                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight" id="reviewStatTotalCount">2건</div>
+                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight" id="reviewStatTotalCount">0건</div>
                     <div class="text-[10px] sm:text-[11px] text-emerald-400 font-semibold flex items-center justify-center gap-1">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                         <span>실시간 자율 등록 집계</span>
@@ -1525,8 +1525,8 @@
                         <i class="fa-solid fa-crown text-amber-400"></i>
                         <span>인증 최고 당첨 등급</span>
                     </div>
-                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight" id="reviewStatTopPrize">4등 (50,000원)</div>
-                    <div class="text-[10px] sm:text-[11px] text-amber-300 font-semibold" id="reviewStatTopRound">제 1248회 (AI 스마트 조합기)</div>
+                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tight" id="reviewStatTopPrize">인증 등록 대기 중</div>
+                    <div class="text-[10px] sm:text-[11px] text-amber-300 font-semibold" id="reviewStatTopRound">첫 주인공을 기다리고 있습니다</div>
                 </div>
 
                 <!-- 3. 실시간 등록 대기 현황 -->
@@ -1545,8 +1545,8 @@
                         <i class="fa-solid fa-heart text-rose-400"></i>
                         <span>후기 공감 & 축하</span>
                     </div>
-                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight" id="reviewStatLikesCount">117회 축하</div>
-                    <div class="text-[10px] sm:text-[11px] text-slate-300 font-semibold" id="reviewStatCommentsCount">회원 간 실시간 응원 진행 중</div>
+                    <div class="text-xl sm:text-2xl md:text-3xl font-black text-amber-300 tracking-tight" id="reviewStatLikesCount">0회 축하</div>
+                    <div class="text-[10px] sm:text-[11px] text-slate-300 font-semibold" id="reviewStatCommentsCount">축하 댓글 0건 교환 중</div>
                 </div>
             </div>
 
@@ -7635,7 +7635,9 @@
 
         // --- (8) 🏆 실시간 당첨 후기 및 명예의 전당 엔진 (reviewEngine) ---
         const reviewEngine = {
-            storageKey: 'kms_loddo_reviews_v3', // v3로 업데이트하여 4등/5등 당첨 후기 반영
+            storageKey: 'kms_loddo_reviews_v4', // v4: 샘플(더미) 후기 제거 — 실제 사용자 등록 후기만 저장
+            legacyStorageKeys: ['kms_loddo_reviews_v3'], // 구버전 키: 샘플만 걸러 내고 실제 후기는 v4로 이관
+            legacySampleIds: ['rev-1248-4', 'rev-1248-6'], // 과거 기본 탑재되었던 샘플 후기 ID
             currentFilter: 'rank4', // 4등 당첨 후기 디렉토리가 기본 활성화
             selectedRank: 1,
             uploadedImage: null,
@@ -7701,45 +7703,8 @@
                 }
             },
 
-            // 1~3등은 빈 상태 처리, 4등 및 5등은 지난 버전 당첨 후기 반영
-            defaultReviews: [
-                {
-                    id: 'rev-1248-4',
-                    password: 'demo',
-                    author: '주말의행복',
-                    authorType: 'verified',
-                    round: 1248,
-                    rank: 4,
-                    prize: '4등 10만원 (2줄 당첨)',
-                    method: 'AI 스마트 조합기',
-                    numbers: [11, 16, 22, 38, 43, 45],
-                    title: "최신 1248회 AI 조합기로 뽑은 5줄 중 4등 2줄 동시 당첨!",
-                    content: "가볍게 5천원어치 샀는데 4등이 2줄이나 나와서 10만원 벌었습니다. 오늘 저녁 가족들이랑 소고기 파티했습니다. loddo.co 알고리즘 정말 신기하네요!",
-                    date: '2026.05.09',
-                    likes: 74,
-                    likedByUser: false,
-                    comments: [
-                        { id: 'c5', author: '맛있는소고기', text: '소고기 나이스입니다 ㅋㅋㅋ 축하드려요!', date: '2026.05.09' }
-                    ]
-                },
-                {
-                    id: 'rev-1248-6',
-                    password: 'demo',
-                    author: '소소한일상',
-                    authorType: 'member',
-                    round: 1248,
-                    rank: 5,
-                    prize: '5등 5,000원',
-                    method: 'AI 스마트 조합기',
-                    numbers: [11, 22, 38, 5, 29, 33],
-                    title: "3주 연속 5등 본전치기 중! 꾸준히 도전합니다",
-                    content: "매주 AI 조합기로 5천원씩 자동 생성해서 사는데 3주 연속으로 5등 당첨되어 계속 무료로 즐기는 기분입니다. 언젠가 앞자리 1등 찍는 그날까지 화이팅입니다!",
-                    date: '2026.05.09',
-                    likes: 43,
-                    likedByUser: false,
-                    comments: []
-                }
-            ],
+            // 기본 탑재 샘플(더미) 후기는 모두 제거됨 — 초기 상태는 0건, 실제 사용자 등록 후기만 표시
+            defaultReviews: [],
 
             reviews: [],
 
@@ -7750,13 +7715,41 @@
             },
 
             loadReviews() {
+                const sampleIds = this.legacySampleIds || [];
+                const isSample = r => !r || sampleIds.includes(r.id);
                 try {
                     const saved = localStorage.getItem(this.storageKey);
                     if (saved) {
-                        this.reviews = JSON.parse(saved);
+                        const parsed = JSON.parse(saved);
+                        this.reviews = Array.isArray(parsed) ? parsed.filter(r => !isSample(r)) : [];
+                        // v4 이후에도 남아 있는 구버전(v3) 저장분 중 실제 후기만 중복 없이 병합 후 정리
+                        let merged = false;
+                        for (const key of (this.legacyStorageKeys || [])) {
+                            const old = localStorage.getItem(key);
+                            if (!old) continue;
+                            try {
+                                const arr = JSON.parse(old);
+                                if (Array.isArray(arr)) arr.forEach(r => {
+                                    if (!isSample(r) && !this.reviews.some(x => x.id === r.id)) { this.reviews.push(r); merged = true; }
+                                });
+                            } catch (e) { /* 손상된 구버전 데이터는 무시 */ }
+                            try { localStorage.removeItem(key); } catch (e) {}
+                        }
+                        if (merged) this.saveReviews();
                     } else {
-                        this.reviews = JSON.parse(JSON.stringify(this.defaultReviews));
+                        // 구버전(v3) 저장분 이관: 과거 기본 샘플은 버리고 사용자가 직접 등록한 후기만 보존
+                        let migrated = [];
+                        for (const key of (this.legacyStorageKeys || [])) {
+                            const old = localStorage.getItem(key);
+                            if (!old) continue;
+                            try {
+                                const arr = JSON.parse(old);
+                                if (Array.isArray(arr)) migrated = migrated.concat(arr.filter(r => !isSample(r)));
+                            } catch (e) { /* 손상된 구버전 데이터는 무시 */ }
+                        }
+                        this.reviews = migrated.length ? migrated : JSON.parse(JSON.stringify(this.defaultReviews));
                         this.saveReviews();
+                        (this.legacyStorageKeys || []).forEach(k => { try { localStorage.removeItem(k); } catch (e) {} });
                     }
                 } catch (e) {
                     this.reviews = JSON.parse(JSON.stringify(this.defaultReviews));
@@ -7994,7 +7987,7 @@
             submitReview() {
                 const nickname = document.getElementById('reviewFormNickname')?.value.trim();
                 const password = document.getElementById('reviewFormPassword')?.value.trim();
-                const round = parseInt(document.getElementById('reviewFormRound')?.value || '1248', 10);
+                const round = parseInt(document.getElementById('reviewFormRound')?.value || String((getLottoData().slice(-1)[0] || {}).no || 1251), 10);
                 const method = document.getElementById('reviewFormMethod')?.value || 'AI 스마트 조합기';
                 const prize = document.getElementById('reviewFormPrize')?.value.trim();
                 const title = document.getElementById('reviewFormTitle')?.value.trim();
@@ -8433,10 +8426,10 @@
                             </div>
                             <div class="space-y-1.5">
                                 <h3 class="text-base sm:text-lg font-black text-white tracking-tight">
-                                    ${currentMeta.emptyTitle}
+                                    ${this.reviews.length === 0 ? '아직 등록된 실제 당첨 후기가 없습니다.' : currentMeta.emptyTitle}
                                 </h3>
                                 <p class="text-xs sm:text-sm text-slate-400 font-normal leading-relaxed max-w-md mx-auto">
-                                    ${currentMeta.emptyDesc}
+                                    ${this.reviews.length === 0 ? '첫 번째 영수증 인증의 주인공이 되어보세요!' : currentMeta.emptyDesc}
                                 </p>
                             </div>
                             <div class="pt-2">
