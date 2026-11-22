@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node ./node_modules/live-server/live-server.js --port=5500 --open=/",
     "build": "echo 'Build OK'",
+    "update-lotto": "node tools/update-lotto.js",
     "indexnow": "node tools/indexnow.js",
     "indexnow:new": "node tools/indexnow.js --last-commit"
   },
