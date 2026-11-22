@@ -1,3 +1,14 @@
 /ads.txt
   Content-Type: text/plain; charset=utf-8
   Cache-Control: public, max-age=3600
+
+# 로또 당첨 데이터: 매주 자동 갱신되므로 브라우저/엣지가 항상 재검증(ETag/304)하도록 강제.
+# (index.html 이 ?v=<최신회차> 쿼리로 요청하고, 이 헤더가 구버전 재사용을 이중 차단)
+/data/*
+  Cache-Control: no-cache, must-revalidate
+
+# 메인 페이지도 항상 재검증 → 새 ?v= 값을 즉시 인식
+/
+  Cache-Control: no-cache, must-revalidate
+/index.html
+  Cache-Control: no-cache, must-revalidate

@@ -28,8 +28,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 역대 1회부터 최신회차(1248회) 전수 공식 당첨 데이터셋 -->
-    <script src="data/lotto_history.js"></script>
+    <!-- 역대 1회부터 최신회차(1251회) 전수 공식 당첨 데이터셋 -->
+    <script src="data/lotto_history.js?v=1251"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800&display=swap');
 
@@ -877,7 +877,7 @@
         </div>
     </section>
 
-    <!-- 3. 전수 데이터 통계 센터 (1회 ~ 1248회 최신회차 완벽 탑재) -->
+    <!-- 3. 전수 데이터 통계 센터 (1회 ~ 1251회 최신회차 완벽 탑재) -->
     <section id="stats" class="max-w-7xl mx-auto px-4 py-16 space-y-6 border-t border-slate-200/80">
         <!-- (1) 회차별 당첨 결과 공식 슬립 뷰어 -->
         <div class="bg-white rounded-3xl border-2 border-slate-200 shadow-xl overflow-hidden p-6 sm:p-8">
@@ -888,15 +888,15 @@
                             class="text-xs font-black text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-full border border-indigo-200">
                             동행복권 공식 검증 데이터
                         </span>
-                        <span class="text-xs text-slate-400 font-medium">1회(2002년) ~ 1248회(최신) 전수 완비</span>
+                        <span id="latestRangeLabel" class="text-xs text-slate-400 font-medium">1회(2002년) ~ 1251회(최신) 전수 완비</span>
                     </div>
                     <div class="flex items-center space-x-3 mt-2">
                         <h2 class="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight" id="drawTitleText">
-                            로또 6/45 <span class="text-indigo-600" id="drawNoDisplay">제 1248회</span>
+                            로또 6/45 <span class="text-indigo-600" id="drawNoDisplay">제 1251회</span>
                         </h2>
                         <span class="text-xs text-slate-500 font-bold bg-slate-100 px-2.5 py-1 rounded-lg"
                             id="drawDateDisplay">
-                            2026-10-31 추첨
+                            2026-11-21 추첨
                         </span>
                     </div>
                 </div>
@@ -908,7 +908,7 @@
                         <i class="fa-solid fa-chevron-left text-[10px]"></i> <span>이전회차</span>
                     </button>
                     <div class="flex items-center bg-slate-100 rounded-xl px-2 py-1 border border-slate-200">
-                        <input type="number" id="directDrawInput" placeholder="1248" min="1" max="1248"
+                        <input type="number" id="directDrawInput" placeholder="1251" min="1" max="1251"
                             class="w-16 bg-transparent text-center font-bold text-xs text-slate-800 outline-none">
                         <button onclick="searchDirectDraw()"
                             class="text-indigo-600 font-extrabold text-xs px-1.5 py-1 hover:text-indigo-800">
@@ -937,10 +937,10 @@
                     class="bg-gradient-to-r from-slate-50 to-indigo-50/50 p-4 rounded-2xl border border-slate-200/80 text-center lg:text-right space-y-1 w-full lg:w-auto">
                     <div class="text-xs text-slate-500 font-medium">1등 1인당 실수령 당첨금 (세전)</div>
                     <div class="text-xl sm:text-2xl font-black text-indigo-700" id="drawPrizeDisplay">
-                        약 19억 3,365만원
+                        약 20억 6,884만원
                     </div>
                     <div class="text-xs text-slate-400" id="drawWinnersDisplay">
-                        1등 당첨 총 15명
+                        1등 당첨 총 14명
                     </div>
                 </div>
             </div>
@@ -961,7 +961,7 @@
                         <span class="ball ball-blue !w-7 !h-7 !text-xs">18</span>
                         <span class="ball ball-blue !w-7 !h-7 !text-xs">12</span>
                     </div>
-                    <div class="text-[11px] text-slate-400 mt-2">1위 34번 (총 187회 출현)</div>
+                    <div id="hotNote" class="text-[11px] text-slate-400 mt-2">1위 34번 (총 187회 출현)</div>
                 </div>
 
                 <!-- 2. 최소 출현수 -->
@@ -978,21 +978,21 @@
                         <span class="ball ball-red !w-7 !h-7 !text-xs">23</span>
                         <span class="ball ball-green !w-7 !h-7 !text-xs">41</span>
                     </div>
-                    <div class="text-[11px] text-slate-400 mt-2">최소 9번 (총 137회 출현)</div>
+                    <div id="coldNote" class="text-[11px] text-slate-400 mt-2">최소 9번 (총 137회 출현)</div>
                 </div>
 
                 <!-- 3. 합계 황금 구간 -->
                 <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <div class="text-xs font-bold text-slate-500">역대 평균 합계 (Sum)</div>
-                    <div class="text-2xl font-black text-indigo-600 mt-1">138</div>
-                    <div class="text-[11px] text-slate-400 mt-1">황금 구간(130~155) 점유율 43.1%</div>
+                    <div id="avgSumValue" class="text-2xl font-black text-indigo-600 mt-1">138</div>
+                    <div id="goldZoneNote" class="text-[11px] text-slate-400 mt-1">황금 구간(130~155) 점유율 43.1%</div>
                 </div>
 
                 <!-- 4. 최빈 홀짝 비율 -->
                 <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100">
                     <div class="text-xs font-bold text-slate-500">최빈 홀짝(Odd/Even) 비율</div>
-                    <div class="text-2xl font-black text-emerald-600 mt-1">3 : 3 (33.2%)</div>
-                    <div class="text-[11px] text-slate-400 mt-1">2위 4:2 (24.1%) 비율 최다</div>
+                    <div id="oddEvenTopValue" class="text-2xl font-black text-emerald-600 mt-1">3 : 3 (33.2%)</div>
+                    <div id="oddEvenTopNote" class="text-[11px] text-slate-400 mt-1">2위 4:2 (24.1%) 비율 최다</div>
                 </div>
             </div>
         </div>
@@ -1006,7 +1006,7 @@
                         동행복권 stats 벤치마킹
                     </span>
                     <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                        1회~1248회 실시간 분석
+                        <span id="latestRealtimeLabel">1회~1251회 실시간 분석</span>
                     </span>
                 </div>
                 <h3 class="text-xl sm:text-2xl font-black text-slate-900 flex items-center justify-center space-x-2">
@@ -1097,7 +1097,7 @@
                                 <span id="unshown5Count"
                                     class="text-xs font-extrabold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700">0개</span>
                             </div>
-                            <div class="text-[11px] text-slate-400">제 1244회 ~ 제 1248회 미출현</div>
+                            <div id="unshown5Range" class="text-[11px] text-slate-400">제 1247회 ~ 제 1251회 미출현</div>
                             <div id="unshown5Balls" class="flex flex-wrap gap-1.5 pt-1 min-h-[80px]"></div>
                         </div>
 
@@ -1108,7 +1108,7 @@
                                 <span id="unshown10Count"
                                     class="text-xs font-extrabold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">0개</span>
                             </div>
-                            <div class="text-[11px] text-slate-400">제 1239회 ~ 제 1248회 미출현</div>
+                            <div id="unshown10Range" class="text-[11px] text-slate-400">제 1242회 ~ 제 1251회 미출현</div>
                             <div id="unshown10Balls" class="flex flex-wrap gap-1.5 pt-1 min-h-[80px]"></div>
                         </div>
 
@@ -1119,7 +1119,7 @@
                                 <span id="unshown15Count"
                                     class="text-xs font-extrabold px-2 py-0.5 rounded-full bg-rose-100 text-rose-700">0개</span>
                             </div>
-                            <div class="text-[11px] text-slate-400">제 1234회 ~ 제 1248회 미출현</div>
+                            <div id="unshown15Range" class="text-[11px] text-slate-400">제 1237회 ~ 제 1251회 미출현</div>
                             <div id="unshown15Balls" class="flex flex-wrap gap-1.5 pt-1 min-h-[80px]"></div>
                         </div>
                     </div>
@@ -1135,7 +1135,7 @@
                                     <i class="fa-solid fa-scale-balanced text-indigo-600"></i>
                                     <span>홀짝(Odd/Even) 비율 출현 빈도</span>
                                 </h4>
-                                <span class="text-[11px] text-slate-400">총 1248회 전수</span>
+                                <span id="oddEvenTotalLabel" class="text-[11px] text-slate-400">총 1251회 전수</span>
                             </div>
                             <div id="oddEvenStatsContainer" class="space-y-2.5 text-xs">
                                 <!-- JS 생성 -->
@@ -1163,7 +1163,7 @@
                     class="mt-8 pt-5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-400 bg-slate-50/60 p-4 rounded-2xl">
                     <div class="flex items-center space-x-2">
                         <i class="fa-solid fa-shield-halved text-indigo-500 text-sm"></i>
-                        <span><strong>데이터 출처:</strong> (주)동행복권 공공 추첨 사실 데이터(제1회~1248회 전수)를 자체 수학 알고리즘으로 가공·시각화함.</span>
+                        <span><strong>데이터 출처:</strong> (주)동행복권 공공 추첨 사실 데이터(<span id="sourceRangeLabel">제1회~1251회</span> 전수)를 자체 수학 알고리즘으로 가공·시각화함.</span>
                     </div>
                     <div class="text-[11px] text-slate-400">
                         * 본 통계는 엔터테인먼트 및 학술 연구 목적이며 미래 당첨을 보장하지 않습니다.
@@ -1172,7 +1172,7 @@
             </div>
         </div>
 
-        <!-- (3) 역대 1회 ~ 최신 1248회 전수 당첨 내역 검색 & 테이블 리스트 (기본 5회차 요약 + 더보기 토글) -->
+        <!-- (3) 역대 1회 ~ 최신 1251회 전수 당첨 내역 검색 & 테이블 리스트 (기본 5회차 요약 + 더보기 토글) -->
         <div id="historyArchiveSection" class="bg-white rounded-3xl border border-slate-200 shadow-md p-6">
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-slate-100">
                 <div>
@@ -1230,7 +1230,7 @@
 
             <!-- 테이블 페이징 컨트롤 (펼침 상태일 때만 노출) -->
             <div id="tablePaginationBar" class="hidden items-center justify-between pt-4 border-t border-slate-100 text-xs">
-                <span class="text-slate-400" id="tablePageIndicator">1 / 125 페이지 (총 1248회차)</span>
+                <span class="text-slate-400" id="tablePageIndicator">1 / 126 페이지 (총 1251회차)</span>
                 <div class="flex space-x-1.5">
                     <button onclick="prevTablePage()"
                         class="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-slate-600 font-bold transition touch-manipulation">
@@ -2305,15 +2305,15 @@
                         <label class="block font-bold text-slate-300 mb-1">당첨 회차 선택 <span class="text-rose-400">*</span></label>
                         <select id="reviewFormRound"
                             class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-white text-xs focus:outline-none focus:border-amber-400 focus:ring-1 focus:ring-amber-400">
-                            <option value="1248" selected>제 1248회 (최신 회차)</option>
+                            <option value="1251" selected>제 1251회 (최신 회차)</option>
+                            <option value="1250">제 1250회</option>
+                            <option value="1249">제 1249회</option>
+                            <option value="1248">제 1248회</option>
                             <option value="1247">제 1247회</option>
                             <option value="1246">제 1246회</option>
                             <option value="1245">제 1245회</option>
                             <option value="1244">제 1244회</option>
                             <option value="1243">제 1243회</option>
-                            <option value="1242">제 1242회</option>
-                            <option value="1241">제 1241회</option>
-                            <option value="1240">제 1240회</option>
                         </select>
                     </div>
                 </div>
@@ -2510,7 +2510,7 @@
 
     <!-- 9. 메인 자바스크립트 엔진 -->
     <script>
-        // --- (0) 역대 1회 ~ 최신 1248회 전수 당첨 데이터 뷰어 및 통계 컨트롤러 ---
+        // --- (0) 역대 1회 ~ 최신 1251회 전수 당첨 데이터 뷰어 및 통계 컨트롤러 ---
         let currentDrawIndex = 0;
         let filteredHistoryList = [];
         let currentTablePage = 1;
@@ -2518,15 +2518,94 @@
         let isHistoryExpanded = false; // 기본 상태: 접힘 (최근 5회차만 요약 노출)
         let selectedHistoryYear = 'ALL'; // 연도 필터 ('ALL' | '2026' | ...)
 
+        // 회차 오름차순으로 정렬된 데이터(마지막 요소 = 항상 최신 회차). 데이터 파일 순서와 무관하게 보장.
+        let _lottoDataCache = null;
+        let _lottoDataSrc = null;
         function getLottoData() {
-            return window.LOTTO_HISTORY || [];
+            const src = window.LOTTO_HISTORY || [];
+            if (_lottoDataSrc !== src || !_lottoDataCache) {
+                _lottoDataSrc = src;
+                _lottoDataCache = [...src].sort((a, b) => a.no - b.no);
+            }
+            return _lottoDataCache;
+        }
+
+        // 최신 회차 번호에 연동되는 모든 화면 라벨 갱신 (하드코딩 회차 제거)
+        function applyLatestRoundLabels() {
+            const data = getLottoData();
+            if (data.length === 0) return;
+            const latest = data[data.length - 1].no;
+            const total = data.length;
+            const setText = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+
+            setText('latestRangeLabel', `1회(2002년) ~ ${latest}회(최신) 전수 완비`);
+            setText('latestRealtimeLabel', `1회~${latest}회 실시간 분석`);
+            setText('sourceRangeLabel', `제1회~${latest}회`);
+            setText('oddEvenTotalLabel', `총 ${latest}회 전수`);
+            setText('unshown5Range', `제 ${latest - 4}회 ~ 제 ${latest}회 미출현`);
+            setText('unshown10Range', `제 ${latest - 9}회 ~ 제 ${latest}회 미출현`);
+            setText('unshown15Range', `제 ${latest - 14}회 ~ 제 ${latest}회 미출현`);
+
+            const input = document.getElementById('directDrawInput');
+            if (input) { input.placeholder = String(latest); input.max = String(latest); }
+
+            // 후기 등록 폼의 회차 선택지: 최신 회차부터 9개 자동 생성
+            const roundSel = document.getElementById('reviewFormRound');
+            if (roundSel) {
+                let opts = '';
+                for (let n = latest; n > latest - 9 && n >= 1; n--) {
+                    opts += `<option value="${n}"${n === latest ? ' selected' : ''}>제 ${n}회${n === latest ? ' (최신 회차)' : ''}</option>`;
+                }
+                roundSel.innerHTML = opts;
+            }
+            return { latest, total };
+        }
+
+        // 상단 요약 4종 카드(HOT/COLD/평균 합계/홀짝 최빈) 전수 데이터 기준 자동 계산
+        function renderTopSummaryCards() {
+            const data = getLottoData();
+            if (data.length === 0) return;
+            const total = data.length;
+            const counts = Array(46).fill(0);
+            const oddEven = {};
+            let sumAll = 0, gold = 0;
+            data.forEach(d => {
+                let odd = 0, sum = 0;
+                d.nums.forEach(n => { counts[n]++; sum += n; if (n % 2 !== 0) odd++; });
+                sumAll += sum;
+                if (sum >= 130 && sum <= 155) gold++;
+                const k = `${odd}:${6 - odd}`;
+                oddEven[k] = (oddEven[k] || 0) + 1;
+            });
+            const list = [];
+            for (let i = 1; i <= 45; i++) list.push({ num: i, count: counts[i] });
+            const hot = [...list].sort((a, b) => b.count - a.count || a.num - b.num).slice(0, 5);
+            const cold = [...list].sort((a, b) => a.count - b.count || a.num - b.num).slice(0, 5);
+            const ballsHtml = arr => arr.map(it => `<span class="ball ${getBallClass(it.num)} !w-7 !h-7 !text-xs">${it.num}</span>`).join('');
+            const setHtml = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+            const setText = (id, txt) => { const el = document.getElementById(id); if (el) el.textContent = txt; };
+            const pct = v => ((v / total) * 100).toFixed(1);
+
+            setHtml('hotBallsArea', ballsHtml(hot));
+            setText('hotNote', `1위 ${hot[0].num}번 (총 ${hot[0].count}회 출현)`);
+            setHtml('coldBallsArea', ballsHtml(cold));
+            setText('coldNote', `최소 ${cold[0].num}번 (총 ${cold[0].count}회 출현)`);
+            setText('avgSumValue', String(Math.round(sumAll / total)));
+            setText('goldZoneNote', `황금 구간(130~155) 점유율 ${pct(gold)}%`);
+
+            const oe = Object.entries(oddEven).sort((a, b) => b[1] - a[1]);
+            if (oe[0]) setText('oddEvenTopValue', `${oe[0][0].replace(':', ' : ')} (${pct(oe[0][1])}%)`);
+            if (oe[1]) setText('oddEvenTopNote', `2위 ${oe[1][0]} (${pct(oe[1][1])}%) 비율 최다`);
         }
 
         function initLottoHistoryViewer() {
             const data = getLottoData();
             if (data.length === 0) return;
 
-            // 최신 회차(1248회)를 기본으로 로드
+            applyLatestRoundLabels();
+            renderTopSummaryCards();
+
+            // 데이터의 가장 최신 회차를 무조건 기본값으로 로드
             currentDrawIndex = data.length - 1;
             renderSelectedDraw(data[currentDrawIndex].no);
 
@@ -2615,7 +2694,7 @@
                 return;
             }
             if (nextIndex >= data.length) {
-                alert("가장 최신 회차(제 1248회)입니다.");
+                alert(`가장 최신 회차(제 ${data[data.length - 1].no}회)입니다.`);
                 return;
             }
             renderSelectedDraw(data[nextIndex].no);
