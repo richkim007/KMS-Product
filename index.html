@@ -7444,10 +7444,11 @@
             },
 
             getFilteredStories() {
-                if (this.currentCat === 'all') {
-                    return lottoStories;
-                }
-                return lottoStories.filter(s => s.catId === this.currentCat);
+                // 최신 회차 우선(내림차순): 모든 탭·페이지·전체 펼쳐보기에 공통 적용
+                const list = this.currentCat === 'all'
+                    ? lottoStories.slice()
+                    : lottoStories.filter(s => s.catId === this.currentCat);
+                return list.sort((a, b) => b.id - a.id);
             },
 
             render() {
@@ -7506,9 +7507,11 @@
                     if (this.showAll) {
                         statusEl.innerText = `총 ${total}편의 연재 스토리가 전체 펼쳐져 있습니다 (전체 보기 활성화)`;
                     } else {
-                        const start = (this.currentPage - 1) * this.perPage + 1;
-                        const end = Math.min(this.currentPage * this.perPage, total);
-                        statusEl.innerText = `총 ${total}편 중 ${start}~${end}화 표시 중 (${this.currentPage}/${totalPages} 페이지)`;
+                        // 실제 렌더된 카드의 회차 번호와 일치시킴 (예: 23~18화)
+                        const first = displayList.length ? displayList[0].id : 0;
+                        const last = displayList.length ? displayList[displayList.length - 1].id : 0;
+                        const range = first === last ? `${first}` : `${first}~${last}`;
+                        statusEl.innerText = `총 ${total}편 중 ${range}화 표시 중 (${this.currentPage}/${totalPages} 페이지)`;
                     }
                 }
 
